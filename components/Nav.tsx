@@ -2,8 +2,9 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import type { Route } from 'next'   // ✅ add this
 
-const LINKS = [
+const LINKS: { href: Route; label: string }[] = [   // ✅ type here
   { href: '/',         label: 'Index'    },
   { href: '/services', label: 'Services' },
   { href: '/work',     label: 'Work'     },
