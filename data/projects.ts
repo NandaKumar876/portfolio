@@ -27,8 +27,8 @@ export const PROJECTS: Project[] = [
   },
   {
     id:'orbitly', slug:'orbitly', index:'02', title:'Orbitly', year:'2024',
-    description:'Immersive 3D solar system explorer built entirely in the browser using Three.js and WebGL.',
-    tags:['Three.js','React'],
+    description:'Immersive 3D solar system explorer built entirely in the browser.',
+    tags:['React'],
     features:[
       {title:'3D Rendering',description:'Physically accurate planetary motion with real orbital parameters from NASA ephemeris data.'},
       {title:'Interactive Camera',description:'Orbit, pan, and zoom with smooth exponential damping and boundary clamping.'},

@@ -1,11 +1,10 @@
 import type { Metadata } from 'next'
 import { Nav }           from '@/components/Nav'
-import { AmbientCanvas } from '@/components/AmbientCanvas'
 import '@/app/globals.css'
 
 export const metadata: Metadata = {
-  title:       'Thamo — Developer',
-  description: 'Full Stack Developer building precise, performant digital products.',
+  title: 'Thamo — Developer',
+  description: 'Liquid glass portfolio for Thamo, a full stack developer in Chennai.',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -19,11 +18,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
-        <AmbientCanvas />
         <Nav />
         <main>{children}</main>
         <footer className="footer">
-          Thamo &nbsp;·&nbsp; Next.js &nbsp;·&nbsp; Chennai, India &nbsp;·&nbsp; 2025
+          Thamo &nbsp;·&nbsp; Chennai, India
         </footer>
       </body>
     </html>

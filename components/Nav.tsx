@@ -2,14 +2,13 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import type { Route } from 'next'   // ✅ add this
+import type { Route } from 'next'
 
-const LINKS: { href: Route; label: string }[] = [   // ✅ type here
-  { href: '/',         label: 'Index'    },
-  { href: '/services', label: 'Services' },
-  { href: '/work',     label: 'Work'     },
-  { href: '/about',    label: 'About'    },
-  { href: '/contact',  label: 'Contact'  },
+const LINKS: { href: Route; label: string }[] = [
+  { href: '/', label: 'Home' },
+  { href: '/work', label: 'Work' },
+  { href: '/about', label: 'About' },
+  { href: '/contact', label: 'Contact' },
 ]
 
 export function Nav() {

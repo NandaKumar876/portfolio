@@ -18,12 +18,14 @@ npm run start
 
 | Route | Type | Description |
 |-------|------|-------------|
-| `/` | Server | Hero — typewriter, CTA, skills |
+| `/` | Server | Minimal hero — typewriter, CTA, skills |
 | `/services` | Server | Services & expertise grid |
 | `/work` | Server + Client island | Projects + live tag filter |
 | `/work/[slug]` | Server (SSG) | Project detail with features |
-| `/about` | Server | Timeline + stats |
-| `/contact` | Server + Client | Glass form with Server Action |
+| `/about` | Server | Profile summary + stats |
+| `/certificates` | Server | Uploaded certificates |
+| `/contact` | Server + Client | Glass form with Redis inbox |
+| `/admin` | Server + Client | Protected admin console |
 
 ---
 
@@ -32,7 +34,7 @@ npm run start
 ```
 next-portfolio/
 ├── app/
-│   ├── layout.tsx          # Root — Nav, AmbientCanvas, fonts
+│   ├── layout.tsx          # Root — Nav, fonts
 │   ├── globals.css          # Full Liquid Glass design system
 │   ├── page.tsx             # Hero
 │   ├── services/page.tsx    # Services
@@ -41,21 +43,29 @@ next-portfolio/
 │   │   ├── WorkClient.tsx   # 'use client' island — filter state
 │   │   └── [slug]/page.tsx  # SSG detail pages
 │   ├── about/page.tsx       # About
-│   └── contact/page.tsx     # Contact (uses ContactForm)
+│   ├── contact/page.tsx     # Contact (uses ContactForm)
+│   └── api/resume/route.ts   # PDF download endpoint
 │
 ├── components/
 │   ├── LiquidGlass.tsx      # Polymorphic glass — mouse shimmer
 │   ├── Nav.tsx              # Active-link nav (usePathname)
 │   ├── Typewriter.tsx       # Animated role typewriter
-│   ├── AmbientCanvas.tsx    # Canvas blobs (glass needs backdrop)
 │   └── ContactForm.tsx      # useActionState form
+│
+├── lib/
+│   ├── portfolio.ts         # Redis-backed profile/resume/certificates data
+│   ├── contacts.ts          # Redis inbox for contact form submissions
+│   ├── github.ts           # GitHub streak stats
+│   └── admin-session.ts    # Signed admin session cookies
 │
 ├── data/
 │   ├── projects.ts          # All project data
 │   └── services.ts          # Services data
 │
-└── lib/
-    └── actions.ts           # submitContact Server Action (Zod + fs)
+└── app/
+    ├── admin/               # Protected dashboard + login
+    ├── api/admin/           # Login/logout/content/upload routes
+    └── certificates/        # Certificate gallery
 ```
 
 ---
@@ -91,20 +101,23 @@ Five layers stacked in CSS:
 
 ---
 
-## Backend — Contact Server Action
+## Backend — Redis Content Store
 
-`lib/actions.ts` uses Next.js 15 Server Actions:
+The site now stores profile, resume, certificates, and contact submissions in Redis:
 
-1. Validates with **Zod** schema
-2. Saves to **`data/contacts.json`**
-3. Optional **nodemailer** email (uncomment block + set `.env`)
+1. `lib/portfolio.ts` loads and saves the editable site content
+2. `lib/contacts.ts` stores inbox submissions
+3. Admin routes are protected by signed cookies in `proxy.ts`
+4. The contact form still uses a Server Action, but persistence is Redis-backed
 
 ```bash
 # .env.local
-SMTP_HOST=smtp.gmail.com
-SMTP_USER=you@gmail.com
-SMTP_PASS=your-app-password
-NOTIFY_EMAIL=notify@you.com
+REDIS_URL=redis://default:...
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD=change-me
+ADMIN_SESSION_SECRET=long-random-string
+GITHUB_USERNAME=thamothara7
+GITHUB_TOKEN=github_pat_...
 ```
 
 ---

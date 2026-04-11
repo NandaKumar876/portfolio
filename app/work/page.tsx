@@ -4,7 +4,7 @@ import { PROJECTS }       from '@/data/projects'
 
 export const metadata: Metadata = {
   title: 'Work — Thamo',
-  description: 'Selected projects in React, Node, Three.js, AI and Design.',
+  description: 'Selected projects in React, Node, AI and Design.',
 }
 
 /* Server component — passes static data to client island */

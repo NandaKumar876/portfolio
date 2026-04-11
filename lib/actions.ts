@@ -1,8 +1,8 @@
 'use server'
 
 import { z } from 'zod'
-import fs   from 'fs/promises'
-import path from 'path'
+import { randomUUID } from 'crypto'
+import { saveContactSubmission } from './contacts'
 
 /* ── Schema ── */
 export const ContactSchema = z.object({
@@ -36,18 +36,11 @@ export async function submitContact(
     return { ok: false, errors }
   }
 
-  /* Persist to /data/contacts.json */
-  const dir      = path.join(process.cwd(), 'data')
-  const filePath = path.join(dir, 'contacts.json')
-  await fs.mkdir(dir, { recursive: true })
-
-  let contacts: (ContactData & { id: number; createdAt: string })[] = []
-  try {
-    contacts = JSON.parse(await fs.readFile(filePath, 'utf-8'))
-  } catch { /* first entry */ }
-
-  contacts.push({ ...result.data, id: Date.now(), createdAt: new Date().toISOString() })
-  await fs.writeFile(filePath, JSON.stringify(contacts, null, 2), 'utf-8')
+  await saveContactSubmission({
+    ...result.data,
+    id: randomUUID(),
+    createdAt: new Date().toISOString(),
+  })
 
   /* Optional: email notification — uncomment + add .env values
   const nodemailer = (await import('nodemailer')).default

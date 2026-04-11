@@ -5,7 +5,7 @@ import Link            from 'next/link'
 import { LiquidGlass } from '@/components/LiquidGlass'
 import type { Project } from '@/data/projects'
 
-const TAGS = ['All', 'React', 'Node', 'Three.js', 'AI', 'Design']
+const TAGS = ['All', 'React', 'Node', 'AI', 'Design']
 
 export function WorkClient({ projects }: { projects: Project[] }) {
   const [tag, setTag] = useState('All')
