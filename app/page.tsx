@@ -41,6 +41,7 @@ export default async function Home() {
             <a href="/api/resume" className="btn-glass" target="_blank" rel="noreferrer">
               View Resume
             </a>
+            
             <Link href="/contact" className="btn-ghost">
               Get in Touch
             </Link>

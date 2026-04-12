@@ -195,8 +195,9 @@ export function AdminDashboard({ initialContent, initialProjects }: AdminDashboa
     setResumeStatus('Uploading resume...')
     const body = new FormData(formEl)
     const response = await fetch('/api/admin/resume', { method: 'POST', body })
-    const data = await response.json()
-    if (!response.ok) { setResumeStatus(data?.error || 'Upload failed.'); return }
+    let data;
+    try { data = await response.json() } catch { data = null }
+    if (!response.ok) { setResumeStatus(data?.error || (response.status === 413 ? 'File too large.' : 'Upload failed.')); return }
     setResume(data.resume)
     setResumeStatus('Resume uploaded.')
     formEl.reset()
@@ -218,8 +219,9 @@ export function AdminDashboard({ initialContent, initialProjects }: AdminDashboa
     setCertificateStatus('Uploading certificate...')
     const body = new FormData(formEl)
     const response = await fetch('/api/admin/certificates', { method: 'POST', body })
-    const data = await response.json()
-    if (!response.ok) { setCertificateStatus(data?.error || 'Upload failed.'); return }
+    let data;
+    try { data = await response.json() } catch { data = null }
+    if (!response.ok) { setCertificateStatus(data?.error || (response.status === 413 ? 'File too large (limit is ~4MB).' : 'Upload failed.')); return }
     setCertificates(prev => [data.certificate, ...prev])
     setCertificateStatus('Certificate added.')
     formEl.reset()

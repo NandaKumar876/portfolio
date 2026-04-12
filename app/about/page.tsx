@@ -57,6 +57,7 @@ export default async function AboutPage() {
 
           <div className="hero-actions" style={{ marginTop: 24, marginBottom: 44 }}>
             <a href="/api/resume" className="btn-glass" target="_blank" rel="noreferrer">View Resume</a>
+            <Link href="/certificates" className="btn-glass">View Certificates</Link>
             <Link href="/contact" className="btn-ghost">Get in Touch</Link>
           </div>
 
