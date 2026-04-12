@@ -3,10 +3,10 @@
 import { useEffect, useState } from 'react'
 
 const ROLES = [
-  'Developer',
-  'Full Stack Developer',
-  'React Engineer',
-  'Redis Builder',
+  'Software Developer',
+  'Full-Stack Engineer',
+  'Frontend Engineer (React)',
+  'Backend Engineer (Node.js)',
 ]
 
 export function Typewriter() {

@@ -7,7 +7,7 @@ import { getPortfolioData }  from '@/lib/portfolio'
 
 const SKILLS = [
   'JavaScript', 'TypeScript', 'React', 'Next.js', 'Node.js',
-  'Python', 'Redis', 'PostgreSQL', 'Docker', 'Tailwind CSS',
+  'Express.js', 'MongoDB', 'PostgreSQL', 'Docker', 'AWS',
 ]
 
 export default async function Home() {

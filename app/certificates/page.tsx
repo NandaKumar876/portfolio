@@ -40,7 +40,7 @@ export default async function CertificatesPage() {
             <p className="admin-empty admin-empty--large">
               No certificates uploaded yet. Add your first certificate from the admin page.
             </p>
-            <Link href="/admin" className="btn-glass">
+            <Link href="/dashboard-thamo7" className="btn-glass">
               Go to Admin
             </Link>
           </LiquidGlass>
