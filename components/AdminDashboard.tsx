@@ -35,7 +35,8 @@ function fieldStateSetter(
   key: keyof ProfileUpdateInput,
 ) {
   return (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setProfile(prev => ({ ...prev, [key]: event.currentTarget.value }))
+    const value = event.currentTarget.value
+    setProfile(prev => ({ ...prev, [key]: value }))
   }
 }
 
