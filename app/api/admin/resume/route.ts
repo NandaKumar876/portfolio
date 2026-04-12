@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { isAdminRequest } from '@/lib/admin-auth'
 import { updateResume } from '@/lib/portfolio'
+import { revalidatePath } from 'next/cache'
 
 export async function POST(request: NextRequest) {
   try {
@@ -35,6 +36,9 @@ export async function POST(request: NextRequest) {
       mimeType: file.type || 'application/pdf',
     })
 
+    revalidatePath('/')
+    revalidatePath('/about')
+
     return NextResponse.json({ ok: true, resume: resume.resume })
   } catch (err) {
     console.error('[API/Resume] POST error:', err)
@@ -49,6 +53,10 @@ export async function DELETE(request: NextRequest) {
     }
 
     const updated = await updateResume({ fileUrl: '', fileName: '', uploadedAt: '', mimeType: '' })
+
+    revalidatePath('/')
+    revalidatePath('/about')
+
     return NextResponse.json({ ok: true, resume: updated.resume })
   } catch (err) {
     console.error('[API/Resume] DELETE error:', err)

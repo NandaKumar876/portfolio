@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import { isAdminRequest } from '@/lib/admin-auth'
 import { z } from 'zod'
 import {
@@ -29,6 +30,11 @@ export async function POST(request: NextRequest) {
   }
 
   const project = await createProject(parsed.data)
+
+  revalidatePath('/')
+  revalidatePath('/work')
+  revalidatePath('/projects')
+
   return NextResponse.json({ ok: true, project })
 }
 
@@ -49,6 +55,12 @@ export async function PUT(request: NextRequest) {
 
   const project = await updateProject(id, parsed.data)
   if (!project) return NextResponse.json({ error: 'Project not found' }, { status: 404 })
+
+  revalidatePath('/')
+  revalidatePath('/work')
+  revalidatePath('/projects')
+  revalidatePath(`/work/${project.slug}`)
+
   return NextResponse.json({ ok: true, project })
 }
 
@@ -63,5 +75,10 @@ export async function DELETE(request: NextRequest) {
 
   const ok = await deleteProject(id)
   if (!ok) return NextResponse.json({ error: 'Project not found' }, { status: 404 })
+
+  revalidatePath('/')
+  revalidatePath('/work')
+  revalidatePath('/projects')
+
   return NextResponse.json({ ok: true })
 }

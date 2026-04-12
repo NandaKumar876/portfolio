@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { isAdminRequest } from '@/lib/admin-auth'
 import { ProfileUpdateSchema, getPortfolioData, updateProfile } from '@/lib/portfolio'
+import { revalidatePath } from 'next/cache'
 
 export async function GET(request: NextRequest) {
   if (!(await isAdminRequest(request))) {
@@ -29,6 +30,10 @@ export async function PUT(request: NextRequest) {
   }
 
   const updated = await updateProfile(parsed.data)
+
+  revalidatePath('/')
+  revalidatePath('/about')
+
   return NextResponse.json({ ok: true, profile: updated.profile })
 }
 

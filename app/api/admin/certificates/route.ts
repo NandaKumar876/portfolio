@@ -2,6 +2,7 @@ import { randomUUID } from 'crypto'
 import { NextRequest, NextResponse } from 'next/server'
 import { isAdminRequest } from '@/lib/admin-auth'
 import { addCertificate, getPortfolioData, removeCertificate } from '@/lib/portfolio'
+import { revalidatePath } from 'next/cache'
 
 export async function GET(request: NextRequest) {
   try {
@@ -60,6 +61,9 @@ export async function POST(request: NextRequest) {
       uploadedAt: new Date().toISOString(),
     })
 
+    revalidatePath('/')
+    revalidatePath('/certificates')
+
     return NextResponse.json({ ok: true, certificate: certificate.certificates[0] })
   } catch (err) {
     console.error('[API/Certificates] POST error:', err)
@@ -80,6 +84,10 @@ export async function DELETE(request: NextRequest) {
 
     // No longer need to delete from filesystem as it's stored in Redis
     await removeCertificate(id)
+
+    revalidatePath('/')
+    revalidatePath('/certificates')
+
     return NextResponse.json({ ok: true })
   } catch (err) {
     console.error('[API/Certificates] DELETE error:', err)

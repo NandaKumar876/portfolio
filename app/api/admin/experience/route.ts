@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import { randomUUID } from 'crypto'
 import { isAdminRequest } from '@/lib/admin-auth'
 import { getPortfolioData, updateExperience } from '@/lib/portfolio'
@@ -25,6 +26,10 @@ export async function POST(request: NextRequest) {
   const { experience } = await getPortfolioData()
   const item = { ...parsed.data, id: randomUUID() }
   const updated = await updateExperience([item, ...experience])
+
+  revalidatePath('/')
+  revalidatePath('/about')
+
   return NextResponse.json({ ok: true, experience: updated.experience })
 }
 
@@ -37,6 +42,10 @@ export async function PUT(request: NextRequest) {
   if (!parsed.success) return NextResponse.json({ error: 'Validation failed' }, { status: 400 })
   const { experience } = await getPortfolioData()
   const updated = await updateExperience(experience.map(e => e.id === id ? { ...e, ...parsed.data } : e))
+
+  revalidatePath('/')
+  revalidatePath('/about')
+
   return NextResponse.json({ ok: true, experience: updated.experience })
 }
 
@@ -46,5 +55,9 @@ export async function DELETE(request: NextRequest) {
   if (!id) return NextResponse.json({ error: 'Missing id' }, { status: 400 })
   const { experience } = await getPortfolioData()
   const updated = await updateExperience(experience.filter(e => e.id !== id))
+
+  revalidatePath('/')
+  revalidatePath('/about')
+
   return NextResponse.json({ ok: true, experience: updated.experience })
 }
