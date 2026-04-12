@@ -982,14 +982,17 @@ h1.hero-name em {
    GITHUB HEATMAP
    ════════════════════════════════════════════════════ */
 .heatmap-glass {
-  padding: 24px 28px;
+  padding: 24px 0 24px 0;
   border-radius: 28px;
   overflow: clip !important;
+  max-width: 820px;
+  margin: 0 auto;
 }
 
 .heatmap-wrap {
   position: relative;
   width: 100%;
+  padding: 0 24px;  /* horizontal padding lives here instead */
 }
 
 .heatmap-header {
@@ -1020,6 +1023,7 @@ h1.hero-name em {
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
   scrollbar-color: rgba(255,255,255,0.1) transparent;
+  direction: rtl; /* Scroll naturally starts at right end */
 }
 .heatmap-scroll::-webkit-scrollbar        { height: 3px; }
 .heatmap-scroll::-webkit-scrollbar-thumb  { background: rgba(255,255,255,0.15); border-radius: 2px; }
@@ -1031,6 +1035,7 @@ h1.hero-name em {
   gap: 3px;
   min-width: max-content;
   padding-bottom: 4px;
+  direction: ltr; /* Content remains standard LTR */
 }
 
 .heatmap-day-labels {
@@ -1102,17 +1107,13 @@ h1.hero-name em {
 }
 
 @media (max-width: 720px) {
-  .heatmap-glass       { padding: 16px 14px !important; }
-  .heatmap-cell        { width: 10px; height: 10px; }
-  .heatmap-legend-cell { width: 10px; height: 10px; }
-  .heatmap-day-label   { height: 10px; line-height: 10px; }
+  .heatmap-glass { padding: 16px 0 !important; }
+  .heatmap-wrap  { padding: 0 14px; }
 }
 
 @media (max-width: 480px) {
-  .heatmap-glass       { padding: 12px 12px !important; }
-  .heatmap-cell        { width: 9px; height: 9px; }
-  .heatmap-legend-cell { width: 9px; height: 9px; }
-  .heatmap-day-label   { height: 9px; line-height: 9px; }
+  .heatmap-glass { padding: 12px 0 !important; }
+  .heatmap-wrap  { padding: 0 12px; }
 }
 /* ════════════════════════════════════════════════════
    ABOUT — STATUS / INTERESTS / FUNFACT

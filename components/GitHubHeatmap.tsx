@@ -28,21 +28,6 @@ export function GitHubHeatmap({ weeks, totalContributions }: Props) {
   const [tooltip, setTooltip] = useState<{ text: string; x: number; y: number } | null>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
 
-  // Scroll to the rightmost (most recent) contributions on mount
- useEffect(() => {
-  const el = scrollRef.current
-  if (!el) return
-  
-  const scrollToEnd = () => {
-    el.scrollLeft = el.scrollWidth - el.clientWidth
-  }
-
-  // Try multiple times to catch after layout/paint
-  scrollToEnd()
-  requestAnimationFrame(scrollToEnd)
-  setTimeout(scrollToEnd, 50)
-  setTimeout(scrollToEnd, 200)
-}, [weeks])
 
   return (
     <div className="heatmap-wrap">
