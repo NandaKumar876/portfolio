@@ -72,7 +72,14 @@ function TimelineAdmin({
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(form),
     })
-    const data = await res.json()
+    
+    let data;
+    try {
+      data = await res.json()
+    } catch {
+      data = { error: 'Invalid response from server' }
+    }
+
     if (!res.ok) { setStatus(data?.error || 'Error'); return }
     const key = label === 'Experience' ? 'experience' : 'education'
     setItems(data[key])
@@ -83,7 +90,13 @@ function TimelineAdmin({
   async function handleDelete(id: string) {
     setStatus('Deleting...')
     const res = await fetch(`${endpoint}?id=${id}`, { method: 'DELETE' })
-    const data = await res.json()
+    let data;
+    try {
+      data = await res.json()
+    } catch {
+      data = { error: 'Invalid response from server' }
+    }
+
     if (!res.ok) { setStatus(data?.error || 'Error'); return }
     const key = label === 'Experience' ? 'experience' : 'education'
     setItems(data[key])
@@ -183,7 +196,14 @@ export function AdminDashboard({ initialContent, initialProjects }: AdminDashboa
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(profile),
     })
-    const data = await response.json()
+    
+    let data;
+    try {
+      data = await response.json()
+    } catch {
+      data = { error: 'Invalid response from server' }
+    }
+
     if (!response.ok) { setProfileStatus(data?.error || 'Unable to save.'); return }
     setProfileStatus('Profile saved.')
   }
@@ -206,7 +226,13 @@ export function AdminDashboard({ initialContent, initialProjects }: AdminDashboa
   async function removeResume() {
     setResumeStatus('Removing resume...')
     const response = await fetch('/api/admin/resume', { method: 'DELETE' })
-    const data = await response.json()
+    let data;
+    try {
+      data = await response.json()
+    } catch {
+      data = { error: 'Invalid response from server' }
+    }
+
     if (!response.ok) { setResumeStatus(data?.error || 'Failed to remove.'); return }
     setResume(data.resume)
     setResumeStatus('Resume removed.')
@@ -230,7 +256,13 @@ export function AdminDashboard({ initialContent, initialProjects }: AdminDashboa
   async function deleteCertificate(id: string) {
     setCertificateStatus('Removing certificate...')
     const response = await fetch(`/api/admin/certificates?id=${encodeURIComponent(id)}`, { method: 'DELETE' })
-    const data = await response.json()
+    let data;
+    try {
+      data = await response.json()
+    } catch {
+      data = { error: 'Invalid response from server' }
+    }
+
     if (!response.ok) { setCertificateStatus(data?.error || 'Unable to delete.'); return }
     setCertificates(prev => prev.filter(item => item.id !== id))
     setCertificateStatus('Certificate removed.')
@@ -286,7 +318,14 @@ export function AdminDashboard({ initialContent, initialProjects }: AdminDashboa
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     })
-    const data = await response.json()
+    
+    let data;
+    try {
+      data = await response.json()
+    } catch {
+      data = { error: 'Invalid response from server' }
+    }
+
     if (!response.ok) { setProjectStatus(data?.error || 'Unable to save project.'); return }
     if (editingProject) {
       setProjects(prev => prev.map(p => p.id === editingProject.id ? data.project : p))
@@ -301,7 +340,13 @@ export function AdminDashboard({ initialContent, initialProjects }: AdminDashboa
   async function deleteProjectById(id: string) {
     setProjectStatus('Deleting...')
     const response = await fetch(`/api/admin/projects?id=${encodeURIComponent(id)}`, { method: 'DELETE' })
-    const data = await response.json()
+    let data;
+    try {
+      data = await response.json()
+    } catch {
+      data = { error: 'Invalid response from server' }
+    }
+
     if (!response.ok) { setProjectStatus(data?.error || 'Unable to delete.'); return }
     setProjects(prev => prev.filter(p => p.id !== id))
     setProjectStatus('Project deleted.')

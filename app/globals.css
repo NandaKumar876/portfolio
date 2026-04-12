@@ -10,6 +10,7 @@ html {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   scroll-behavior: smooth;
+  scrollbar-gutter: stable;
 }
 
 /* ── TOKENS ── */
@@ -228,8 +229,8 @@ main {
 .nav {
   position: fixed;
   top: 16px;
-  /* Use left/right margin trick so scrollbar doesn't shift the nav */
-  left: 0; right: 0; margin: 0 auto;
+  left: 50%;
+  transform: translateX(-50%);
   width: fit-content;
   max-width: calc(100vw - 24px);
   z-index: 300;
@@ -1193,7 +1194,6 @@ h1.hero-name em {
   .about-grid, .certificate-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 720px) {
-  html { scrollbar-gutter: stable; }
   .page                             { padding: 80px 18px 64px; }
   .page--hero                       { padding-top: 110px; }
   .services-grid, .about-layout, .resume-layout, .contact-layout,
