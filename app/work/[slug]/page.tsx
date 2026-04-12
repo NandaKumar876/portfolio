@@ -1,23 +1,24 @@
-import { notFound }    from 'next/navigation'
-import type { Metadata } from 'next'
-import { PROJECTS }     from '@/data/projects'
-import { LiquidGlass }  from '@/components/LiquidGlass'
+import { notFound }      from 'next/navigation'
+import type { Metadata }  from 'next'
+import { getProjects, getProjectBySlug } from '@/lib/projects'
+import { LiquidGlass }    from '@/components/LiquidGlass'
 
 interface Props { params: Promise<{ slug: string }> }
 
 export async function generateStaticParams() {
-  return PROJECTS.map(p => ({ slug: p.slug }))
+  const projects = await getProjects()
+  return projects.map(p => ({ slug: p.slug }))
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
-  const p = PROJECTS.find(p => p.slug === slug)
+  const p = await getProjectBySlug(slug)
   return { title: p ? `${p.title} — Thamo` : 'Not Found' }
 }
 
 export default async function ProjectDetail({ params }: Props) {
   const { slug } = await params
-  const p = PROJECTS.find(p => p.slug === slug)
+  const p = await getProjectBySlug(slug)
   if (!p) notFound()
 
   return (
@@ -30,6 +31,22 @@ export default async function ProjectDetail({ params }: Props) {
         <div className="project-tags" style={{ marginTop: 28 }}>
           {p.tags.map(t => <span key={t} className="project-tag">{t}</span>)}
         </div>
+
+        {/* GitHub + Live links */}
+        {(p.repoUrl || p.liveUrl) && (
+          <div className="project-detail-links">
+            {p.repoUrl && (
+              <a href={p.repoUrl} target="_blank" rel="noreferrer" className="btn-ghost">
+                ⌥ GitHub Repository
+              </a>
+            )}
+            {p.liveUrl && (
+              <a href={p.liveUrl} target="_blank" rel="noreferrer" className="btn-glass">
+                ↗ View Live Site
+              </a>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Feature cards */}

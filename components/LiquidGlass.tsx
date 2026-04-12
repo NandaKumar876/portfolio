@@ -62,6 +62,7 @@ export function LiquidGlass<T extends ElementType = 'div'>({
       className={cls}
       onMouseMove={onMove}
       onMouseLeave={onLeave}
+      style={!interactive ? { overflow: 'visible' } : undefined}
       {...(rest as any)}
     />
   )

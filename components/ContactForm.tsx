@@ -3,7 +3,7 @@
 import { useActionState, useRef } from 'react'
 import { LiquidGlass }     from './LiquidGlass'
 import { submitContact }   from '@/lib/actions'
-import type { ActionResult } from '@/lib/actions'
+import type { ActionResult } from '@/lib/contact-types'
 
 const init: ActionResult | null = null
 

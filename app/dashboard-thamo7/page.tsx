@@ -1,23 +1,22 @@
 import type { Metadata } from 'next'
 import { AdminDashboard } from '@/components/AdminDashboard'
 import { getPortfolioData } from '@/lib/portfolio'
-import { getRecentContacts } from '@/lib/contacts'
+import { getProjects } from '@/lib/projects'
 
 export const metadata: Metadata = {
   title: 'Admin — Thamo',
-  description: 'Portfolio admin console for profile, resume, certificates, and inbox management.',
+  description: 'Portfolio admin console for profile, resume, certificates, projects and management.',
 }
 
 export default async function AdminPage() {
-  const [content, inbox] = await Promise.all([
+  const [content, projects] = await Promise.all([
     getPortfolioData(),
-    getRecentContacts(8),
+    getProjects(),
   ])
 
   return (
     <section className="page admin-page">
-      <AdminDashboard initialContent={content} inbox={inbox} />
+      <AdminDashboard initialContent={content} initialProjects={projects} />
     </section>
   )
 }
-

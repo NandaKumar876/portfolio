@@ -15,7 +15,7 @@ type LoginPageProps = {
 
 export default async function AdminLoginPage({ searchParams }: LoginPageProps) {
   const params = await searchParams
-  const nextPath = typeof params?.next === 'string' ? params.next : '/admin'
+  const nextPath = typeof params?.next === 'string' ? params.next : '/dashboard-thamo7'
   const error = params?.error
 
   return (

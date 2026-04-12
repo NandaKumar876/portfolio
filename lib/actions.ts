@@ -1,21 +1,9 @@
 'use server'
 
-import { z } from 'zod'
 import { randomUUID } from 'crypto'
 import { saveContactSubmission } from './contacts'
-
-/* ── Schema ── */
-export const ContactSchema = z.object({
-  name:    z.string().min(1,  'Name is required'),
-  email:   z.string().email( 'Valid email required'),
-  subject: z.string().min(1,  'Subject is required'),
-  message: z.string().min(10, 'Message must be at least 10 characters'),
-})
-export type ContactData = z.infer<typeof ContactSchema>
-
-export type ActionResult =
-  | { ok: true }
-  | { ok: false; errors: Record<string, string> }
+import { ContactSchema } from './contact-types'
+import type { ActionResult } from './contact-types'
 
 /* ── Server Action ── */
 export async function submitContact(
@@ -42,19 +30,45 @@ export async function submitContact(
     createdAt: new Date().toISOString(),
   })
 
-  /* Optional: email notification — uncomment + add .env values
-  const nodemailer = (await import('nodemailer')).default
-  const t = nodemailer.createTransport({
-    host: process.env.SMTP_HOST, port: 587,
-    auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
-  })
-  await t.sendMail({
-    from: `"Portfolio" <${process.env.SMTP_USER}>`,
-    to:   process.env.NOTIFY_EMAIL,
-    subject: `[Portfolio] ${result.data.subject}`,
-    text: `From: ${result.data.name} <${result.data.email}>\n\n${result.data.message}`,
-  })
-  */
+  /* ── Email notification via Gmail SMTP ── */
+  try {
+    const smtpHost = process.env.SMTP_HOST
+    const smtpUser = process.env.SMTP_USER
+    const smtpPass = process.env.SMTP_PASS
+    const notifyEmail = process.env.NOTIFY_EMAIL
+
+    if (smtpHost && smtpUser && smtpPass && notifyEmail) {
+      const nodemailer = (await import('nodemailer')).default
+      const transporter = nodemailer.createTransport({
+        host: smtpHost,
+        port: 587,
+        secure: false,
+        auth: { user: smtpUser, pass: smtpPass },
+      })
+
+      await transporter.sendMail({
+        from: `"Portfolio Contact" <${smtpUser}>`,
+        to:   notifyEmail,
+        replyTo: result.data.email,
+        subject: `[Portfolio] ${result.data.subject}`,
+        text: [
+          `From: ${result.data.name} <${result.data.email}>`,
+          `Subject: ${result.data.subject}`,
+          '',
+          result.data.message,
+        ].join('\n'),
+        html: `
+          <p><strong>From:</strong> ${result.data.name} &lt;${result.data.email}&gt;</p>
+          <p><strong>Subject:</strong> ${result.data.subject}</p>
+          <hr />
+          <p style="white-space:pre-wrap">${result.data.message.replace(/</g, '&lt;')}</p>
+        `,
+      })
+    }
+  } catch (err) {
+    // Don't fail the form submission if email fails — submission is already saved to Redis
+    console.error('Email notification failed:', err)
+  }
 
   return { ok: true }
 }

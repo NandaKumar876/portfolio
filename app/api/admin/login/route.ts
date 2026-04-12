@@ -11,13 +11,13 @@ export async function POST(request: NextRequest) {
   const expectedPassword = process.env.ADMIN_PASSWORD || 'admin'
 
   if (username !== expectedUser || password !== expectedPassword) {
-    return NextResponse.redirect(new URL('/admin/login?error=1', request.url), 303)
+    return NextResponse.redirect(new URL('/dashboard-thamo7/login?error=1', request.url), 303)
   }
 
   const secret = process.env.ADMIN_SESSION_SECRET || 'thamo-admin-session-secret'
   const token = await createAdminSessionToken(secret)
-  const nextPath = String(request.nextUrl.searchParams.get('next') ?? '/admin')
-  const safeNext = nextPath.startsWith('/admin') ? nextPath : '/admin'
+  const nextPath = String(request.nextUrl.searchParams.get('next') ?? '/dashboard-thamo7')
+  const safeNext = nextPath.startsWith('/dashboard-thamo7') ? nextPath : '/dashboard-thamo7'
 
   const response = NextResponse.redirect(new URL(safeNext, request.url), 303)
   response.cookies.set({

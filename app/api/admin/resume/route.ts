@@ -51,3 +51,11 @@ export async function POST(request: NextRequest) {
   return NextResponse.json({ ok: true, resume: resume.resume })
 }
 
+export async function DELETE(request: NextRequest) {
+  if (!(await isAdminRequest(request))) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  const updated = await updateResume({ fileUrl: '', fileName: '', uploadedAt: '', mimeType: '' })
+  return NextResponse.json({ ok: true, resume: updated.resume })
+}

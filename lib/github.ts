@@ -5,9 +5,18 @@ export interface GitHubStats {
   lastContributionDate: string | null
 }
 
-interface CalendarDay {
+export interface CalendarDay {
   date: string
   contributionCount: number
+}
+
+export interface CalendarWeek {
+  contributionDays: CalendarDay[]
+}
+
+export interface GitHubCalendar {
+  weeks: CalendarWeek[]
+  totalContributions: number
 }
 
 function countStreak(days: CalendarDay[]) {
@@ -40,15 +49,10 @@ function countStreak(days: CalendarDay[]) {
   const totalContributions = days.reduce((sum, day) => sum + day.contributionCount, 0)
   const lastContributionDate = [...days].reverse().find(day => day.contributionCount > 0)?.date ?? null
 
-  return {
-    currentStreak,
-    longestStreak,
-    totalContributions,
-    lastContributionDate,
-  }
+  return { currentStreak, longestStreak, totalContributions, lastContributionDate }
 }
 
-export async function getGitHubStats() {
+async function fetchCalendarData(): Promise<CalendarWeek[] | null> {
   const token = process.env.GITHUB_TOKEN
   const username = process.env.GITHUB_USERNAME || 'thamothara7'
   if (!token) return null
@@ -70,6 +74,7 @@ export async function getGitHubStats() {
           user(login: $login) {
             contributionsCollection(from: $from, to: $to) {
               contributionCalendar {
+                totalContributions
                 weeks {
                   contributionDays {
                     date
@@ -81,13 +86,9 @@ export async function getGitHubStats() {
           }
         }
       `,
-      variables: {
-        login: username,
-        from: from.toISOString(),
-        to: to.toISOString(),
-      },
+      variables: { login: username, from: from.toISOString(), to: to.toISOString() },
     }),
-    cache: 'no-store',
+    next: { revalidate: 3600 },
   })
 
   if (!response.ok) return null
@@ -97,18 +98,29 @@ export async function getGitHubStats() {
       user?: {
         contributionsCollection?: {
           contributionCalendar?: {
-            weeks?: Array<{ contributionDays: CalendarDay[] }>
+            totalContributions: number
+            weeks?: CalendarWeek[]
           }
         }
       }
     }
-    errors?: Array<{ message: string }>
   }
 
-  const weeks = payload.data?.user?.contributionsCollection?.contributionCalendar?.weeks ?? []
-  const days = weeks.flatMap(week => week.contributionDays ?? [])
-  if (!days.length) return null
+  return payload.data?.user?.contributionsCollection?.contributionCalendar?.weeks ?? null
+}
 
+export async function getGitHubStats(): Promise<GitHubStats | null> {
+  const weeks = await fetchCalendarData()
+  if (!weeks) return null
+  const days = weeks.flatMap(w => w.contributionDays ?? [])
+  if (!days.length) return null
   return countStreak(days)
 }
 
+export async function getGitHubCalendar(): Promise<GitHubCalendar | null> {
+  const weeks = await fetchCalendarData()
+  if (!weeks) return null
+  const days = weeks.flatMap(w => w.contributionDays ?? [])
+  const totalContributions = days.reduce((s, d) => s + d.contributionCount, 0)
+  return { weeks, totalContributions }
+}
