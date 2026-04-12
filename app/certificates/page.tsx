@@ -28,7 +28,7 @@ export default async function CertificatesPage() {
             <p className="resume-role">{cert.issuer}</p>
             {cert.description && <p className="about-body">{cert.description}</p>}
             {cert.fileUrl ? (
-              <a href={cert.fileUrl} target="_blank" rel="noreferrer" className="project-link">
+              <a href={`/api/certificates/${cert.id}`} target="_blank" rel="noreferrer" className="project-link">
                 Open certificate ↗
               </a>
             ) : (

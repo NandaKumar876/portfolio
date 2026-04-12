@@ -77,6 +77,22 @@ function buildFallbackPdf(lines: string[]) {
 export async function GET() {
   const { profile, resume } = await getPortfolioData()
 
+  if (resume.fileUrl.startsWith('data:application/pdf;base64,')) {
+    try {
+      const base64Data = resume.fileUrl.split(',')[1]
+      const file = Buffer.from(base64Data, 'base64')
+      return new NextResponse(file, {
+        headers: {
+          'Content-Type': 'application/pdf',
+          'Content-Disposition': `inline; filename="${resume.fileName || 'resume.pdf'}"`,
+        },
+      })
+    } catch (err) {
+      console.error('[API/Resume] Error decoding Base64 from Redis:', err)
+      // Fall through to fallback
+    }
+  }
+
   if (resume.fileUrl.startsWith('/uploads/resume/')) {
     try {
       const filePath = path.join(process.cwd(), 'public', resume.fileUrl)
