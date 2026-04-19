@@ -915,7 +915,12 @@ h1.hero-name em {
 .contact-links  { display: flex; flex-direction: column; gap: 13px; }
 .contact-link   { display: inline-flex; align-items: center; gap: 11px; font-size: 13px; color: var(--w60); text-decoration: none; letter-spacing: 0.02em; transition: color 0.2s; }
 .contact-link:hover { color: var(--w90); }
-.link-icon      { opacity: 0.44; font-size: 14px; }
+.link-icon      { 
+  opacity: 0.44; 
+  display: flex; align-items: center; justify-content: center;
+  width: 14px; height: 14px;
+}
+.link-icon svg  { width: 100%; height: 100%; }
 
 .contact-form   { border-radius: 24px; padding: 34px; }
 
@@ -1143,6 +1148,76 @@ h1.hero-name em {
 .about-funfact-text  { font-family: var(--fd); font-style: italic; font-size: 18px; font-weight: 300; color: #fff; line-height: 1.5; }
 
 /* ════════════════════════════════════════════════════
+   ABOUT — SOCIAL LINKS
+   ════════════════════════════════════════════════════ */
+.social-card { padding: 24px; border-radius: 22px; display: flex; flex-direction: column; gap: 4px; }
+.social-links-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+.social-link {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 16px; border-radius: 16px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.22,1,0.36,1);
+  position: relative;
+  overflow: hidden;
+}
+.social-link::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.08), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.social-link:hover {
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(255,255,255,0.18);
+  transform: translateY(-3px);
+  box-shadow: 
+    0 8px 24px rgba(0,0,0,0.3),
+    0 0 1px 1px rgba(255,255,255,0.08);
+}
+.social-link:hover::after { opacity: 1; }
+
+.social-icon-wrapper {
+  display: flex; align-items: center; justify-content: center;
+  width: 38px; height: 38px; border-radius: 12px;
+  background: rgba(255,255,255,0.04);
+  color: var(--w40);
+  font-size: 18px;
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: all 0.3s;
+  flex-shrink: 0;
+}
+.social-icon-wrapper img { 
+  width: 20px; height: 20px; 
+  opacity: 0.6; 
+  transition: all 0.3s;
+  filter: brightness(1.2);
+}
+.social-icon-wrapper svg {
+  width: 18px; height: 18px;
+  opacity: 0.6;
+  transition: all 0.3s;
+}
+
+.social-link:hover .social-icon-wrapper { 
+  color: #fff; 
+  background: rgba(255,255,255,0.12); 
+  border-color: rgba(255,255,255,0.22);
+  transform: scale(1.05);
+}
+.social-link:hover .social-icon-wrapper img,
+.social-link:hover .social-icon-wrapper svg { 
+  opacity: 1; 
+  filter: brightness(2);
+}
+
+.social-text { display: flex; flex-direction: column; gap: 1px; z-index: 1; }
+.social-platform { font-size: 12.5px; font-weight: 500; color: var(--w90); letter-spacing: 0.01em; }
+.social-handle { font-size: 10.5px; color: var(--w40); letter-spacing: 0.03em; font-family: var(--f); }
+
+/* ════════════════════════════════════════════════════
    TECH STACK — CATEGORY PILLS
    ════════════════════════════════════════════════════ */
 .stack-category      { margin-bottom: 16px; }
@@ -1198,7 +1273,7 @@ h1.hero-name em {
   .page--hero                       { padding-top: 110px; }
   .services-grid, .about-layout, .resume-layout, .contact-layout,
   .admin-grid, .admin-stats, .about-grid, .certificate-grid,
-  .resume-meta, .form-grid          { grid-template-columns: 1fr !important; gap: 12px !important; }
+  .resume-meta, .form-grid, .social-links-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
   .projects-grid                    { grid-template-columns: 1fr; }
   .form-row-2                       { grid-template-columns: 1fr; }
   .nav                              { top: 10px; padding: 4px 4px; max-width: calc(100vw - 12px); }
