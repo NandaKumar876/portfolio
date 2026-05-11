@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState, useRef } from 'react'
+import { useEffect, useMemo, useState, useRef } from 'react'
 import type { CalendarWeek } from '@/lib/github'
 
 interface Props {
@@ -86,6 +86,13 @@ export function GitHubHeatmap({ weeks, totalContributions }: Props) {
 
   const { currentStreak, longestStreak, lastActive } = useMemo(() => computeStats(weeks), [weeks])
   const monthLabels = useMemo(() => monthLabelPositions(weeks), [weeks])
+
+  /* Scroll to the right end on mount so the most recent week is in view. */
+  useEffect(() => {
+    const el = scrollRef.current
+    if (!el) return
+    el.scrollLeft = el.scrollWidth
+  }, [weeks])
 
   return (
     <div className="heatmap-wrap">

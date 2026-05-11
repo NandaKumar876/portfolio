@@ -12,7 +12,7 @@ type CommandItem = {
   external?: boolean
   action?: () => void
   keywords?: string
-  icon: 'home' | 'work' | 'about' | 'contact' | 'services' | 'resume' | 'certs' | 'theme' | 'external' | 'project'
+  icon: 'home' | 'work' | 'about' | 'contact' | 'services' | 'resume' | 'certs' | 'theme' | 'external' | 'project' | 'admin'
 }
 
 const ICONS: Record<CommandItem['icon'], React.ReactElement> = {
@@ -66,6 +66,11 @@ const ICONS: Record<CommandItem['icon'], React.ReactElement> = {
       <path d="M3 12l9-9 9 9-9 9z" />
     </svg>
   ),
+  admin: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="4" y="11" width="16" height="10" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" />
+    </svg>
+  ),
 }
 
 type ProjectLite = { title: string; slug: string; description: string }
@@ -87,15 +92,16 @@ export function CommandPalette({ projects = [] }: { projects?: ProjectLite[] }) 
       { id: 'p:contact',  group: 'Pages', title: 'Contact',      subtitle: 'Reach out',                   href: '/contact',      icon: 'contact' },
     ]
     const actions: CommandItem[] = [
-      { id: 'a:resume',   group: 'Actions', title: 'Open Resume',  subtitle: 'Latest PDF in a new tab', href: '/api/resume', external: true, icon: 'resume' },
-      { id: 'a:theme',    group: 'Actions', title: 'Toggle Theme', subtitle: 'Light / Dark', icon: 'theme',
+      { id: 'a:resume',   group: 'Actions', title: 'Open Resume',     subtitle: 'Latest PDF in a new tab', href: '/api/resume', external: true, icon: 'resume' },
+      { id: 'a:admin',    group: 'Actions', title: 'Admin Dashboard', subtitle: 'Sign in to manage content', href: '/dashboard-thamo7/login', icon: 'admin', keywords: 'admin login dashboard manage' },
+      { id: 'a:theme',    group: 'Actions', title: 'Toggle Theme',    subtitle: 'Light / Dark', icon: 'theme',
         action: () => {
           const cur = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'
           document.documentElement.setAttribute('data-theme', cur)
           try { localStorage.setItem('theme', cur) } catch {}
         } },
-      { id: 'a:github',   group: 'Actions', title: 'GitHub',     subtitle: 'Open GitHub profile',  href: 'https://github.com/thamothara7', external: true, icon: 'external' },
-      { id: 'a:linkedin', group: 'Actions', title: 'LinkedIn',   subtitle: 'Open LinkedIn profile', href: 'https://www.linkedin.com/in/thamotharanatarajan/', external: true, icon: 'external' },
+      { id: 'a:github',   group: 'Actions', title: 'GitHub',          subtitle: 'Open GitHub profile',  href: 'https://github.com/thamothara7', external: true, icon: 'external' },
+      { id: 'a:linkedin', group: 'Actions', title: 'LinkedIn',        subtitle: 'Open LinkedIn profile', href: 'https://www.linkedin.com/in/thamotharanatarajan/', external: true, icon: 'external' },
     ]
     const projectItems: CommandItem[] = projects.map(p => ({
       id: `proj:${p.slug}`,

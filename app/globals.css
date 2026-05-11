@@ -11,9 +11,9 @@ html {
   text-rendering: optimizeLegibility;
   scroll-behavior: smooth;
   scrollbar-gutter: stable;
-  color-scheme: dark;
+  color-scheme: light;
 }
-html[data-theme='light'] { color-scheme: light; }
+html[data-theme='dark'] { color-scheme: dark; }
 
 /* ════════════════════════════════════════════════════════════════
    DESIGN TOKENS — semantic, theme-aware
@@ -21,7 +21,6 @@ html[data-theme='light'] { color-scheme: light; }
    data-theme flip retints the entire site.
    ════════════════════════════════════════════════════════════════ */
 
-:root,
 html[data-theme='dark'] {
   /* core surfaces — deep oxblood */
   --bg:           #190a0c;
@@ -76,6 +75,7 @@ html[data-theme='dark'] {
   --r-xl: 28px;
 }
 
+:root,
 html[data-theme='light'] {
   /* core surfaces — parchment paper */
   --bg:           #f4ecd8;
@@ -262,16 +262,9 @@ html[data-theme='light'] .lg::before { mix-blend-mode: soft-light; }
               box-shadow 0.42s cubic-bezier(0.22,1,0.36,1),
               border-color 0.30s ease;
 }
-.lg--interactive:hover {
-  border-top-color: color-mix(in srgb, var(--glass-hi) 110%, transparent);
-  box-shadow:
-    inset 0  1.5px 0   var(--glass-hi),
-    inset 1px 0    0   color-mix(in srgb, var(--glass-hi) 55%, transparent),
-    inset 0 -1.5px 0   var(--glass-lo),
-    inset 0  0    40px color-mix(in srgb, var(--accent) 6%, transparent),
-    var(--shadow-card);
-}
+/* Light-mode hover — gentle accent glow. Dark mode has no hover. */
 html[data-theme='light'] .lg--interactive:hover {
+  border-top-color: color-mix(in srgb, var(--glass-hi) 110%, transparent);
   box-shadow:
     inset 0  1.5px 0   var(--glass-hi),
     inset 1px 0    0   color-mix(in srgb, var(--glass-hi) 55%, transparent),
@@ -279,6 +272,9 @@ html[data-theme='light'] .lg--interactive:hover {
     inset 0  0    40px color-mix(in srgb, var(--accent) 5%, transparent),
     var(--shadow-card);
 }
+/* Dark mode — no visible hover transformation */
+html[data-theme='dark'] .lg--interactive { transition: none; will-change: auto; }
+html[data-theme='dark'] .lg--interactive:hover { /* intentionally empty */ }
 
 /* ════════════════════════════════════════════════════════════════
    NAVIGATION — centered glass pill
@@ -2233,9 +2229,11 @@ html[data-theme='light'] .heatmap-tooltip {
   }
   .projects-grid       { grid-template-columns: 1fr; }
   .form-row-2          { grid-template-columns: 1fr; }
-  .nav                 { top: 10px; padding: 4px; max-width: calc(100vw - 12px); }
-  .nav-link            { padding: 6px 12px; font-size: 11.5px; }
+  .nav                 { top: 10px; padding: 4px; max-width: calc(100vw - 12px); gap: 0; }
+  .nav-link            { padding: 5px 10px; font-size: 11px; letter-spacing: 0; }
   .nav-divider         { display: none; }
+  .nav-kbd             { display: none; }
+  .nav-icon-btn[aria-label='Open command palette'] { display: none; }
   h1.hero-name         { font-size: clamp(50px, 11vw, 66px); }
   .sec-heading         { font-size: clamp(30px, 8vw, 50px); }
   .resume-summary, .resume-viewer, .admin-card, .admin-stat,
@@ -2266,7 +2264,10 @@ html[data-theme='light'] .heatmap-tooltip {
 }
 @media (max-width: 480px) {
   .page                { padding: 84px 14px 56px; }
-  .nav-link            { padding: 5px 10px; font-size: 10.5px; }
+  .nav                 { padding: 3px; }
+  .nav-link            { padding: 5px 8px; font-size: 10.5px; }
+  .nav-icon-btn        { width: 26px; height: 26px; }
+  .nav-icon-btn svg    { width: 13px; height: 13px; }
   .admin-stats         { grid-template-columns: 1fr 1fr !important; }
   .heatmap-glass       { padding: 16px 12px !important; }
   h1.hero-name         { font-size: clamp(42px, 12vw, 56px); }
