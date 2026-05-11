@@ -16,12 +16,13 @@ export default async function ContactPage() {
     <section className="page">
       <div className="contact-layout">
         <LiquidGlass className="contact-info" interactive>
+          <p className="sec-label">Get in Touch</p>
           <h1 className="contact-heading">
-            Let&apos;s <em>Work<br />Together</em>
+            Let&apos;s build<br />
+            <em>something fine</em>
           </h1>
           <p className="contact-sub">
-            Have a project in mind or want to discuss an opportunity?
-            I'd love to hear from you.
+            Have a project in mind, or want to talk shop? I read every message and reply within 24–48 hours.
           </p>
           <div className="contact-links">
             <a href={`mailto:${profile.email}`} className="contact-link">

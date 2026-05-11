@@ -22,10 +22,14 @@ export function ContactForm() {
     <LiquidGlass className="contact-form">
       {state?.ok ? (
         <div className="form-success">
-          <span className="success-icon">✓</span>
+          <span className="success-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" width="22" height="22">
+              <path d="M5 12.5l4 4L19 7" />
+            </svg>
+          </span>
           <h3 className="success-title">Message Received</h3>
           <p className="success-body">
-            Thank you for reaching out. I'll be in touch within 24–48 hours.
+            Thank you for reaching out. I&apos;ll be in touch within 24–48 hours.
           </p>
         </div>
       ) : (

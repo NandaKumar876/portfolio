@@ -13,7 +13,6 @@ export function WorkClient({ projects }: { projects: AdminProject[] }) {
 
   return (
     <>
-      {/* Filter bar */}
       <div className="filter-bar">
         {TAGS.map(t => (
           <button
@@ -26,7 +25,6 @@ export function WorkClient({ projects }: { projects: AdminProject[] }) {
         ))}
       </div>
 
-      {/* Grid */}
       <div className="projects-grid">
         {list.length === 0 && (
           <p className="admin-empty" style={{ gridColumn: '1/-1', padding: '40px 0' }}>
@@ -40,7 +38,7 @@ export function WorkClient({ projects }: { projects: AdminProject[] }) {
               style={{ animationDelay: `${i * 0.06}s` } as React.CSSProperties}
               interactive
             >
-              <div className="project-index">{p.index}&nbsp;·&nbsp;{p.year}</div>
+              <div className="project-index">{p.index} · {p.year}</div>
               <h3 className="project-title">{p.title}</h3>
               <p className="project-desc">{p.description}</p>
               <div className="project-tags">
@@ -53,7 +51,7 @@ export function WorkClient({ projects }: { projects: AdminProject[] }) {
                       className="project-pill"
                       onClick={e => { e.preventDefault(); window.open(p.repoUrl, '_blank') }}
                     >
-                      ⌥ GitHub
+                      GitHub
                     </span>
                   )}
                   {p.liveUrl && (
@@ -61,12 +59,12 @@ export function WorkClient({ projects }: { projects: AdminProject[] }) {
                       className="project-pill project-pill--live"
                       onClick={e => { e.preventDefault(); window.open(p.liveUrl, '_blank') }}
                     >
-                      ↗ Live
+                      Live ↗
                     </span>
                   )}
                 </div>
               )}
-              <span className="project-link">View details ↗</span>
+              <span className="project-link">View details →</span>
             </LiquidGlass>
           </Link>
         ))}

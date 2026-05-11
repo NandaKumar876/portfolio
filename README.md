@@ -132,4 +132,6 @@ GITHUB_TOKEN=github_pat_...
 | Contact links | `app/contact/page.tsx` |
 | Glass intensity | `<LiquidGlass intensity="low|medium|high">` |
 | Skills list | `app/page.tsx` |
+
+
 # Portfolio

@@ -23,46 +23,48 @@ export default async function ProjectDetail({ params }: Props) {
 
   return (
     <section className="page">
-      {/* Header */}
       <div className="project-detail-header">
-        <p className="sec-label">{p.index} &nbsp;·&nbsp; {p.year}</p>
-        <h1 className="hero-name">{p.title}</h1>
-        <p className="hero-bio" style={{ maxWidth: 560 }}>{p.description}</p>
+        <p className="sec-label">{p.index} · {p.year}</p>
+        <h1 className="sec-heading" style={{ marginBottom: 24 }}>{p.title}</h1>
+        <p className="hero-bio" style={{ maxWidth: 620 }}>{p.description}</p>
         <div className="project-tags" style={{ marginTop: 28 }}>
           {p.tags.map(t => <span key={t} className="project-tag">{t}</span>)}
         </div>
 
-        {/* GitHub + Live links */}
         {(p.repoUrl || p.liveUrl) && (
           <div className="project-detail-links">
             {p.repoUrl && (
               <a href={p.repoUrl} target="_blank" rel="noreferrer" className="btn-ghost">
-                ⌥ GitHub Repository
+                View on GitHub
               </a>
             )}
             {p.liveUrl && (
               <a href={p.liveUrl} target="_blank" rel="noreferrer" className="btn-glass">
-                ↗ View Live Site
+                View Live Site ↗
               </a>
             )}
           </div>
         )}
       </div>
 
-      {/* Feature cards */}
-      <div className="feature-grid">
-        {p.features.map((f, i) => (
-          <LiquidGlass
-            key={f.title}
-            className="feature-card fade-in"
-            style={{ animationDelay: `${i * 0.08}s` } as React.CSSProperties}
-            interactive
-          >
-            <div className="feature-title">{f.title}</div>
-            <div className="feature-desc">{f.description}</div>
-          </LiquidGlass>
-        ))}
-      </div>
+      {p.features.length > 0 && (
+        <>
+          <p className="sec-label" style={{ marginBottom: 18 }}>Highlights</p>
+          <div className="feature-grid">
+            {p.features.map((f, i) => (
+              <LiquidGlass
+                key={f.title}
+                className="feature-card fade-in"
+                style={{ animationDelay: `${i * 0.08}s` } as React.CSSProperties}
+                interactive
+              >
+                <div className="feature-title">{f.title}</div>
+                <div className="feature-desc">{f.description}</div>
+              </LiquidGlass>
+            ))}
+          </div>
+        </>
+      )}
     </section>
   )
 }

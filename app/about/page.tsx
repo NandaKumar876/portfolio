@@ -41,8 +41,8 @@ export default async function AboutPage() {
         <p className="sec-label">Background</p>
         <h1 className="sec-heading">About <em>Me</em></h1>
         <p className="about-tagline">
-          Hey, I&apos;m <strong style={{ color: '#fff', fontWeight: 400 }}>Thamothara Natarajan</strong> — alias <em>Thamo</em>.
-          A Full Stack Developer from <strong style={{ color: '#fff', fontWeight: 400 }}>Chennai, Tamil Nadu 🇮🇳</strong>,
+          Hey, I&apos;m <strong>Thamothara Natarajan</strong> — alias <em>Thamo</em>.
+          A Full Stack Developer based in <strong>Chennai, Tamil Nadu</strong>,
           obsessed with building things that are precise, fast, and a little bit beautiful.
         </p>
       </div>
@@ -57,13 +57,13 @@ export default async function AboutPage() {
 
           <div className="hero-actions" style={{ marginTop: 24, marginBottom: 44 }}>
             <a href="/api/resume" className="btn-glass" target="_blank" rel="noreferrer">View Resume</a>
-            <Link href="/certificates" className="btn-glass">View Certificates</Link>
+            <Link href="/certificates" className="btn-ghost">View Certificates</Link>
             <Link href="/contact" className="btn-ghost">Get in Touch</Link>
           </div>
 
           {/* Currently */}
           <LiquidGlass className="about-status-card">
-            <p className="sec-label" style={{ marginBottom: 14 }}>Currently</p>
+            <p className="sec-label" style={{ marginBottom: 6 }}>Currently</p>
             {CURRENTLY.map(c => (
               <div key={c.label} className="about-status-row">
                 <span className="about-status-label">{c.label}</span>
@@ -73,7 +73,7 @@ export default async function AboutPage() {
           </LiquidGlass>
 
           {/* Interests */}
-          <div style={{ marginTop: 20 }}>
+          <div style={{ marginTop: 24 }}>
             <p className="sec-label" style={{ marginBottom: 12 }}>Interests</p>
             <div className="interests-list">
               {INTERESTS.map(item => (
@@ -83,13 +83,13 @@ export default async function AboutPage() {
           </div>
 
           {/* Fun fact */}
-          <LiquidGlass className="about-funfact-card" style={{ marginTop: 20 }}>
+          <LiquidGlass className="about-funfact-card" style={{ marginTop: 24 }}>
             <span className="about-funfact-icon">Fun fact</span>
             <p className="about-funfact-text">I name my side projects before I start them.</p>
           </LiquidGlass>
 
           {/* Social Links */}
-          <LiquidGlass className="social-card" style={{ marginTop: 20 }} interactive>
+          <LiquidGlass className="social-card" style={{ marginTop: 24 }} interactive>
             <p className="sec-label" style={{ marginBottom: 16 }}>Connect</p>
             <div className="social-links-grid">
               <a href={profile.githubUrl} className="social-link" target="_blank" rel="noreferrer">
@@ -119,7 +119,7 @@ export default async function AboutPage() {
                   <span className="social-handle">@{new URL(profile.xUrl).pathname.replace(/^\/+/, '')}</span>
                 </div>
               </a>
-              <a href="https://leetcode.com/u/thamothara/" className="social-link" target="_blank" rel="noreferrer" id="social">
+              <a href="https://leetcode.com/u/thamothara/" className="social-link" target="_blank" rel="noreferrer">
                 <span className="social-icon-wrapper">
                   <img src="/leetcode-brands-solid-full.svg" alt="LeetCode" />
                 </span>
@@ -148,8 +148,8 @@ export default async function AboutPage() {
             </div>
           ))}
 
-          {/* Experience (from Redis) */}
-          <p className="sec-label" style={{ marginTop: 40, marginBottom: 16 }}>Experience</p>
+          {/* Experience */}
+          <p className="sec-label" style={{ marginTop: 44, marginBottom: 18 }}>Experience</p>
           <div className="timeline">
             {experience.map(e => (
               <div key={e.id} className="timeline-item">
@@ -162,8 +162,8 @@ export default async function AboutPage() {
             ))}
           </div>
 
-          {/* Education (from Redis) */}
-          <p className="sec-label" style={{ marginTop: 32, marginBottom: 16 }}>Education</p>
+          {/* Education */}
+          <p className="sec-label" style={{ marginTop: 36, marginBottom: 18 }}>Education</p>
           <div className="timeline">
             {education.map(e => (
               <div key={e.id} className="timeline-item">
