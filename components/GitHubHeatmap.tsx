@@ -87,11 +87,32 @@ export function GitHubHeatmap({ weeks, totalContributions }: Props) {
   const { currentStreak, longestStreak, lastActive } = useMemo(() => computeStats(weeks), [weeks])
   const monthLabels = useMemo(() => monthLabelPositions(weeks), [weeks])
 
-  /* Scroll to the right end on mount so the most recent week is in view. */
+  /* Scroll to the right end on mount so the most recent week is in view.
+     Wrapped in requestAnimationFrame so the cells have measured their width
+     before we set scrollLeft, and `behavior: 'instant'` bypasses the
+     site-wide smooth-scroll declared on <html>. We try a few frames in case
+     fonts/images shift width late. */
   useEffect(() => {
     const el = scrollRef.current
     if (!el) return
-    el.scrollLeft = el.scrollWidth
+    let cancelled = false
+
+    function jump() {
+      if (cancelled || !el) return
+      el.scrollTo({ left: el.scrollWidth, behavior: 'instant' as ScrollBehavior })
+    }
+
+    // First on next frame, then once layout settles, then once more after
+    // fonts/icons have loaded. Cheap and bulletproof.
+    requestAnimationFrame(jump)
+    const t1 = setTimeout(jump, 60)
+    const t2 = setTimeout(jump, 300)
+
+    return () => {
+      cancelled = true
+      clearTimeout(t1)
+      clearTimeout(t2)
+    }
   }, [weeks])
 
   return (

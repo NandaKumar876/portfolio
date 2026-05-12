@@ -3,6 +3,32 @@ import path from 'path'
 import { NextResponse } from 'next/server'
 import { getPortfolioData } from '@/lib/portfolio'
 
+/* Never cache this route: a freshly uploaded resume must be served on the
+   very next request. The headers below also tell browsers and any CDN
+   in front of the app to revalidate every time. */
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
+const NO_STORE_HEADERS = {
+  'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
+  Pragma: 'no-cache',
+  Expires: '0',
+}
+
+/* HTTP header values can only carry bytes (US-ASCII). User-supplied
+   filenames may contain em-dashes, smart quotes, or other Unicode. We
+   strip them for the legacy `filename=` parameter, but also emit a
+   `filename*` parameter (RFC 5987) with the full UTF-8 form so modern
+   clients still get the original name. */
+function buildContentDisposition(rawName: string | undefined): string {
+  const fallback = 'resume.pdf'
+  const name = (rawName && rawName.trim()) || fallback
+  // ASCII-safe version: replace any non-ASCII byte with '-'.
+  const asciiSafe = name.replace(/[^\x20-\x7E]/g, '-')
+  const utf8Encoded = encodeURIComponent(name)
+  return `inline; filename="${asciiSafe}"; filename*=UTF-8''${utf8Encoded}`
+}
+
 function escapePdfText(text: string) {
   return text
     .replace(/\\/g, '\\\\')
@@ -83,8 +109,9 @@ export async function GET() {
       const file = Buffer.from(base64Data, 'base64')
       return new NextResponse(file, {
         headers: {
+          ...NO_STORE_HEADERS,
           'Content-Type': 'application/pdf',
-          'Content-Disposition': `inline; filename="${resume.fileName || 'resume.pdf'}"`,
+          'Content-Disposition': buildContentDisposition(resume.fileName),
         },
       })
     } catch (err) {
@@ -99,8 +126,9 @@ export async function GET() {
       const file = await fs.readFile(filePath)
       return new NextResponse(file, {
         headers: {
+          ...NO_STORE_HEADERS,
           'Content-Type': 'application/pdf',
-          'Content-Disposition': `inline; filename="${resume.fileName || 'resume.pdf'}"`,
+          'Content-Disposition': buildContentDisposition(resume.fileName),
         },
       })
     } catch {
@@ -123,8 +151,9 @@ export async function GET() {
   const pdf = buildFallbackPdf(lines)
   return new NextResponse(pdf, {
     headers: {
+      ...NO_STORE_HEADERS,
       'Content-Type': 'application/pdf',
-      'Content-Disposition': 'inline; filename="Thamo-Resume.pdf"',
+      'Content-Disposition': buildContentDisposition('Thamo-Resume.pdf'),
     },
   })
 }

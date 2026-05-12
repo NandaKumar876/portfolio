@@ -100,6 +100,12 @@ export function CommandPalette({ projects = [] }: { projects?: ProjectLite[] }) 
           document.documentElement.setAttribute('data-theme', cur)
           try { localStorage.setItem('theme', cur) } catch {}
         } },
+      { id: 'a:keys',     group: 'Actions', title: 'Keyboard Shortcuts', subtitle: 'Press ? to open',  icon: 'theme', keywords: 'keyboard shortcuts hotkeys help ?',
+        action: () => {
+          /* Dispatch a synthetic ? keydown so the global KeyboardShortcuts
+             listener opens the overlay. */
+          window.dispatchEvent(new KeyboardEvent('keydown', { key: '?' }))
+        } },
       { id: 'a:github',   group: 'Actions', title: 'GitHub',          subtitle: 'Open GitHub profile',  href: 'https://github.com/thamothara7', external: true, icon: 'external' },
       { id: 'a:linkedin', group: 'Actions', title: 'LinkedIn',        subtitle: 'Open LinkedIn profile', href: 'https://www.linkedin.com/in/thamotharanatarajan/', external: true, icon: 'external' },
     ]

@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
-import { Nav }             from '@/components/Nav'
-import { CommandPalette }  from '@/components/CommandPalette'
-import { getProjects }     from '@/lib/projects'
+import { Nav }                  from '@/components/Nav'
+import { CommandPalette }       from '@/components/CommandPalette'
+import { KeyboardShortcuts }    from '@/components/KeyboardShortcuts'
+import { getProjects }          from '@/lib/projects'
 import '@/app/globals.css'
 
 export const metadata: Metadata = {
@@ -40,6 +41,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <Nav />
         <main>{children}</main>
         <CommandPalette projects={projectLite} />
+        <KeyboardShortcuts />
         <footer className="footer">
           <span>Thamo</span>
           <span className="footer-divider">·</span>
