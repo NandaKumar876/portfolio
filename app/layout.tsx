@@ -10,7 +10,9 @@ export const metadata: Metadata = {
   description: 'Editorial liquid-glass portfolio for Thamothara Natarajan — Full Stack Developer in Chennai.',
 }
 
-const THEME_INIT = `(function(){try{var s=localStorage.getItem('theme');var t=(s==='dark'||s==='light')?s:'light';document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','light');}})();`
+/* On first ever visit, persist 'light' so the default sticks across reloads.
+   Subsequent visits respect whatever the user explicitly toggled to. */
+const THEME_INIT = `(function(){try{var s=localStorage.getItem('theme');var t=(s==='dark'||s==='light')?s:'light';if(!s){localStorage.setItem('theme','light');}document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','light');}})();`
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const projects = await getProjects().catch(() => [])
