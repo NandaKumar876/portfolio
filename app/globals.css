@@ -2016,9 +2016,9 @@ html[data-theme='light'] .heatmap-tooltip {
 }
 
 /* ── STATS STRIP ──
-   Uses auto-fit so the row gracefully reflows: at wide widths all four sit
-   on one line; at narrower viewports they wrap to two, then one. No magic
-   breakpoints required. */
+   Centered block that doesn't sprawl on wide screens or leave gaps on
+   narrow ones. auto-fit reflows the columns; max-width caps the block;
+   margin auto keeps it horizontally centered. */
 .hero-cover-stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
@@ -2026,6 +2026,10 @@ html[data-theme='light'] .heatmap-tooltip {
   padding: 28px 0;
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
+  max-width: 880px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
   animation: rise 0.9s 0.15s ease both;
 }
 .hero-cover-stat {
@@ -2098,50 +2102,56 @@ html[data-theme='light'] .heatmap-tooltip {
   .hero-cover-feature-card { padding: 24px 22px; min-height: 0; }
   .hero-cover-feature-title { font-size: 22px; }
 
-  /* Stats — 2-column grid on mobile so the row fills the screen width
-     instead of leaving empty space to the right of each label. Vertical
-     dashed rule between columns, horizontal rule between rows. */
+  /* Stats — 2-column grid that fills the screen width.
+     Content inside each stat is CENTER-aligned so the block reads as a
+     balanced bento, never lopsided. Vertical separator between columns,
+     horizontal separator between rows. */
   .hero-cover-stats     {
     grid-template-columns: 1fr 1fr;
     padding: 18px 0;
-    gap: 18px 14px;
+    gap: 16px 0;
+    max-width: 480px;   /* keep the block visually centered on phones */
   }
   .hero-cover-stat      {
-    padding: 0;
+    padding: 0 14px;
     border-right: 0;
     border-bottom: 0;
     position: relative;
+    text-align: center;
+    align-items: center;   /* the stat is a flex column — center its children */
   }
-  /* Vertical separator between the two columns of stats */
+  /* Vertical separator between the two columns */
   .hero-cover-stat:nth-child(odd)::after {
     content: '';
     position: absolute;
-    top: 6px;
-    bottom: 6px;
-    right: -7px;
+    top: 8px;
+    bottom: 8px;
+    right: 0;
     width: 1px;
     background: var(--line);
   }
-  /* Horizontal separator between the two rows of stats */
+  /* Horizontal separator between the first and second row */
   .hero-cover-stat:nth-child(-n + 2) {
-    padding-bottom: 16px;
+    padding-bottom: 14px;
     border-bottom: 1px solid var(--line);
   }
-  .hero-cover-stat-value { font-size: 36px; }
+  .hero-cover-stat:nth-child(n + 3) {
+    padding-top: 14px;
+  }
+  .hero-cover-stat-value { font-size: 34px; justify-content: center; }
   .hero-cover-stat-label { font-size: 9.5px; letter-spacing: 0.20em; margin-top: 6px; }
   .hero-cover-stat-meta  { font-size: 12px; }
 }
 
 @media (max-width: 380px) {
-  /* Very narrow phones — fall back to a single tight column */
-  .hero-cover-stats   { grid-template-columns: 1fr; gap: 0; }
-  .hero-cover-stat    {
-    padding: 14px 0 !important;
-    border-bottom: 1px solid var(--line);
-  }
-  .hero-cover-stat::after { display: none; }
-  .hero-cover-stat:last-child { border-bottom: 0; padding-bottom: 0 !important; }
-  .hero-cover-stat-value { font-size: 30px; }
+  /* Still 2 columns — just tighter values so they fit any device. */
+  .hero-cover-stats     { gap: 14px 0; padding: 14px 0; }
+  .hero-cover-stat      { padding: 0 8px; }
+  .hero-cover-stat:nth-child(-n + 2) { padding-bottom: 12px; }
+  .hero-cover-stat:nth-child(n + 3)  { padding-top: 12px; }
+  .hero-cover-stat-value { font-size: 28px; }
+  .hero-cover-stat-label { font-size: 9px; letter-spacing: 0.16em; }
+  .hero-cover-stat-meta  { font-size: 11px; }
 }
 
 /* For backwards compatibility with any old .page--home-hero refs */
@@ -5818,4 +5828,61 @@ html[data-theme='dark'] .heatmap-cell:hover {
   /* CTA card */
   .home-cta                 { padding: 36px 18px; }
   .home-cta-body            { font-size: 17px; }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   MOBILE MINIMALIST — at ≤720px, hide duplicate / discovery content
+   so the page is short enough to feel like a single mobile read.
+   The same content lives on dedicated pages (work, certificates,
+   etc.) and the chapter rail won't surface hidden sections.
+   ════════════════════════════════════════════════════════════════ */
+@media (max-width: 720px) {
+  /* 1 · Hero — drop the duplicate "Featured work" tile (it's the same
+     project as the first card in Selected Work). Drop the in-hero stats
+     (they're shown in full in Section 03 · The Tally). Drop the small
+     bio sign-off paragraph (the main bio is enough). */
+  .hero-cover-feature       { display: none !important; }
+  .hero-cover-stats         { display: none !important; }
+  .hero-cover-bio-sign      { display: none !important; }
+
+  /* 2 · Currently — keep just the two most relevant cards (Building,
+     Open to). Hide the rest. */
+  .home-now-card:nth-child(n + 3) { display: none !important; }
+  .home-now-grid            { gap: 12px; }
+
+  /* 3 · Live Feed — hide entirely on mobile. Power users on desktop see
+     the live activity; phone visitors don't need 12 rows of git events. */
+  #live-feed                { display: none !important; }
+
+  /* 4 · Credentials — hide on mobile. The /certificates page has the
+     full list. */
+  #credentials              { display: none !important; }
+
+  /* 5 · Section numbering — hide the "04 ·" / "07 ·" indices and the
+     middle dot. With Live Feed + Credentials hidden, the visible numbers
+     would jump (…04, 07, …) which reads as broken. Without numbers each
+     section just gets a clean uppercase eyebrow word. Also strip the
+     italic accent paragraph under titles for a tighter feel. */
+  .home-section-num,
+  .home-section-dot         { display: none !important; }
+  .home-section-eyebrow     {
+    font-size: 9.5px !important;
+    letter-spacing: 0.26em !important;
+    color: var(--accent) !important;
+  }
+  .home-section-accent      { display: none !important; }
+  .home-section-head        {
+    margin-bottom: 18px !important;
+    padding-bottom: 14px !important;
+    border-bottom-color: var(--line) !important;
+  }
+  .home-section-head-left   { gap: 6px !important; }
+  .home-section-link        { font-size: 10px !important; padding: 0 !important; }
+
+  /* 6 · Tighter section spacing so what remains reads tight. */
+  .home-section             { padding-top: 44px !important; }
+  .home-section + .home-section { padding-top: 36px !important; }
+
+  /* 7 · Footer + section title typography squeeze for the cleanest read. */
+  .home-section-title       { font-size: clamp(24px, 7vw, 30px) !important; line-height: 1.08 !important; }
 }
