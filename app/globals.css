@@ -4939,8 +4939,12 @@ html[data-theme='dark'] .home-cert-link:hover {
 }
 
 @media (max-width: 720px) {
-  .home-cert       { grid-template-columns: 1fr; gap: 6px; padding: 18px 2px; }
-  .home-cert-link  { justify-self: flex-start; margin-top: 8px; }
+  .home-cert       { grid-template-columns: 1fr; gap: 8px; padding: 18px 2px; }
+  .home-cert-year  { font-size: 10.5px; }
+  .home-cert-title { font-size: 18px; }
+  .home-cert-issuer { font-size: 15px; }
+  .home-cert-desc  { font-size: 14px; }
+  .home-cert-link  { justify-self: start; margin-top: 10px; font-size: 10px; padding: 6px 12px; }
 }
 
 /* ════════════════════════════════════════════════════════════════
@@ -5283,21 +5287,48 @@ html[data-theme='dark'] .activity-filter:not(.is-active).is-empty .activity-filt
 
 /* ─── Responsive ─── */
 @media (max-width: 720px) {
-  .activity-glass        { padding: 22px 18px; }
-  .activity-controls     { padding-bottom: 14px; }
-  .activity-filters      { gap: 4px; }
-  .activity-filter       { padding: 5px 9px; font-size: 9px; }
-  .activity-filter-count { font-size: 9px; }
-  .activity-row-head     { grid-template-columns: 20px 1fr auto; gap: 10px; padding: 14px 2px; }
-  .activity-repo         { grid-column: 2; grid-row: 2; font-size: 10px; margin-top: 2px; }
-  .activity-when         { grid-column: 3; grid-row: 1; font-size: 10px; }
+  .activity-glass        { padding: 20px 14px; }
+  .activity-controls     { flex-direction: column; align-items: flex-start; gap: 12px; padding-bottom: 14px; }
+  .activity-filters      { gap: 6px; width: 100%; }
+  .activity-filter       {
+    padding: 5px 4px 5px 10px;
+    font-size: 9.5px;
+    letter-spacing: 0.18em;
+    gap: 6px;
+  }
+  .activity-filter-count {
+    min-width: 18px;
+    height: 16px;
+    padding: 0 6px;
+    font-size: 9px;
+  }
+  .activity-status       { font-size: 9.5px; align-self: flex-end; }
+  .activity-row-head     {
+    grid-template-columns: 22px 1fr auto;
+    grid-template-rows: auto auto;
+    column-gap: 10px;
+    row-gap: 4px;
+    padding: 14px 2px;
+  }
+  .activity-kind         { grid-column: 1; grid-row: 1 / span 2; align-self: center; }
+  .activity-action       { grid-column: 2; grid-row: 1; white-space: normal; min-width: 0; }
+  .activity-when         { grid-column: 3; grid-row: 1; font-size: 9.5px; }
+  .activity-repo         { grid-column: 2; grid-row: 2; font-size: 10px; }
   .activity-chevron      { grid-column: 3; grid-row: 2; align-self: end; }
   .activity-action-verb,
-  .activity-action-detail { font-size: 14px; }
-  .activity-action        { white-space: normal; }
-  .activity-commits       { padding-left: 28px; margin-left: 8px; }
-  .activity-commit-link   { gap: 8px; padding: 5px 0; }
-  .activity-commit-msg    { font-size: 13.5px; }
+  .activity-action-detail { font-size: 14px; line-height: 1.4; }
+  .activity-action-detail { margin-left: 4px; }
+  .activity-commits       { padding-left: 24px; margin-left: 8px; }
+  .activity-commit-link   { gap: 8px; padding: 5px 0; flex-wrap: wrap; }
+  .activity-commit-msg    { font-size: 13.5px; white-space: normal; }
+  .activity-empty        { font-size: 14.5px; padding: 28px 4px; }
+}
+@media (max-width: 380px) {
+  .activity-filters      { gap: 4px; }
+  .activity-filter       { padding: 5px 4px 5px 8px; font-size: 9px; }
+  .activity-filter-label { letter-spacing: 0.14em; }
+  .activity-action-verb,
+  .activity-action-detail { font-size: 13px; }
 }
 
 /* ════════════════════════════════════════════════════════════════
@@ -5676,4 +5707,64 @@ html[data-theme='dark'] .heatmap-cell:hover {
   /* override the special scale rule */
   transform: none !important;
   opacity: 1 !important;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   MOBILE FINAL PASS — applied last so it always wins.
+   Tightens section heads, stats, and shared chrome at narrow widths.
+   ════════════════════════════════════════════════════════════════ */
+@media (max-width: 720px) {
+  /* Section heads: smaller titles, less margin, single-column layout */
+  .home-section-head        { gap: 12px; margin-bottom: 22px; padding-bottom: 16px; align-items: flex-start; }
+  .home-section-title       { font-size: clamp(26px, 7.5vw, 34px); line-height: 1.06; letter-spacing: -0.018em; }
+  .home-section-eyebrow     { font-size: 9.5px; letter-spacing: 0.20em; }
+  .home-section-accent      { font-size: 13px; max-width: 100%; }
+  .home-section-link        { font-size: 10.5px; }
+
+  /* Section padding overall — pull the rhythm tighter */
+  .page                     { padding-left: 18px; padding-right: 18px; }
+  .home-section             { padding-top: 56px; }
+  .home-section + .home-section { padding-top: 48px; }
+
+  /* Live activity glass — make sure it doesn't blow out width */
+  .activity-glass           { padding: 18px 14px; border-radius: var(--r-lg); }
+
+  /* Skills marquee inside hero — narrow & smaller */
+  .skills-marquee-track     { gap: 22px; }
+  .skills-marquee-item      { font-size: 13.5px; }
+
+  /* Footer & nav already responsive elsewhere — just tighten nav margins. */
+  .footer                   { padding-left: 18px; padding-right: 18px; }
+}
+
+@media (max-width: 480px) {
+  /* Very narrow phones — one more squeeze on key elements */
+  .page                     { padding-left: 14px; padding-right: 14px; }
+
+  .home-section-title       { font-size: clamp(24px, 8.5vw, 28px); }
+  .home-section-accent      { font-size: 12.5px; }
+
+  .home-stats               { grid-template-columns: 1fr; gap: 12px; }
+  .home-stat-card           { padding: 18px 18px 16px; min-height: 0; }
+  .home-stat-value          { font-size: 32px; }
+
+  /* Hero cover at very narrow */
+  .hero-cover-name          { font-size: clamp(40px, 13vw, 56px); }
+  .hero-cover-bio           { font-size: 16px; }
+  .hero-cover-feature-card  { padding: 20px 18px; }
+  .hero-cover-feature-title { font-size: 20px; }
+
+  /* Activity feed even tighter */
+  .activity-glass           { padding: 16px 12px; }
+  .activity-row-head        { padding: 12px 2px; }
+  .activity-action-verb,
+  .activity-action-detail   { font-size: 13.5px; }
+
+  /* Credentials list tighter */
+  .home-cert                { padding: 16px 2px; }
+  .home-cert-title          { font-size: 17px; }
+
+  /* CTA card */
+  .home-cta                 { padding: 36px 18px; }
+  .home-cta-body            { font-size: 17px; }
 }
