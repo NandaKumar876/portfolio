@@ -2086,7 +2086,7 @@ html[data-theme='light'] .heatmap-tooltip {
   .hero-cover-stat    { padding: 0 22px; }
 }
 @media (max-width: 720px) {
-  .hero-cover         { padding-top: 96px; gap: 36px; }
+  .hero-cover         { padding-top: 96px; gap: 32px; }
   .hero-cover-dateline { flex-wrap: wrap; gap: 8px; padding-bottom: 14px; font-size: 9.5px; }
   .hero-cover-dateline-rule { display: none; }
   .hero-cover-dateline-imprint { font-size: 12px; }
@@ -2097,10 +2097,51 @@ html[data-theme='light'] .heatmap-tooltip {
   .hero-cover-actions a { text-align: center; }
   .hero-cover-feature-card { padding: 24px 22px; min-height: 0; }
   .hero-cover-feature-title { font-size: 22px; }
-  /* Stats: force single column with horizontal rules between rows. */
-  .hero-cover-stats   { grid-template-columns: 1fr; padding: 22px 0; gap: 0; }
-  .hero-cover-stat    { padding: 16px 0; border-right: 0; border-bottom: 1px solid var(--line); }
-  .hero-cover-stat:last-child { border-bottom: 0; padding-bottom: 0; }
+
+  /* Stats — 2-column grid on mobile so the row fills the screen width
+     instead of leaving empty space to the right of each label. Vertical
+     dashed rule between columns, horizontal rule between rows. */
+  .hero-cover-stats     {
+    grid-template-columns: 1fr 1fr;
+    padding: 18px 0;
+    gap: 18px 14px;
+  }
+  .hero-cover-stat      {
+    padding: 0;
+    border-right: 0;
+    border-bottom: 0;
+    position: relative;
+  }
+  /* Vertical separator between the two columns of stats */
+  .hero-cover-stat:nth-child(odd)::after {
+    content: '';
+    position: absolute;
+    top: 6px;
+    bottom: 6px;
+    right: -7px;
+    width: 1px;
+    background: var(--line);
+  }
+  /* Horizontal separator between the two rows of stats */
+  .hero-cover-stat:nth-child(-n + 2) {
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--line);
+  }
+  .hero-cover-stat-value { font-size: 36px; }
+  .hero-cover-stat-label { font-size: 9.5px; letter-spacing: 0.20em; margin-top: 6px; }
+  .hero-cover-stat-meta  { font-size: 12px; }
+}
+
+@media (max-width: 380px) {
+  /* Very narrow phones — fall back to a single tight column */
+  .hero-cover-stats   { grid-template-columns: 1fr; gap: 0; }
+  .hero-cover-stat    {
+    padding: 14px 0 !important;
+    border-bottom: 1px solid var(--line);
+  }
+  .hero-cover-stat::after { display: none; }
+  .hero-cover-stat:last-child { border-bottom: 0; padding-bottom: 0 !important; }
+  .hero-cover-stat-value { font-size: 30px; }
 }
 
 /* For backwards compatibility with any old .page--home-hero refs */
