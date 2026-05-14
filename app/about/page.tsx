@@ -254,7 +254,7 @@ export default async function AboutPage() {
       <footer className="about-foot">
         <span className="about-foot-line" aria-hidden="true" />
         <p className="about-foot-text">
-          That&rsquo;s about it. <Link href="/contact">Say hello</Link> if you&rsquo;d like to talk shop.
+          That&rsquo;s about it. <Link href="/contact">Say hello </Link>if you&rsquo;d like to talk shop.
         </p>
       </footer>
     </section>

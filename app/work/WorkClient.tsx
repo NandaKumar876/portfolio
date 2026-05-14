@@ -144,7 +144,7 @@ export function WorkClient({ projects }: { projects: AdminProject[] }) {
         <span className="work-foot-line" aria-hidden="true" />
         <p className="work-foot-text">
           End of index. There&rsquo;s more in private &mdash;{' '}
-          <Link href="/contact">say hello</Link> if you&rsquo;d like a look.
+          <Link href="/contact">say hello </Link>if you&rsquo;d like a look.
         </p>
       </footer>
     </section>

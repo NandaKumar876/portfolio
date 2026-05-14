@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import { LiquidGlass }       from '@/components/LiquidGlass'
 import { GitHubHeatmap }     from '@/components/GitHubHeatmap'
-import { CountUp }           from '@/components/CountUp'
 import { RepoStars }         from '@/components/RepoStars'
 import { RecentActivity }    from '@/components/RecentActivity'
 import { getGitHubCalendar, getRecentActivity } from '@/lib/github'
@@ -11,7 +10,6 @@ import { getProjects }       from '@/lib/projects'
 export const dynamic = 'force-dynamic'
 
 const STARTED_BUILDING = 2022
-const STACK_COUNT      = 30
 
 function SectionHead({
   index, eyebrow, title, link,
@@ -48,76 +46,88 @@ export default async function Home() {
   ])
 
   const { profile, resume, certificates } = content
-  const resumeHref     = `/api/resume?v=${encodeURIComponent(resume?.uploadedAt || Date.now())}`
-  const yearsBuilding  = new Date().getFullYear() - STARTED_BUILDING
-  const featured       = projects.slice(0, 3)
-  const totalCommits   = calendar?.totalContributions ?? 0
-  const cleanLocation  = profile.location.replace(/[\u{1F1E6}-\u{1F1FF}]{2}/gu, '').trim()
+  const resumeHref    = `/api/resume?v=${encodeURIComponent(resume?.uploadedAt || Date.now())}`
+  const yearsBuilding = new Date().getFullYear() - STARTED_BUILDING
+  const featured      = projects.slice(0, 3)
+  const cleanLocation = profile.location.replace(/[\u{1F1E6}-\u{1F1FF}]{2}/gu, '').trim()
 
-  const stats = [
-    { value: yearsBuilding,   suffix: 'yrs', label: 'Building' },
-    { value: projects.length, suffix: '',    label: 'Projects' },
-    { value: totalCommits,    suffix: '',    label: 'Commits / yr' },
-    { value: STACK_COUNT,     suffix: '+',   label: 'Technologies' },
-  ]
-
-  /* Contiguous section numbering — only the sections that actually render
-     get a number, so there's never a gap (…04, 06…). */
+  /* Contiguous section numbering — only sections that render get a number. */
   const order = [
     'now',
-    featured.length > 0   ? 'selected-work' : null,
-    calendar              ? 'field-notes'   : null,
-    activity.length > 0   ? 'live-feed'     : null,
-    certificates.length > 0 ? 'credentials' : null,
+    featured.length > 0     ? 'selected-work' : null,
+    calendar                ? 'field-notes'   : null,
+    activity.length > 0     ? 'live-feed'      : null,
+    certificates.length > 0 ? 'credentials'    : null,
     'reach-out',
   ].filter(Boolean) as string[]
   const idx = (id: string) => String(order.indexOf(id) + 1).padStart(2, '0')
 
   return (
     <>
-      {/* ═════════════ INTRO ═════════════ */}
-      <section className="home-intro">
-        <p className="home-intro-eyebrow">
-          {profile.role}
-          <span className="home-intro-eyebrow-sep" aria-hidden="true">/</span>
-          {cleanLocation}
-          <span className="home-intro-eyebrow-sep" aria-hidden="true">/</span>
-          <span className="home-intro-eyebrow-status">
-            <span className="status-dot" aria-hidden="true" />
-            open to work
-          </span>
-        </p>
+      {/* ═════════════ HERO — two-column: identity card | annotated intro ═════════════ */}
+      <section className="home-hero">
+        <div className="home-hero-grid">
 
-        <h1 className="home-intro-name">
-          <span>Thamothara</span>
-          <span className="home-intro-name-last">Natarajan</span>
-        </h1>
-
-        <p className="home-intro-statement">
-          I build careful software for the web &mdash; loads fast, ages well,
-          and doesn&rsquo;t pick fights with the people using it.
-        </p>
-        <p className="home-intro-bio">{profile.bio}</p>
-
-        <div className="home-intro-actions">
-          <Link href="/work" className="btn-glass">See my work →</Link>
-          <a href={resumeHref} className="btn-ghost" target="_blank" rel="noreferrer">
-            Resume (PDF)
-          </a>
-          <Link href="/contact" className="btn-ghost">Say hello</Link>
-        </div>
-
-        <dl className="home-intro-stats">
-          {stats.map(s => (
-            <div key={s.label} className="home-intro-stat">
-              <dt className="home-intro-stat-value">
-                <CountUp to={s.value} />
-                {s.suffix && <span className="home-intro-stat-suffix">{s.suffix}</span>}
-              </dt>
-              <dd className="home-intro-stat-label">{s.label}</dd>
+          {/* LEFT — identity (no avatar; a typographic monogram instead) */}
+          <aside className="hero-id">
+            <span className="hero-id-monogram" aria-hidden="true">TN</span>
+            <h1 className="hero-id-name">Thamothara<br />Natarajan</h1>
+            <p className="hero-id-loc">
+              <svg className="hero-id-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+                <path d="M12 21s-7-6.2-7-11a7 7 0 1 1 14 0c0 4.8-7 11-7 11Z" strokeLinejoin="round" />
+                <circle cx="12" cy="10" r="2.4" />
+              </svg>
+              {cleanLocation}
+            </p>
+            <div className="hero-id-socials">
+              <a href={profile.githubUrl}   target="_blank" rel="noreferrer" className="hero-id-social">GitHub</a>
+              <a href={profile.linkedinUrl} target="_blank" rel="noreferrer" className="hero-id-social">LinkedIn</a>
+              <a href={profile.xUrl}        target="_blank" rel="noreferrer" className="hero-id-social">X</a>
             </div>
-          ))}
-        </dl>
+            <a href={resumeHref} target="_blank" rel="noreferrer" className="hero-id-resume">
+              View Résumé
+            </a>
+          </aside>
+
+          {/* divider */}
+          <span className="hero-divider" aria-hidden="true" />
+
+          {/* RIGHT — annotated intro prose, key terms highlighted */}
+          <div className="hero-copy">
+            <p>
+              I&rsquo;m a <mark className="hl">Full Stack Developer</mark> based in{' '}
+              <mark className="hl">{cleanLocation}</mark>, building careful software for
+              the web &mdash; the kind that <mark className="hl">loads fast</mark>,{' '}
+              <mark className="hl">ages well</mark>, and doesn&rsquo;t pick fights with
+              the people using it.
+            </p>
+            <p>
+              I&rsquo;ve spent <mark className="hl">{yearsBuilding}+ years </mark> shipping
+              across the stack &mdash; from <mark className="hl">designing APIs</mark> and{' '}
+              <mark className="hl">modelling databases</mark> to{' '}
+              <mark className="hl">polished, accessible front ends</mark>. I work most with{' '}
+              <mark className="hl">TypeScript</mark>, <mark className="hl">React</mark>,{' '}
+              <mark className="hl">Next.js</mark>, <mark className="hl">Node</mark>, and{' '}
+              <mark className="hl">Python</mark>, with <mark className="hl">Docker</mark>{' '}
+              and <mark className="hl">AWS</mark> on the deployment side.
+            </p>
+            <p>
+              I&rsquo;m a <mark className="hl">fast learner</mark>,{' '}
+              <mark className="hl">detail-obsessed</mark>, and a{' '}
+              <mark className="hl">strong problem solver</mark> who cares as much about the
+              shape of a function as the curve of a serif.
+            </p>
+            <p>
+              Got something to build?{' '}
+              <a href={`mailto:${profile.email}`} className="hero-copy-mail">Drop me an email</a>{' '}
+              &mdash; or reach out on social.
+            </p>
+            <span className="hero-available">
+              <span className="hero-available-dot" aria-hidden="true" />
+              Available for work
+            </span>
+          </div>
+        </div>
       </section>
 
       {/* ═════════════ CURRENTLY ═════════════ */}
