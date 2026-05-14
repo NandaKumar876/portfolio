@@ -28,8 +28,8 @@ html[data-theme='dark'] { color-scheme: dark; }
    fall back to border-radius:0 (boxy edges everywhere).
    ────────────────────────────────────────────────────────── */
 :root {
-  /* fonts */
-  --f:   'DM Sans', system-ui, -apple-system, sans-serif;
+  /* fonts — Space Grotesk is the primary sans (matches crg-portfolio) */
+  --f:   'Space Grotesk', 'DM Sans', system-ui, -apple-system, sans-serif;
   --fd:  'Cormorant Garamond', 'Times New Roman', serif;
   --fm:  ui-monospace, 'SF Mono', Menlo, monospace;
 
@@ -5846,7 +5846,7 @@ html[data-theme='dark'] .heatmap-cell:hover {
   position: sticky;
   top: 112px;
 }
-/* typographic monogram — replaces the avatar, no image */
+/* typographic monogram — no image */
 .hero-id-monogram {
   display: flex;
   align-items: center;
@@ -5861,58 +5861,54 @@ html[data-theme='dark'] .heatmap-cell:hover {
   font-style: italic;
   letter-spacing: 0.02em;
   margin-bottom: 18px;
+  flex-shrink: 0;
 }
+/* name — Space Grotesk bold, like crg-portfolio (not serif) */
 .hero-id-name {
-  font-family: var(--fd);
-  font-weight: 400;
-  font-size: clamp(23px, 2.1vw, 29px);
-  line-height: 1.08;
+  font-family: var(--f);
+  font-weight: 700;
+  font-size: clamp(24px, 2.2vw, 30px);
+  line-height: 1.12;
   letter-spacing: -0.018em;
   color: var(--ink-strong);
-  margin-bottom: 9px;
+  margin-bottom: 8px;
 }
 .hero-id-loc {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  font-family: var(--fm);
-  font-size: 10.5px;
-  letter-spacing: 0.06em;
+  font-family: var(--f);
+  font-size: 14px;
   color: var(--ink-muted);
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
-.hero-id-pin { width: 13px; height: 13px; flex-shrink: 0; }
+.hero-id-pin { width: 14px; height: 14px; flex-shrink: 0; }
+/* socials — icon links (crg style) */
 .hero-id-socials {
   display: flex;
-  gap: 14px;
+  gap: 16px;
   margin-bottom: 22px;
 }
 .hero-id-social {
-  font-family: var(--fm);
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  display: inline-flex;
   color: var(--ink-soft);
-  text-decoration: none;
-  padding-bottom: 2px;
-  border-bottom: 1px solid var(--line-strong);
-  transition: color 0.2s, border-color 0.2s;
+  transition: color 0.2s, transform 0.2s;
 }
+.hero-id-social svg { width: 22px; height: 22px; fill: currentColor; }
 html[data-theme='light'] .hero-id-social:hover {
   color: var(--accent);
-  border-color: var(--accent);
+  transform: translateY(-2px);
 }
 .hero-id-resume {
   display: inline-block;
-  font-family: var(--fm);
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  font-family: var(--f);
+  font-size: 13px;
+  font-weight: 500;
   color: var(--ink-strong);
   text-decoration: none;
-  padding: 9px 20px;
+  padding: 8px 18px;
   border: 1.5px solid var(--ink-strong);
-  border-radius: 999px;
+  border-radius: var(--r-sm);
   transition: background 0.2s, color 0.2s;
 }
 html[data-theme='light'] .hero-id-resume:hover {
@@ -5927,35 +5923,36 @@ html[data-theme='light'] .hero-id-resume:hover {
   background: var(--line);
 }
 
-/* ── RIGHT · annotated intro ── */
+/* ── RIGHT · annotated intro (Space Grotesk, crg-portfolio styling) ── */
 .hero-copy {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
   max-width: 60ch;
 }
 .hero-copy p {
-  font-family: var(--fd);
-  font-size: clamp(16px, 1.4vw, 18.5px);
+  font-family: var(--f);
+  font-size: 16px;
   font-weight: 400;
-  line-height: 1.6;
+  line-height: 1.65;
   color: var(--ink-soft);
   margin: 0;
 }
 .hero-copy p:first-child {
-  font-size: clamp(17.5px, 1.7vw, 21px);
+  font-size: 18px;
   color: var(--ink);
 }
-/* highlighted key terms — the signature move of this hero */
+/* highlighted key terms — bold + colour, NO underline (crg style) */
 .hl {
   background: none;
-  color: var(--ink-strong);
-  font-weight: 500;
-  border-bottom: 2px solid color-mix(in srgb, var(--accent) 55%, transparent);
-  padding-bottom: 0.5px;
+  border-bottom: none;
+  color: var(--accent-deep);
+  font-weight: 700;
 }
+html[data-theme='dark'] .hl { color: var(--accent); }
 .hero-copy-mail {
   color: var(--accent);
+  font-weight: 600;
   text-decoration: none;
   border-bottom: 1px solid color-mix(in srgb, var(--accent) 50%, transparent);
 }
@@ -6109,19 +6106,28 @@ html[data-theme='light'] .home-work-row:hover .home-work-row-arrow {
 
 /* ── Home responsive ── */
 @media (max-width: 860px) {
-  /* Two-column hero stacks: identity card on top, divider hidden, prose below */
+  /* Two-column hero stacks: identity card on top (centered, like desktop
+     and the reference), divider hidden, prose below (kept left-aligned). */
   .home-hero { padding: 104px 22px 4px; }
   .home-hero-grid {
     grid-template-columns: 1fr;
-    gap: 32px;
+    gap: 30px;
+    justify-items: center;
   }
   .hero-id {
     position: static;
-    align-items: flex-start;
-    text-align: left;
+    align-items: center;
+    text-align: center;
+    width: 100%;
   }
   .hero-divider { display: none; }
-  .hero-copy { max-width: none; }
+  /* prose centred as a block, text stays left for readability */
+  .hero-copy {
+    max-width: 60ch;
+    width: 100%;
+    margin: 0 auto;
+  }
+  .hero-available { align-self: center; }
 }
 @media (max-width: 720px) {
   .hero-id-monogram { width: 64px; height: 64px; font-size: 24px; margin-bottom: 14px; }
