@@ -77,6 +77,22 @@ export default async function Home() {
     <>
       {/* ═════════════ INTRO ═════════════ */}
       <section className="home-intro">
+        <p className="home-intro-eyebrow">
+          {profile.role}
+          <span className="home-intro-eyebrow-sep" aria-hidden="true">/</span>
+          {cleanLocation}
+          <span className="home-intro-eyebrow-sep" aria-hidden="true">/</span>
+          <span className="home-intro-eyebrow-status">
+            <span className="status-dot" aria-hidden="true" />
+            open to work
+          </span>
+        </p>
+
+        <h1 className="home-intro-name">
+          <span>Thamothara</span>
+          <span className="home-intro-name-last">Natarajan</span>
+        </h1>
+
         <p className="home-intro-statement">
           I build careful software for the web &mdash; loads fast, ages well,
           and doesn&rsquo;t pick fights with the people using it.
