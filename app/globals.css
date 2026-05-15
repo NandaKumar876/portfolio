@@ -5,6 +5,8 @@
 
 /* ── RESET ── */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+/* No italics anywhere — <em>/<i> keep their emphasis role but render upright. */
+em, i, address, cite, dfn, var, blockquote, q { font-style: normal; }
 html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -420,13 +422,13 @@ h1.hero-name {
   animation: rise 0.9s 0.07s ease both;
 }
 h1.hero-name em {
-  font-style: italic; font-weight: 300;
+  font-style: normal; font-weight: 300;
   color: var(--ink-faint);
   display: block;
 }
 
 .hero-role {
-  font-family: var(--fd); font-style: italic;
+  font-family: var(--fd); font-style: normal;
   font-size: clamp(18px, 2.2vw, 24px); font-weight: 400;
   color: var(--accent-soft);
   min-height: 36px;
@@ -478,7 +480,7 @@ h1.hero-name em {
   margin-bottom: 52px;
 }
 .sec-heading em {
-  font-style: italic;
+  font-style: normal;
   color: var(--accent);
   font-weight: 300;
 }
@@ -744,7 +746,7 @@ html[data-theme='light'] .btn-glass:hover {
   max-width: 660px; margin-top: 20px;
 }
 .about-tagline strong { color: var(--ink-strong); font-weight: 500; }
-.about-tagline em { color: var(--accent); font-style: italic; font-family: var(--fd); font-weight: 400; font-size: 1.08em; }
+.about-tagline em { color: var(--accent); font-style: normal; font-family: var(--fd); font-weight: 400; font-size: 1.08em; }
 
 .about-cols-new {
   display: grid;
@@ -812,7 +814,7 @@ html[data-theme='light'] .btn-glass:hover {
   font-weight: 500;
 }
 .about-funfact-text {
-  font-family: var(--fd); font-style: italic;
+  font-family: var(--fd); font-style: normal;
   font-size: 19px; font-weight: 400;
   color: var(--ink-strong);
   line-height: 1.45;
@@ -879,7 +881,7 @@ html[data-theme='light'] .btn-glass:hover {
   color: var(--ink-muted);
   margin-bottom: 8px;
   font-family: var(--fd);
-  font-style: italic;
+  font-style: normal;
 }
 .timeline-desc {
   font-size: 13.5px; font-weight: 400;
@@ -1132,7 +1134,7 @@ html[data-theme='light'] .heatmap-tooltip {
 .resume-role {
   font-family: var(--fd);
   font-size: 22px;
-  font-style: italic;
+  font-style: normal;
   color: var(--accent-soft);
   line-height: 1.1;
   margin-bottom: 6px;
@@ -1212,7 +1214,7 @@ html[data-theme='light'] .heatmap-tooltip {
   margin-bottom: 20px;
 }
 .contact-heading em {
-  font-style: italic;
+  font-style: normal;
   color: var(--accent);
   font-weight: 300;
 }
@@ -1788,7 +1790,7 @@ html[data-theme='light'] .heatmap-tooltip {
 }
 .hero-cover-dateline-imprint {
   font-family: var(--fd);
-  font-style: italic;
+  font-style: normal;
   font-size: 13.5px;
   text-transform: none;
   letter-spacing: 0.01em;
@@ -1859,7 +1861,7 @@ html[data-theme='light'] .heatmap-tooltip {
 }
 .hero-cover-name-first { font-weight: 400; }
 .hero-cover-name-last {
-  font-style: italic;
+  font-style: normal;
   color: var(--accent);
   font-weight: 400;
   margin-top: 2px;
@@ -1887,7 +1889,7 @@ html[data-theme='light'] .heatmap-tooltip {
 
 .hero-cover-bio {
   font-family: var(--fd);
-  font-style: italic;
+  font-style: normal;
   font-size: clamp(18px, 1.85vw, 23px);
   font-weight: 400;
   line-height: 1.58;
@@ -1908,7 +1910,7 @@ html[data-theme='light'] .heatmap-tooltip {
 }
 .hero-cover-bio-sign {
   font-family: var(--fd);
-  font-style: italic;
+  font-style: normal;
   font-size: 0.74em;
   color: var(--ink-muted);
   margin-top: 14px;
@@ -1944,7 +1946,7 @@ html[data-theme='light'] .heatmap-tooltip {
 }
 .hero-cover-feature-mark {
   font-family: var(--fd);
-  font-style: italic;
+  font-style: normal;
   font-size: 15px;
   color: var(--accent);
   text-transform: none;
@@ -1983,7 +1985,7 @@ html[data-theme='light'] .heatmap-tooltip {
 }
 .hero-cover-feature-desc {
   font-family: var(--fd);
-  font-style: italic;
+  font-style: normal;
   font-size: 16px;
   font-weight: 400;
   line-height: 1.55;
@@ -2076,7 +2078,7 @@ html[data-theme='light'] .heatmap-tooltip {
 }
 .hero-cover-stat-meta {
   font-family: var(--fd);
-  font-style: italic;
+  font-style: normal;
   font-size: 13px;
   color: var(--ink-muted);
 }
@@ -2203,7 +2205,7 @@ html[data-theme='light'] .heatmap-tooltip {
   max-width: 440px;
   margin-bottom: 36px;
   font-family: var(--fd);
-  font-style: italic;
+  font-style: normal;
   font-size: clamp(13px, 1.3vw, 15.5px);
   color: var(--ink-muted);
   letter-spacing: 0.01em;
@@ -2236,14 +2238,14 @@ html[data-theme='light'] .heatmap-tooltip {
 }
 .home-title-name-first { font-weight: 400; }
 .home-title-name-amp {
-  font-style: italic;
+  font-style: normal;
   color: var(--accent);
   font-size: 0.7em;
   line-height: 0;
   vertical-align: middle;
 }
 .home-title-name-last {
-  font-style: italic;
+  font-style: normal;
   font-weight: 400;
   color: var(--accent);
 }
@@ -2251,7 +2253,7 @@ html[data-theme='light'] .heatmap-tooltip {
 /* Subtitle — "A working portfolio" */
 .home-title-edition {
   font-family: var(--fd);
-  font-style: italic;
+  font-style: normal;
   font-weight: 400;
   font-size: clamp(20px, 2.2vw, 28px);
   color: var(--ink);
@@ -2308,7 +2310,7 @@ html[data-theme='light'] .heatmap-tooltip {
 
 .home-title-imprint-text {
   font-family: var(--fd);
-  font-style: italic;
+  font-style: normal;
   font-size: clamp(12px, 1.15vw, 13.5px);
   color: var(--ink-muted);
   line-height: 1.6;
@@ -2341,7 +2343,7 @@ html[data-theme='light'] .heatmap-tooltip {
 }
 .home-toc-heading-mark {
   font-family: var(--fd);
-  font-style: italic;
+  font-style: normal;
   font-size: 16px;
   color: var(--accent);
   text-transform: none;
@@ -2456,7 +2458,7 @@ html[data-theme='light'] .home-toc-link:hover {
   font-size: clamp(18px, 1.85vw, 22px);
 }
 .home-intro-paragraph--coda {
-  font-style: italic;
+  font-style: normal;
   color: var(--ink-muted);
   font-size: clamp(16px, 1.5vw, 18px);
 }
@@ -2469,7 +2471,7 @@ html[data-theme='light'] .home-toc-link:hover {
   color: var(--accent);
   padding: 6px 14px 0 0;
   margin: 4px 4px 0 0;
-  font-style: italic;
+  font-style: normal;
 }
 
 /* ════════════════════════════════════════════════════════════════
@@ -2511,20 +2513,17 @@ html[data-theme='light'] .home-toc-link:hover {
   letter-spacing: 0.003em;
 }
 .home-now-card-body em {
-  font-style: italic;
+  font-style: normal;
   color: var(--ink);
 }
 
 /* ──── Section pattern ──── */
+/* Only scroll-margin lives here — the actual spacing is owned by the
+   current .home-section block further down (single source of truth). */
 .home-section {
   position: relative;
-  padding-top: 88px;
-  padding-bottom: 0;
-  /* scrollIntoView lands here, so the section header is clear of the nav */
-  scroll-margin-top: 96px;
+  scroll-margin-top: 90px;
 }
-.home-section + .home-section { padding-top: 80px; }
-.home-section:last-of-type    { padding-bottom: 96px; }
 
 .home-section-head {
   display: flex;
@@ -2569,13 +2568,13 @@ html[data-theme='light'] .home-toc-link:hover {
   color: var(--ink-strong);
 }
 .home-section-title em {
-  font-style: italic;
+  font-style: normal;
   color: var(--accent);
   font-weight: 300;
 }
 .home-section-accent {
   font-family: var(--fd);
-  font-style: italic;
+  font-style: normal;
   font-size: 14px;
   color: var(--ink-muted);
   margin-top: 2px;
@@ -2691,7 +2690,7 @@ html[data-theme='light'] .home-toc-link:hover {
 .home-stat-suffix {
   font-size: 0.5em;
   margin-left: 4px;
-  font-style: italic;
+  font-style: normal;
   font-weight: 300;
   color: var(--accent-soft);
   letter-spacing: 0;
@@ -2707,7 +2706,7 @@ html[data-theme='light'] .home-toc-link:hover {
 }
 .home-stat-meta {
   font-family: var(--fd);
-  font-style: italic;
+  font-style: normal;
   font-size: 13px;
   color: var(--ink-muted);
   line-height: 1.5;
@@ -2716,13 +2715,13 @@ html[data-theme='light'] .home-toc-link:hover {
 
 /* ──── CTA closing card ──── */
 .home-cta {
-  padding: 72px 56px;
-  border-radius: var(--r-xl);
+  padding: 36px 32px;
+  border-radius: var(--r-lg);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 16px;
+  align-items: flex-start;
+  text-align: left;
+  gap: 14px;
 }
 .home-cta-mark {
   font-family: var(--fm);
@@ -2736,22 +2735,22 @@ html[data-theme='light'] .home-toc-link:hover {
   /* uses .home-section-title sizing via SectionHead; keep this empty for now */
 }
 .home-cta-body {
-  font-family: var(--fd);
-  font-style: italic;
-  font-size: clamp(18px, 2vw, 24px);
+  font-family: var(--f);
+  font-style: normal;
+  font-size: 16px;
   font-weight: 400;
   color: var(--ink-soft);
-  line-height: 1.5;
-  max-width: 580px;
+  line-height: 1.6;
+  max-width: 56ch;
 }
 .home-cta-actions {
-  display: flex; gap: 14px; flex-wrap: wrap;
-  justify-content: center;
-  margin-top: 16px;
+  display: flex; gap: 10px; flex-wrap: wrap;
+  justify-content: flex-start;
+  margin-top: 8px;
 }
 .home-cta-signoff {
   font-family: var(--fd);
-  font-style: italic;
+  font-style: normal;
   font-size: clamp(20px, 2vw, 26px);
   color: var(--accent);
   margin-top: 22px;
@@ -2783,7 +2782,7 @@ html[data-theme='light'] .home-toc-link:hover {
   align-items: center;
   gap: 12px;
   font-family: var(--fd);
-  font-style: italic;
+  font-style: normal;
   font-size: 17px;
   color: var(--ink-soft);
   letter-spacing: 0.005em;
@@ -3037,8 +3036,6 @@ html[data-theme='light'] .home-toc-link:hover {
   .home-toc-num       { min-width: 24px; font-size: 10px; }
   .home-toc-label     { font-size: 15px; }
   .home-toc-page      { font-size: 9.5px; min-width: 40px; }
-  .home-section       { padding-top: 60px; }
-  .home-section + .home-section { padding-top: 56px; }
   .home-section-head  { align-items: flex-start; }
   .home-intro-dropcap { font-size: 4.4em; padding-right: 10px; }
   .home-now-grid      { grid-template-columns: 1fr; gap: 14px; }
@@ -3183,7 +3180,7 @@ html[data-theme='light'] .home-toc-link:hover {
 }
 .contact-hero-mark {
   font-family: var(--fd);
-  font-style: italic;
+  font-style: normal;
   font-size: 16px;
   color: var(--accent);
   text-transform: none;
@@ -3199,13 +3196,13 @@ html[data-theme='light'] .home-toc-link:hover {
   margin-bottom: 20px;
 }
 .contact-hero-title em {
-  font-style: italic;
+  font-style: normal;
   color: var(--accent);
   font-weight: 400;
 }
 .contact-hero-lede {
   font-family: var(--fd);
-  font-style: italic;
+  font-style: normal;
   font-size: clamp(17px, 1.65vw, 21px);
   font-weight: 400;
   line-height: 1.62;
@@ -3240,7 +3237,7 @@ html[data-theme='light'] .home-toc-link:hover {
 }
 .contact-aside-mark {
   font-family: var(--fd);
-  font-style: italic;
+  font-style: normal;
   font-size: 15px;
   color: var(--accent);
   text-transform: none;
@@ -3380,10 +3377,10 @@ html[data-theme='dark'] .contact-channel-link:hover .contact-channel-arrow {
   line-height: 1.5;
   margin: 0 0 10px;
 }
-.contact-foot-text em { font-style: italic; color: var(--ink); }
+.contact-foot-text em { font-style: normal; color: var(--ink); }
 .contact-foot-sign {
   font-family: var(--fd);
-  font-style: italic;
+  font-style: normal;
   font-size: clamp(22px, 2.4vw, 30px);
   color: var(--accent);
   margin: 0;
@@ -3439,7 +3436,7 @@ html[data-theme='dark'] .contact-channel-link:hover .contact-channel-arrow {
 }
 .services-hero-mark {
   font-family: var(--fd);
-  font-style: italic;
+  font-style: normal;
   font-size: 16px;
   color: var(--accent);
   text-transform: none;
@@ -3455,13 +3452,13 @@ html[data-theme='dark'] .contact-channel-link:hover .contact-channel-arrow {
   margin-bottom: 20px;
 }
 .services-hero-title em {
-  font-style: italic;
+  font-style: normal;
   color: var(--accent);
   font-weight: 400;
 }
 .services-hero-lede {
   font-family: var(--fd);
-  font-style: italic;
+  font-style: normal;
   font-size: clamp(17px, 1.65vw, 21px);
   font-weight: 400;
   line-height: 1.6;
@@ -3518,7 +3515,7 @@ html[data-theme='dark'] .contact-channel-link:hover .contact-channel-arrow {
 .services-entry-body { min-width: 0; }
 .services-entry-desc {
   font-family: var(--fd);
-  font-style: italic;
+  font-style: normal;
   font-size: clamp(17px, 1.65vw, 20px);
   font-weight: 400;
   line-height: 1.65;
@@ -3579,7 +3576,7 @@ html[data-theme='dark'] .contact-channel-link:hover .contact-channel-arrow {
 }
 .services-section-num {
   font-family: var(--fd);
-  font-style: italic;
+  font-style: normal;
   font-size: 16px;
   color: var(--accent);
   text-transform: none;
@@ -3594,10 +3591,10 @@ html[data-theme='dark'] .contact-channel-link:hover .contact-channel-arrow {
   color: var(--ink-strong);
   margin: 0;
 }
-.services-section-title em { font-style: italic; color: var(--accent); font-weight: 400; }
+.services-section-title em { font-style: normal; color: var(--accent); font-weight: 400; }
 .services-section-accent {
   font-family: var(--fd);
-  font-style: italic;
+  font-style: normal;
   font-size: 16px;
   color: var(--ink-muted);
   margin-top: 10px;
@@ -3624,7 +3621,7 @@ html[data-theme='dark'] .contact-channel-link:hover .contact-channel-arrow {
 }
 .services-process-roman {
   font-family: var(--fd);
-  font-style: italic;
+  font-style: normal;
   font-size: clamp(22px, 2.4vw, 30px);
   color: var(--accent);
   line-height: 1;
@@ -3697,10 +3694,10 @@ html[data-theme='dark'] .contact-channel-link:hover .contact-channel-arrow {
   color: var(--ink-strong);
   margin: 0 0 18px;
 }
-.services-foot-title em { font-style: italic; color: var(--accent); font-weight: 400; }
+.services-foot-title em { font-style: normal; color: var(--accent); font-weight: 400; }
 .services-foot-text {
   font-family: var(--fd);
-  font-style: italic;
+  font-style: normal;
   font-size: clamp(17px, 1.6vw, 20px);
   color: var(--ink-soft);
   line-height: 1.6;
@@ -3766,7 +3763,7 @@ html[data-theme='dark'] .contact-channel-link:hover .contact-channel-arrow {
 }
 .about-hero-mark {
   font-family: var(--fd);
-  font-style: italic;
+  font-style: normal;
   font-size: 16px;
   color: var(--accent);
   text-transform: none;
@@ -3782,13 +3779,13 @@ html[data-theme='dark'] .contact-channel-link:hover .contact-channel-arrow {
   margin-bottom: 20px;
 }
 .about-hero-title em {
-  font-style: italic;
+  font-style: normal;
   color: var(--accent);
   font-weight: 400;
 }
 .about-hero-lede {
   font-family: var(--fd);
-  font-style: italic;
+  font-style: normal;
   font-size: clamp(17px, 1.65vw, 21px);
   font-weight: 400;
   line-height: 1.6;
@@ -3852,13 +3849,13 @@ html[data-theme='dark'] .contact-channel-link:hover .contact-channel-arrow {
   margin: 0;
 }
 .about-section-title em {
-  font-style: italic;
+  font-style: normal;
   color: var(--accent);
   font-weight: 400;
 }
 .about-section-accent {
   font-family: var(--fd);
-  font-style: italic;
+  font-style: normal;
   font-size: 16px;
   color: var(--ink-muted);
   margin-top: 8px;
@@ -3886,7 +3883,7 @@ html[data-theme='dark'] .contact-channel-link:hover .contact-channel-arrow {
 .about-prose-dropcap {
   float: left;
   font-family: var(--fd);
-  font-style: italic;
+  font-style: normal;
   font-weight: 400;
   font-size: 5em;
   line-height: 0.86;
@@ -4017,7 +4014,7 @@ html[data-theme='dark'] .contact-channel-link:hover .contact-channel-arrow {
 }
 .about-timeline-org {
   font-family: var(--fd);
-  font-style: italic;
+  font-style: normal;
   font-size: 16px;
   color: var(--ink-muted);
   margin: 0 0 8px;
@@ -4065,7 +4062,7 @@ html[data-theme='dark'] .contact-channel-link:hover .contact-channel-arrow {
 .about-interest:last-child { border-bottom: 0; }
 .about-funfact {
   font-family: var(--fd);
-  font-style: italic;
+  font-style: normal;
   font-size: clamp(18px, 1.8vw, 22px);
   line-height: 1.55;
   color: var(--ink);
@@ -4073,7 +4070,7 @@ html[data-theme='dark'] .contact-channel-link:hover .contact-channel-arrow {
   padding-left: 16px;
   border-left: 2px solid var(--accent);
 }
-.about-funfact em { font-style: italic; color: var(--accent); }
+.about-funfact em { font-style: normal; color: var(--accent); }
 
 /* ─── ELSEWHERE — social link rows ─── */
 .about-socials {
@@ -4149,7 +4146,7 @@ html[data-theme='dark'] .about-social:hover .about-social-arrow {
 }
 .about-foot-text {
   font-family: var(--fd);
-  font-style: italic;
+  font-style: normal;
   font-size: 16px;
   color: var(--ink-muted);
 }
@@ -4210,7 +4207,7 @@ html[data-theme='dark'] .about-social:hover .about-social-arrow {
 }
 .work-hero-mark {
   font-family: var(--fd);
-  font-style: italic;
+  font-style: normal;
   font-size: 16px;
   color: var(--accent);
   text-transform: none;
@@ -4226,13 +4223,13 @@ html[data-theme='dark'] .about-social:hover .about-social-arrow {
   margin-bottom: 18px;
 }
 .work-hero-title em {
-  font-style: italic;
+  font-style: normal;
   color: var(--accent);
   font-weight: 400;
 }
 .work-hero-lede {
   font-family: var(--fd);
-  font-style: italic;
+  font-style: normal;
   font-size: clamp(17px, 1.7vw, 21px);
   font-weight: 400;
   line-height: 1.6;
@@ -4317,12 +4314,12 @@ html[data-theme='light'] .work-filter-btn:hover {
   text-align: center;
   padding: 80px 0;
   font-family: var(--fd);
-  font-style: italic;
+  font-style: normal;
   font-size: 18px;
   color: var(--ink-muted);
 }
 .work-empty em {
-  font-style: italic;
+  font-style: normal;
   color: var(--accent);
 }
 
@@ -4395,7 +4392,7 @@ html[data-theme='light'] .work-entry-link:hover .work-entry-title {
 }
 .work-entry-desc {
   font-family: var(--fd);
-  font-style: italic;
+  font-style: normal;
   font-size: clamp(17px, 1.5vw, 20px);
   font-weight: 400;
   line-height: 1.6;
@@ -4490,7 +4487,7 @@ html[data-theme='dark'] .work-entry-link:hover .work-entry-cta span { color: inh
 }
 .work-foot-text {
   font-family: var(--fd);
-  font-style: italic;
+  font-style: normal;
   font-size: 16px;
   color: var(--ink-muted);
 }
@@ -4602,7 +4599,7 @@ html[data-theme='dark'] .work-entry-link:hover .work-entry-cta span { color: inh
 }
 .resume-toolbar-mark {
   font-family: var(--fd);
-  font-style: italic;
+  font-style: normal;
   font-size: 15px;
   color: var(--accent);
 }
@@ -4654,12 +4651,12 @@ html[data-theme='dark'] .work-entry-link:hover .work-entry-cta span { color: inh
   margin: 0 0 6px;
 }
 .resume-name-last {
-  font-style: italic;
+  font-style: normal;
   color: var(--accent);
 }
 .resume-role {
   font-family: var(--fd);
-  font-style: italic;
+  font-style: normal;
   font-size: clamp(17px, 1.6vw, 20px);
   font-weight: 400;
   color: var(--ink-soft);
@@ -4752,7 +4749,7 @@ html[data-theme='dark'] .work-entry-link:hover .work-entry-cta span { color: inh
 }
 .resume-item-org {
   font-family: var(--fd);
-  font-style: italic;
+  font-style: normal;
   font-size: 14.5px;
   color: var(--ink-soft);
   margin: 2px 0 6px;
@@ -4964,7 +4961,7 @@ html[data-theme='dark'] .work-entry-link:hover .work-entry-cta span { color: inh
 }
 .home-cert-issuer {
   font-family: var(--fd);
-  font-style: italic;
+  font-style: normal;
   font-size: 16px;
   color: var(--ink-muted);
   margin: 0 0 6px;
@@ -5016,401 +5013,81 @@ html[data-theme='dark'] .home-cert-link:hover {
 }
 
 /* ════════════════════════════════════════════════════════════════
-   RECENT ACTIVITY — live GitHub feed on the home page.
+   RECENT ACTIVITY — compact live GitHub feed (4 items, minimal)
+   No filters, no status chrome, no expand — just tight rows.
    ════════════════════════════════════════════════════════════════ */
 .activity-glass {
-  padding: 28px 32px 28px;
-  border-radius: var(--r-xl);
+  padding: 6px 4px;
+  border-radius: var(--r-md);
 }
-
-/* ─── CONTROLS: filters + refresh status ─── */
-.activity-controls {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 18px;
-  flex-wrap: wrap;
-  padding-bottom: 18px;
-  margin-bottom: 8px;
-  border-bottom: 1px solid var(--line);
-}
-.activity-filters {
-  display: inline-flex;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-.activity-filter {
-  appearance: none;
-  background: transparent;
-  border: 1px solid var(--line);
-  padding: 6px 4px 6px 14px;
-  border-radius: 999px;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-family: var(--fm);
-  font-size: 10.5px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
-  cursor: pointer;
-  transition: color 0.22s, border-color 0.22s, background 0.22s;
-}
-.activity-filter-label {
-  line-height: 1;
-}
-.activity-filter-count {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 22px;
-  height: 20px;
-  padding: 0 7px;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--ink-soft) 8%, transparent);
-  border: 1px solid var(--line);
-  font-family: var(--fm);
-  font-size: 10px;
-  letter-spacing: 0.04em;
-  font-variant-numeric: tabular-nums;
-  color: var(--ink-muted);
-  transition: color 0.22s, background 0.22s, border-color 0.22s;
-}
-
-/* Empty (count = 0) but still clickable — dimmed so users can tell. */
-.activity-filter.is-empty {
-  color: var(--ink-faint);
-  opacity: 0.7;
-}
-.activity-filter.is-empty .activity-filter-count {
-  color: var(--ink-faint);
-}
-
-/* Light-mode hover — but ONLY on non-active filters, otherwise hover
-   would wipe out the burgundy active fill. */
-html[data-theme='light'] .activity-filter:not(.is-active):hover {
-  color: var(--accent);
-  border-color: color-mix(in srgb, var(--accent) 35%, var(--line));
-  opacity: 1;
-}
-html[data-theme='light'] .activity-filter:not(.is-active):hover .activity-filter-count {
-  color: var(--accent);
-  border-color: color-mix(in srgb, var(--accent) 35%, var(--line));
-}
-
-/* Active state — filled accent, parchment text.
-   `&&` (double class) raises specificity so hover/state rules can't override. */
-.activity-filter.is-active.is-active {
-  color: #fdf6e3 !important;
-  border-color: var(--accent) !important;
-  background: var(--accent) !important;
-  opacity: 1 !important;
-  box-shadow:
-    inset 0 1px 0 color-mix(in srgb, #fff 18%, transparent),
-    0 4px 10px color-mix(in srgb, var(--accent) 28%, transparent) !important;
-}
-.activity-filter.is-active.is-active .activity-filter-count {
-  color: var(--accent) !important;
-  background: #fdf6e3 !important;
-  border-color: transparent !important;
-}
-
-.activity-status {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--fm);
-  font-size: 10px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-}
-.activity-status-dot {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 6px var(--accent);
-}
-.activity-status-dot.is-pulsing {
-  animation: activity-pulse 1s ease-in-out infinite;
-}
-@keyframes activity-pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50%      { opacity: 0.4; transform: scale(0.78); }
-}
-
-/* ─── LIST ─── */
 .activity-list {
   list-style: none;
   padding: 0;
   margin: 0;
 }
-.activity-empty {
-  padding: 36px 4px;
-  text-align: center;
-  font-family: var(--fd);
-  font-style: italic;
-  font-size: 16px;
-  color: var(--ink-muted);
-}
-.activity-empty em { color: var(--accent); }
-
 .activity-row {
   border-bottom: 1px solid var(--line);
 }
 .activity-row:last-child { border-bottom: 0; }
-
-.activity-row-head {
+.activity-row-link {
   display: grid;
-  grid-template-columns: 22px minmax(0, 1fr) auto auto auto;
+  grid-template-columns: 18px minmax(0, 1fr) auto auto;
   gap: 14px;
-  align-items: center;
-  width: 100%;
-  min-width: 0;
-  background: transparent;
-  border: 0;
-  padding: 14px 4px;
-  text-align: left;
+  align-items: baseline;
+  padding: 12px 12px;
+  text-decoration: none;
   color: inherit;
-  cursor: pointer;
-  font: inherit;
-  transition: padding 0.32s cubic-bezier(.22,1,.36,1), background 0.32s ease;
+  transition: background 0.2s;
 }
-html[data-theme='light'] .activity-row-head:hover {
-  padding-left: 14px;
-  background: color-mix(in srgb, var(--accent) 4%, transparent);
-}
-
+html[data-theme='light'] .activity-row-link:hover { background: var(--bg-soft); }
 .activity-kind {
   font-family: var(--fd);
-  font-size: 18px;
+  font-size: 15px;
   color: var(--accent);
   line-height: 1;
   text-align: center;
 }
-.activity-row--push    .activity-kind { color: var(--accent); }
-.activity-row--release .activity-kind { color: #c98a3a; }
-.activity-row--pr      .activity-kind { color: var(--accent-soft); }
-.activity-row--create  .activity-kind { color: var(--ink); font-size: 16px; }
-
 .activity-action {
+  font-family: var(--f);
+  font-size: 14px;
+  color: var(--ink);
   min-width: 0;
   overflow: hidden;
-  white-space: nowrap;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
-.activity-action-verb {
-  font-family: var(--fd);
-  font-size: clamp(15px, 1.4vw, 17px);
-  font-weight: 400;
-  color: var(--ink-strong);
-}
-.activity-action-detail {
-  font-family: var(--fd);
-  font-style: italic;
-  font-size: clamp(15px, 1.4vw, 17px);
-  color: var(--ink-soft);
-  margin-left: 6px;
-}
-
+.activity-action-detail { color: var(--ink-muted); }
 .activity-repo {
   font-family: var(--fm);
-  font-size: 10.5px;
-  letter-spacing: 0.14em;
-  text-transform: none;
-  color: var(--ink-muted);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  color: var(--ink-faint);
   white-space: nowrap;
 }
-
 .activity-when {
   font-family: var(--fm);
-  font-size: 10.5px;
-  letter-spacing: 0.18em;
+  font-size: 10px;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--accent);
-  font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
 
-.activity-chevron {
-  font-family: var(--fm);
-  font-size: 14px;
-  color: var(--ink-muted);
-  transition: transform 0.28s ease;
-  width: 12px; text-align: center;
-}
-.activity-chevron.is-open { transform: rotate(90deg); color: var(--accent); }
-
-/* ─── EXPANDED COMMITS ─── */
-.activity-commits {
-  list-style: none;
-  padding: 2px 0 16px 36px;
-  margin: 0;
-  border-left: 1px dashed color-mix(in srgb, var(--accent) 35%, var(--line));
-  margin-left: 10px;
-  animation: activity-expand 0.28s ease both;
-}
-@keyframes activity-expand {
-  from { opacity: 0; transform: translateY(-4px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-.activity-commit-link {
-  display: flex;
-  align-items: baseline;
-  gap: 12px;
-  padding: 6px 0;
-  text-decoration: none;
-  color: inherit;
-  transition: color 0.22s;
-}
-.activity-commit-sha {
-  font-family: var(--fm);
-  font-size: 11px;
-  letter-spacing: 0.06em;
-  color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 8%, transparent);
-  border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--line));
-  padding: 1px 6px;
-  border-radius: 4px;
-  flex-shrink: 0;
-}
-.activity-commit-msg {
-  font-family: var(--fd);
-  font-size: 15px;
-  font-weight: 400;
-  color: var(--ink-soft);
-  line-height: 1.5;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-html[data-theme='light'] .activity-commit-link:hover .activity-commit-msg {
-  color: var(--accent);
-}
-.activity-commit--more a {
-  font-family: var(--fm);
-  font-size: 10.5px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--accent);
-  text-decoration: none;
-  padding: 8px 0;
-  display: inline-block;
-}
-
-/* Dark-mode hover suppression for activity feed.
-   IMPORTANT: do not match .is-active filters — those need to keep their
-   filled burgundy look while the cursor is hovering them.
-   The filter buttons and row-heads have different default paddings, so
-   their hover-reset rules must be defined separately, otherwise the filter
-   button shifts on hover (cursor leaves bounds → hover ends → springs back
-   → hover begins → infinite jitter loop). */
-html[data-theme='dark'] .activity-filter:not(.is-active),
-html[data-theme='dark'] .activity-row-head,
-html[data-theme='dark'] .activity-commit-link { transition: none !important; }
-
-/* Filter buttons (dark) — keep their default padding on hover, no shift. */
-html[data-theme='dark'] .activity-filter:not(.is-active):hover {
-  color: var(--ink) !important;
-  background: color-mix(in srgb, var(--glass-tint) 140%, transparent) !important;
-  /* padding-left stays at the default 14px — no jitter */
-}
-
-/* Row-head (dark) — full-width row, ok to reset its left-padding to the
-   original 4px so it doesn't drift on hover. */
-html[data-theme='dark'] .activity-row-head:hover {
-  color: inherit !important;
-  background: transparent !important;
-  padding-left: 4px !important;
-}
-
-html[data-theme='dark'] .activity-commit-link:hover .activity-commit-msg {
-  color: var(--ink-soft) !important;
-}
-
-/* ─── Dark-mode filter button contrast ───
-   Non-active buttons need stronger borders + brighter text on the
-   oxblood background so they're clearly clickable. The badge background
-   also gets bumped so the count is readable. */
-html[data-theme='dark'] .activity-filter:not(.is-active) {
-  color: var(--ink);
-  border-color: var(--line-strong);
-  background: color-mix(in srgb, var(--glass-tint) 140%, transparent);
-}
-html[data-theme='dark'] .activity-filter:not(.is-active).is-empty {
-  color: var(--ink-muted);
-  border-color: var(--line);
-  background: transparent;
-  opacity: 0.7;
-}
-html[data-theme='dark'] .activity-filter:not(.is-active) .activity-filter-count {
-  color: var(--ink-soft);
-  background: color-mix(in srgb, var(--glass-tint-strong) 180%, transparent);
-  border-color: var(--line-strong);
-}
-html[data-theme='dark'] .activity-filter:not(.is-active).is-empty .activity-filter-count {
-  color: var(--ink-faint);
-  background: transparent;
-  border-color: var(--line);
-}
-
-/* ─── Responsive ─── */
-@media (max-width: 720px) {
-  /* Whole activity card needs a min-width:0 so its grid children can shrink */
-  .activity, .activity-list, .activity-row { min-width: 0; }
-  .activity-glass        { padding: 18px 12px; }
-  .activity-controls     { flex-direction: column; align-items: flex-start; gap: 10px; padding-bottom: 14px; }
-  .activity-filters      { gap: 6px; width: 100%; }
-  .activity-filter       {
-    padding: 5px 4px 5px 10px;
-    font-size: 9.5px;
-    letter-spacing: 0.16em;
-    gap: 6px;
-  }
-  .activity-filter-count {
-    min-width: 18px;
-    height: 16px;
-    padding: 0 6px;
-    font-size: 9px;
-  }
-  .activity-status       { font-size: 9.5px; align-self: flex-end; }
-
-  /* Row layout: kind on left, action+repo stacked in the middle, when+chevron
-     stacked on the right. Each row must have min-width:0 so long text can
-     wrap instead of pushing the timestamp past the card edge. */
-  .activity-row-head     {
+/* Responsive — repo drops under the action on narrow screens */
+@media (max-width: 600px) {
+  .activity-row-link {
     grid-template-columns: 18px minmax(0, 1fr) auto;
     grid-template-rows: auto auto;
-    column-gap: 8px;
-    row-gap: 2px;
-    padding: 12px 0;
-    width: 100%;
-    min-width: 0;
+    column-gap: 10px;
+    row-gap: 3px;
+    padding: 11px 6px;
   }
-  .activity-kind         { grid-column: 1; grid-row: 1 / span 2; align-self: center; font-size: 16px; }
-  .activity-action       { grid-column: 2; grid-row: 1; white-space: normal; min-width: 0; overflow-wrap: anywhere; }
-  .activity-when         { grid-column: 3; grid-row: 1; font-size: 9.5px; letter-spacing: 0.12em; white-space: nowrap; }
-  .activity-repo         { grid-column: 2; grid-row: 2; font-size: 10px; min-width: 0; overflow-wrap: anywhere; }
-  .activity-chevron      { grid-column: 3; grid-row: 2; align-self: end; }
-  .activity-action-verb,
-  .activity-action-detail { font-size: 13.5px; line-height: 1.4; }
-  .activity-action-detail { margin-left: 4px; }
-  .activity-commits       { padding-left: 20px; margin-left: 8px; }
-  .activity-commit-link   { gap: 8px; padding: 5px 0; flex-wrap: wrap; }
-  .activity-commit-msg    { font-size: 13px; white-space: normal; overflow-wrap: anywhere; }
-  .activity-empty        { font-size: 14px; padding: 24px 4px; }
+  .activity-kind   { grid-column: 1; grid-row: 1 / span 2; align-self: center; }
+  .activity-action { grid-column: 2; grid-row: 1; white-space: normal; }
+  .activity-when   { grid-column: 3; grid-row: 1; font-size: 9px; }
+  .activity-repo   { grid-column: 2; grid-row: 2; font-size: 10px; }
 }
-@media (max-width: 420px) {
-  .activity-glass        { padding: 14px 10px; }
-  .activity-filters      { gap: 4px; }
-  .activity-filter       { padding: 4px 4px 4px 8px; font-size: 9px; gap: 5px; }
-  .activity-filter-label { letter-spacing: 0.12em; }
-  .activity-filter-count { min-width: 16px; height: 14px; padding: 0 5px; font-size: 8.5px; }
-  .activity-action-verb,
-  .activity-action-detail { font-size: 12.5px; }
-  .activity-when         { font-size: 8.5px; }
-  .activity-repo         { font-size: 9.5px; }
-}
+
 
 /* ════════════════════════════════════════════════════════════════
    REPO STARS — live GitHub stargazers / forks statline.
@@ -5584,7 +5261,7 @@ html[data-theme='dark'] .activity-filter:not(.is-active).is-empty .activity-filt
 }
 .kbd-panel-mark {
   font-family: var(--fd);
-  font-style: italic;
+  font-style: normal;
   font-size: 16px;
   color: var(--accent);
   text-transform: none;
@@ -5600,7 +5277,7 @@ html[data-theme='dark'] .activity-filter:not(.is-active).is-empty .activity-filt
   margin: 0;
 }
 .kbd-panel-title em {
-  font-style: italic;
+  font-style: normal;
   color: var(--accent);
   font-weight: 400;
 }
@@ -5826,9 +5503,9 @@ html[data-theme='dark'] .heatmap-cell:hover {
    every key term is highlighted. No avatar image, no blog feed.
    ════════════════════════════════════════════════════════════════ */
 .home-hero {
-  max-width: 1040px;
+  max-width: 920px;
   margin: 0 auto;
-  padding: 108px 44px 8px;
+  padding: 104px 40px 8px;
 }
 .home-hero-grid {
   display: grid;
@@ -5858,7 +5535,7 @@ html[data-theme='dark'] .heatmap-cell:hover {
   color: var(--accent);
   font-family: var(--fd);
   font-size: 27px;
-  font-style: italic;
+  font-style: normal;
   letter-spacing: 0.02em;
   margin-bottom: 18px;
   flex-shrink: 0;
@@ -5872,6 +5549,15 @@ html[data-theme='dark'] .heatmap-cell:hover {
   letter-spacing: -0.018em;
   color: var(--ink-strong);
   margin-bottom: 8px;
+}
+/* humorous aside under the (visually large) name */
+.hero-id-aside {
+  font-family: var(--f);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--ink-faint);
+  max-width: 26ch;
+  margin: 6px 0 14px;
 }
 .hero-id-loc {
   display: inline-flex;
@@ -5985,15 +5671,15 @@ html[data-theme='light'] .hero-copy-mail:hover {
 
 /* ── Sections ── */
 .home-section {
-  max-width: 1080px;
+  max-width: 920px;
   margin: 0 auto;
-  padding: 46px 48px 0;
+  padding: 36px 40px 0;
 }
-.home-section:last-of-type { padding-bottom: 80px; }
+.home-section:last-of-type { padding-bottom: 40px; }
 
 .sec-head {
-  margin-bottom: 22px;
-  padding-bottom: 12px;
+  margin-bottom: 18px;
+  padding-bottom: 10px;
   border-bottom: 1px solid var(--line);
 }
 .sec-head-eyebrow {
@@ -6003,7 +5689,7 @@ html[data-theme='light'] .hero-copy-mail:hover {
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--ink-muted);
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 .sec-head-num { color: var(--accent); font-weight: 600; }
 .sec-head-row {
@@ -6011,16 +5697,17 @@ html[data-theme='light'] .hero-copy-mail:hover {
   justify-content: space-between;
   gap: 20px; flex-wrap: wrap;
 }
+/* Section titles — Space Grotesk, sized down so they don't dominate */
 .sec-head-title {
-  font-family: var(--fd);
-  font-size: clamp(26px, 3.2vw, 38px);
-  font-weight: 400;
-  line-height: 1.05;
-  letter-spacing: -0.02em;
+  font-family: var(--f);
+  font-size: clamp(20px, 2vw, 26px);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
   color: var(--ink-strong);
   margin: 0;
 }
-.sec-head-title em { font-style: italic; color: var(--accent); }
+.sec-head-title em { font-style: normal; color: var(--accent); font-weight: 600; }
 .sec-head-link {
   font-family: var(--fm);
   font-size: 10.5px;
@@ -6083,7 +5770,7 @@ html[data-theme='light'] .home-work-row:hover {
 }
 .home-work-row-desc {
   font-family: var(--fd);
-  font-style: italic;
+  font-style: normal;
   font-size: 16px;
   line-height: 1.55;
   color: var(--ink-soft);
@@ -6144,4 +5831,149 @@ html[data-theme='light'] .home-work-row:hover .home-work-row-arrow {
 @media (max-width: 440px) {
   .home-hero    { padding: 96px 16px 4px; }
   .home-section { padding-left: 16px; padding-right: 16px; }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   CERTIFICATES PAGE — minimalist editorial list
+   Space Grotesk, hairline rules, no glass cards. Numbered rows.
+   ════════════════════════════════════════════════════════════════ */
+.certs-hero {
+  max-width: 680px;
+  margin: 0 0 8px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--line-strong);
+  animation: rise 0.9s ease both;
+}
+.certs-hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--fm);
+  font-size: 10.5px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 16px;
+}
+.certs-hero-mark {
+  font-family: var(--fd);
+  font-size: 15px;
+  color: var(--accent);
+  letter-spacing: 0;
+}
+.certs-hero-title {
+  font-family: var(--f);
+  font-weight: 700;
+  font-size: clamp(28px, 3.6vw, 40px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--ink-strong);
+  margin-bottom: 12px;
+}
+.certs-hero-lede {
+  font-family: var(--f);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--ink-muted);
+  max-width: 56ch;
+}
+
+/* ── list ── */
+.certs-list {
+  list-style: none;
+  padding: 0;
+  margin: 28px 0 0;
+}
+.certs-row {
+  display: grid;
+  grid-template-columns: 40px 1fr auto;
+  gap: 22px;
+  align-items: start;
+  padding: 22px 4px;
+  border-bottom: 1px solid var(--line);
+}
+.certs-row:first-child { border-top: 1px solid var(--line); }
+.certs-row-num {
+  font-family: var(--fm);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  padding-top: 3px;
+}
+.certs-row-body { min-width: 0; }
+.certs-row-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 3px;
+}
+.certs-row-title {
+  font-family: var(--f);
+  font-weight: 600;
+  font-size: clamp(16px, 1.6vw, 19px);
+  line-height: 1.3;
+  color: var(--ink-strong);
+  margin: 0;
+}
+.certs-row-year {
+  font-family: var(--fm);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  white-space: nowrap;
+}
+.certs-row-issuer {
+  font-family: var(--f);
+  font-size: 14px;
+  color: var(--ink-muted);
+  margin: 0 0 6px;
+}
+.certs-row-desc {
+  font-family: var(--f);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  margin: 0;
+  max-width: 60ch;
+}
+.certs-row-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--fm);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-decoration: none;
+  padding-top: 4px;
+  white-space: nowrap;
+  transition: opacity 0.2s;
+}
+html[data-theme='light'] .certs-row-link:hover { opacity: 0.6; }
+
+.certs-empty {
+  font-family: var(--f);
+  font-size: 15px;
+  color: var(--ink-muted);
+  padding: 36px 0;
+  border-top: 1px solid var(--line);
+  margin-top: 28px;
+}
+
+@media (max-width: 720px) {
+  .certs-hero        { margin-bottom: 4px; padding-bottom: 18px; }
+  .certs-hero-title  { font-size: clamp(24px, 7vw, 32px); }
+  .certs-list        { margin-top: 22px; }
+  .certs-row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    padding: 18px 2px;
+  }
+  .certs-row-num     { display: none; }
+  .certs-row-head    { gap: 8px; }
+  .certs-row-link    { padding-top: 8px; }
 }

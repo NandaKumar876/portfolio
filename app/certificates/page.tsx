@@ -1,48 +1,66 @@
 import type { Metadata } from 'next'
-import { LiquidGlass } from '@/components/LiquidGlass'
 import { getPortfolioData } from '@/lib/portfolio'
 
 export const metadata: Metadata = {
   title: 'Certificates — Thamo',
-  description: 'Browse uploaded certificates and credentials.',
+  description: 'Certifications and credentials of Thamothara Natarajan.',
 }
 
 export default async function CertificatesPage() {
   const { certificates } = await getPortfolioData()
 
   return (
-    <section className="page">
-      <p className="sec-label">Credentials</p>
-      <h1 className="sec-heading">Proof of <em>practice</em></h1>
+    <section className="page certs-page">
 
-      <p className="page-note">
-        A growing collection of certifications, course completions, and credentials.
-        New uploads appear here automatically.
-      </p>
+      <header className="certs-hero">
+        <p className="certs-hero-eyebrow">
+          <span className="certs-hero-mark" aria-hidden="true">§</span>
+          Credentials
+        </p>
+        <h1 className="certs-hero-title">Proof of practice</h1>
+        <p className="certs-hero-lede">
+          Certifications and course completions, most recent first. New uploads
+          appear here automatically.
+        </p>
+      </header>
 
-      <div className="certificate-grid">
-        {certificates.length ? certificates.map(cert => (
-          <LiquidGlass key={cert.id} className="certificate-card" interactive>
-            <span className="admin-card-badge">{cert.year}</span>
-            <h2 className="admin-card-title">{cert.title}</h2>
-            <p className="resume-role">{cert.issuer}</p>
-            {cert.description && <p className="about-body" style={{ marginBottom: 0 }}>{cert.description}</p>}
-            {cert.fileUrl ? (
-              <a href={`/api/certificates/${cert.id}`} target="_blank" rel="noreferrer" className="project-link" style={{ marginTop: 'auto' }}>
-                Open certificate →
-              </a>
-            ) : (
-              <span className="admin-empty" style={{ marginTop: 'auto' }}>No file preview attached.</span>
-            )}
-          </LiquidGlass>
-        )) : (
-          <LiquidGlass className="certificate-empty" interactive>
-            <p className="admin-empty admin-empty--large">
-              No certificates uploaded yet. Add your first certificate from the admin dashboard.
-            </p>
-          </LiquidGlass>
-        )}
-      </div>
+      {certificates.length > 0 ? (
+        <ol className="certs-list">
+          {certificates.map((cert, i) => (
+            <li key={cert.id} className="certs-row">
+              <span className="certs-row-num" aria-hidden="true">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <div className="certs-row-body">
+                <div className="certs-row-head">
+                  <h2 className="certs-row-title">{cert.title}</h2>
+                  <span className="certs-row-year">{cert.year}</span>
+                </div>
+                <p className="certs-row-issuer">{cert.issuer}</p>
+                {cert.description && (
+                  <p className="certs-row-desc">{cert.description}</p>
+                )}
+              </div>
+              {cert.fileUrl && (
+                <a
+                  href={`/api/certificates/${cert.id}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="certs-row-link"
+                  aria-label={`Open ${cert.title}`}
+                >
+                  Open <span aria-hidden="true">↗</span>
+                </a>
+              )}
+            </li>
+          ))}
+        </ol>
+      ) : (
+        <p className="certs-empty">
+          No certificates uploaded yet &mdash; they&rsquo;ll appear here once added
+          from the admin dashboard.
+        </p>
+      )}
     </section>
   )
 }

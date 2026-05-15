@@ -42,7 +42,7 @@ export default async function Home() {
     getPortfolioData(),
     getGitHubCalendar(),
     getProjects(),
-    getRecentActivity(12),
+    getRecentActivity(4),
   ])
 
   const { profile, resume, certificates } = content
@@ -53,7 +53,6 @@ export default async function Home() {
 
   /* Contiguous section numbering — only sections that render get a number. */
   const order = [
-    'now',
     featured.length > 0     ? 'selected-work' : null,
     calendar                ? 'field-notes'   : null,
     activity.length > 0     ? 'live-feed'      : null,
@@ -72,6 +71,9 @@ export default async function Home() {
           <aside className="hero-id">
             <span className="hero-id-monogram" aria-hidden="true">TN</span>
             <h1 className="hero-id-name">Thamothara<br />Natarajan</h1>
+            <p className="hero-id-aside">
+              Looks big up there, I know &mdash; you can just call me Thamo. 🤓
+            </p>
             <p className="hero-id-loc">
               <svg className="hero-id-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
                 <path d="M12 21s-7-6.2-7-11a7 7 0 1 1 14 0c0 4.8-7 11-7 11Z" strokeLinejoin="round" />
@@ -139,45 +141,6 @@ export default async function Home() {
               Available for work
             </span>
           </div>
-        </div>
-      </section>
-
-      {/* ═════════════ CURRENTLY ═════════════ */}
-      <section id="now" className="home-section">
-        <SectionHead
-          index={idx('now')}
-          eyebrow="Currently"
-          title={<>What I&rsquo;m up to <em>this week</em></>}
-        />
-        <div className="home-now-grid">
-          <LiquidGlass className="home-now-card" interactive={false}>
-            <span className="home-now-card-tag">Building</span>
-            <p className="home-now-card-body">
-              Polishing this portfolio &mdash; a Next&nbsp;16 + Redis admin
-              console behind a careful front end.
-            </p>
-          </LiquidGlass>
-          <LiquidGlass className="home-now-card" interactive={false}>
-            <span className="home-now-card-tag">Learning</span>
-            <p className="home-now-card-body">
-              Going deeper on edge runtimes, async caching, and the
-              fine print of CSS&nbsp;color-mix.
-            </p>
-          </LiquidGlass>
-          <LiquidGlass className="home-now-card" interactive={false}>
-            <span className="home-now-card-tag">Reading</span>
-            <p className="home-now-card-body">
-              <em>A Philosophy of Software Design</em> by John Ousterhout
-              &mdash; for the third time.
-            </p>
-          </LiquidGlass>
-          <LiquidGlass className="home-now-card" interactive={false}>
-            <span className="home-now-card-tag">Open to</span>
-            <p className="home-now-card-body">
-              Full-time roles, contract work, and small careful collaborations.
-              Based in {cleanLocation}.
-            </p>
-          </LiquidGlass>
         </div>
       </section>
 

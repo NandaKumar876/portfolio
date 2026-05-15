@@ -6,7 +6,7 @@ import { getRecentActivity } from '@/lib/github'
    Cached 5 minutes server-side; surfaced with stale-while-revalidate so the
    feed feels live without hammering GitHub. */
 export async function GET() {
-  const events = await getRecentActivity(12)
+  const events = await getRecentActivity(4)
   return NextResponse.json({ events }, {
     headers: {
       'Cache-Control': 'public, max-age=120, s-maxage=300, stale-while-revalidate=600',
