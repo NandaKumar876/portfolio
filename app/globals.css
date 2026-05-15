@@ -4935,12 +4935,22 @@ html[data-theme='dark'] .work-entry-link:hover .work-entry-cta span { color: inh
   border-top: 1px solid var(--line);
 }
 .home-cert {
-  display: grid;
-  grid-template-columns: 110px 1fr auto;
-  gap: 24px;
-  align-items: baseline;
-  padding: 22px 4px;
   border-bottom: 1px solid var(--line);
+}
+/* the whole row is the interactive surface (a link when a file exists) */
+.home-cert-row {
+  display: grid;
+  grid-template-columns: 96px 1fr auto;
+  gap: 22px;
+  align-items: baseline;
+  padding: 18px 6px;
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.2s, padding-left 0.2s;
+}
+html[data-theme='light'] a.home-cert-row:hover {
+  background: var(--bg-soft);
+  padding-left: 14px;
 }
 .home-cert-year {
   font-family: var(--fm);
@@ -4975,41 +4985,32 @@ html[data-theme='dark'] .work-entry-link:hover .work-entry-cta span { color: inh
   margin: 0;
   max-width: 56ch;
 }
+/* "View ↗" — a quiet label; the whole row carries the click */
 .home-cert-link {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 7px 14px;
-  border-radius: 999px;
-  border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--line));
-  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  gap: 5px;
   font-family: var(--fm);
   font-size: 10.5px;
-  letter-spacing: 0.20em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--accent);
-  text-decoration: none;
-  transition: background 0.22s, border-color 0.22s, color 0.22s;
+  white-space: nowrap;
+  padding-top: 3px;
+  transition: opacity 0.2s, transform 0.2s;
 }
-html[data-theme='light'] .home-cert-link:hover {
-  background: var(--accent);
-  color: #fdf6e3;
-  border-color: var(--accent);
-}
-html[data-theme='dark'] .home-cert-link { transition: none !important; }
-html[data-theme='dark'] .home-cert-link:hover {
-  background: color-mix(in srgb, var(--accent) 8%, transparent) !important;
-  color: var(--accent) !important;
-  border-color: color-mix(in srgb, var(--accent) 35%, var(--line)) !important;
+html[data-theme='light'] a.home-cert-row:hover .home-cert-link {
+  transform: translateX(3px);
 }
 
 @media (max-width: 720px) {
-  .home-cert       { grid-template-columns: 1fr; gap: 8px; padding: 18px 2px; }
+  .home-cert-row   { grid-template-columns: 1fr; gap: 6px; padding: 16px 2px; }
+  html[data-theme='light'] a.home-cert-row:hover { padding-left: 2px; }
   .home-cert-year  { font-size: 10.5px; }
   .home-cert-title { font-size: 18px; }
   .home-cert-issuer { font-size: 15px; }
   .home-cert-desc  { font-size: 14px; }
-  .home-cert-link  { justify-self: start; margin-top: 10px; font-size: 10px; padding: 6px 12px; }
+  .home-cert-link  { justify-self: start; margin-top: 8px; }
 }
 
 /* ════════════════════════════════════════════════════════════════

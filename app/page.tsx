@@ -51,12 +51,14 @@ export default async function Home() {
   const featured      = projects.slice(0, 3)
   const cleanLocation = profile.location.replace(/[\u{1F1E6}-\u{1F1FF}]{2}/gu, '').trim()
 
-  /* Contiguous section numbering — only sections that render get a number. */
+  /* Contiguous section numbering — only sections that render get a number.
+     Order is intentional: capability (work) → qualifications (credentials)
+     → activity signals (field notes, live feed) → contact. */
   const order = [
     featured.length > 0     ? 'selected-work' : null,
+    certificates.length > 0 ? 'credentials'    : null,
     calendar                ? 'field-notes'   : null,
     activity.length > 0     ? 'live-feed'      : null,
-    certificates.length > 0 ? 'credentials'    : null,
     'reach-out',
   ].filter(Boolean) as string[]
   const idx = (id: string) => String(order.indexOf(id) + 1).padStart(2, '0')
@@ -183,6 +185,52 @@ export default async function Home() {
         </section>
       )}
 
+      {/* ═════════════ CREDENTIALS ═════════════ */}
+      {certificates.length > 0 && (
+        <section id="credentials" className="home-section">
+          <SectionHead
+            index={idx('credentials')}
+            eyebrow="Credentials"
+            title={<>Proof of <em>practice</em></>}
+            link={{ href: '/certificates', label: 'View all certificates' }}
+          />
+          <ol className="home-certs">
+            {certificates.slice(0, 4).map(c => {
+              const inner = (
+                <>
+                  <span className="home-cert-year">{c.year}</span>
+                  <div className="home-cert-body">
+                    <h3 className="home-cert-title">{c.title}</h3>
+                    <p className="home-cert-issuer">{c.issuer}</p>
+                    {c.description && <p className="home-cert-desc">{c.description}</p>}
+                  </div>
+                  {c.fileUrl && (
+                    <span className="home-cert-link">View <span aria-hidden="true">↗</span></span>
+                  )}
+                </>
+              )
+              return (
+                <li key={c.id} className="home-cert">
+                  {c.fileUrl ? (
+                    <a
+                      href={c.fileUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="home-cert-row"
+                      aria-label={`View ${c.title} certificate`}
+                    >
+                      {inner}
+                    </a>
+                  ) : (
+                    <div className="home-cert-row">{inner}</div>
+                  )}
+                </li>
+              )
+            })}
+          </ol>
+        </section>
+      )}
+
       {/* ═════════════ FIELD NOTES ═════════════ */}
       {calendar && (
         <section id="field-notes" className="home-section">
@@ -211,41 +259,6 @@ export default async function Home() {
           <LiquidGlass className="activity-glass" interactive={false}>
             <RecentActivity initial={activity} />
           </LiquidGlass>
-        </section>
-      )}
-
-      {/* ═════════════ CREDENTIALS ═════════════ */}
-      {certificates.length > 0 && (
-        <section id="credentials" className="home-section">
-          <SectionHead
-            index={idx('credentials')}
-            eyebrow="Credentials"
-            title={<>Proof of <em>practice</em></>}
-            link={{ href: '/certificates', label: 'View all certificates' }}
-          />
-          <ol className="home-certs">
-            {certificates.slice(0, 4).map(c => (
-              <li key={c.id} className="home-cert">
-                <span className="home-cert-year">{c.year}</span>
-                <div className="home-cert-body">
-                  <h3 className="home-cert-title">{c.title}</h3>
-                  <p className="home-cert-issuer">{c.issuer}</p>
-                  {c.description && <p className="home-cert-desc">{c.description}</p>}
-                </div>
-                {c.fileUrl && (
-                  <a
-                    href={c.fileUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="home-cert-link"
-                    aria-label={`View ${c.title} certificate`}
-                  >
-                    View <span aria-hidden="true">↗</span>
-                  </a>
-                )}
-              </li>
-            ))}
-          </ol>
         </section>
       )}
 
