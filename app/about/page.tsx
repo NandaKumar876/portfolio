@@ -7,256 +7,250 @@ export const metadata: Metadata = {
   description: 'Thamothara Natarajan — Full Stack Developer based in Chennai. Stack, work, education and tangents.',
 }
 
-const STACK: Record<string, string[]> = {
-  Languages: ['JavaScript', 'TypeScript', 'Python', 'Java', 'C++', 'Go'],
-  Frontend: ['React', 'Next.js', 'Tailwind CSS', 'Framer Motion', 'HTML5', 'CSS3', 'Vite', 'Vue.js'],
-  Backend: ['Node.js', 'Express', 'FastAPI', 'Django', 'MongoDB', 'PostgreSQL', 'MySQL', 'Redis', 'Firebase'],
-  Cloud: ['Docker', 'Kubernetes', 'AWS', 'Google Cloud', 'Vercel', 'Git', 'GitHub'],
-  Design: ['Figma', 'Photoshop', 'Final Cut Pro'],
-  Algorithms: ['LeetCode 20+ problems', 'Arrays', 'Trees', 'Graphs', 'Dynamic Programming'],
-}
+const STARTED_BUILDING = 2022
+
+const STACK_GROUPS = [
+  {
+    label: 'Languages',
+    items: ['JavaScript', 'TypeScript', 'Python', 'Java', 'C++', 'Go'],
+  },
+  {
+    label: 'Frontend',
+    items: ['React', 'Next.js', 'Tailwind CSS', 'HTML5', 'CSS3', 'Vite', 'Vue.js'],
+  },
+  {
+    label: 'Backend',
+    items: ['Node.js', 'Express', 'FastAPI', 'Django', 'PostgreSQL', 'MongoDB', 'Redis'],
+  },
+  {
+    label: 'Cloud',
+    items: ['Docker', 'Kubernetes', 'AWS', 'Google Cloud', 'Vercel', 'GitHub Actions'],
+  },
+  {
+    label: 'Design',
+    items: ['Figma', 'Photoshop', 'Final Cut Pro', 'Interface polish'],
+  },
+] as const
 
 const CURRENTLY = [
-  { label: 'Learning',  value: 'Advanced React & system design.' },
-  { label: 'Building',  value: 'Portfolio v3 and KNK Trip Cart.' },
-  { label: 'Exploring', value: 'Web3, AI agents, weekend hackathons.' },
-]
+  { label: 'Learning', value: 'Advanced React, systems design, and production-grade API patterns.' },
+  { label: 'Building', value: 'Portfolio v3, KNK Trip Cart, and experiments around useful AI tooling.' },
+  { label: 'Exploring', value: 'Web3, AI agents, hackathon sprints, and sharper product storytelling.' },
+] as const
+
+const PRINCIPLES = [
+  { label: 'Fast first', text: 'Interfaces should feel immediate before they look impressive.' },
+  { label: 'Readable systems', text: 'I prefer boring architecture, clear names, and code future me can debug.' },
+  { label: 'Polish matters', text: 'Tiny layout decisions, copy, focus states, and loading paths all count.' },
+] as const
 
 const INTERESTS = [
   'Open source contributions',
   'Hackathon sprints',
-  'Building useful side projects',
+  'Useful side projects',
   'Blockchain × AI crossovers',
-]
+] as const
 
-function NumberHead({ index, eyebrow, title, accent }: {
-  index: string
-  eyebrow: string
-  title: React.ReactNode
-  accent?: string
-}) {
-  return (
-    <div className="about-section-head">
-      <p className="about-section-eyebrow">
-        <span className="about-section-num">{index}</span>
-        <span className="about-section-dot" aria-hidden="true">·</span>
-        {eyebrow}
-      </p>
-      <h2 className="about-section-title">{title}</h2>
-      {accent && <p className="about-section-accent">{accent}</p>}
-    </div>
-  )
+function profilePath(url: string) {
+  return new URL(url).pathname.replace(/^\/+|\/+$/g, '')
 }
 
 export default async function AboutPage() {
   const { profile, experience, education } = await getPortfolioData()
   const cleanLocation = profile.location.replace(/[\u{1F1E6}-\u{1F1FF}]{2}/gu, '').trim()
+  const yearsBuilding = new Date().getFullYear() - STARTED_BUILDING
+  const linkedinHandle = profilePath(profile.linkedinUrl)
+  const xHandle = profilePath(profile.xUrl)
 
   return (
     <section className="page about-page">
-
-      {/* ─── HERO ─── */}
-      <header className="about-hero">
-        <p className="about-hero-eyebrow">
-          <span className="about-hero-mark" aria-hidden="true">§</span>
-          About the author
-        </p>
-        <h1 className="about-hero-title">
-          A short biography of <em>Thamothara Natarajan</em>
-        </h1>
-        <p className="about-hero-lede">
-          Developer in {cleanLocation}. Building careful software,
-          one repository at a time &mdash; mostly for the web, occasionally
-          for fun.
-        </p>
-        <div className="about-hero-meta">
-          <span>{profile.role}</span>
-          <span className="about-hero-meta-sep" aria-hidden="true">·</span>
-          <span>{cleanLocation}</span>
-          <span className="about-hero-meta-sep" aria-hidden="true">·</span>
-          <span className="about-hero-meta-status">
-            <span className="status-dot" aria-hidden="true" />
-            open to work
-          </span>
+      <header className="about-cover">
+        <div className="about-cover-copy">
+          <p className="about-kicker">
+            <span aria-hidden="true">§</span>
+            About / Developer profile
+          </p>
+          <h1 className="about-cover-title">
+            Software with a <em>clear pulse</em>
+          </h1>
+          <p className="about-cover-lede">
+            I&rsquo;m Thamothara Natarajan, a full stack developer in {cleanLocation}.
+            I build web products that are quick to use, simple to reason about,
+            and polished enough that people trust them before reading the docs.
+          </p>
+          <div className="about-cover-actions">
+            <Link href="/work" className="btn-glass">See the work</Link>
+            <Link href="/contact" className="btn-ghost">Start a conversation</Link>
+          </div>
         </div>
+
+        <aside className="about-profile-card" aria-label="Profile summary">
+          <div className="about-profile-top">
+            <span className="about-profile-code">TN</span>
+            <span className="about-profile-status">
+              <span className="status-dot" aria-hidden="true" />
+              open to work
+            </span>
+          </div>
+          <p className="about-profile-name">Thamo</p>
+          <dl className="about-profile-facts">
+            <div>
+              <dt>Role</dt>
+              <dd>{profile.role}</dd>
+            </div>
+            <div>
+              <dt>Base</dt>
+              <dd>{cleanLocation}</dd>
+            </div>
+            <div>
+              <dt>Focus</dt>
+              <dd>Full stack web, APIs, product polish</dd>
+            </div>
+          </dl>
+        </aside>
       </header>
 
-      {/* ─── 01 · THE SHORT VERSION ─── */}
-      <article className="about-section">
-        <NumberHead
-          index="01"
-          eyebrow="The short version"
-          title={<>If you only read <em>one paragraph</em></>}
-        />
-        <div className="about-prose">
-          <p className="about-prose-paragraph about-prose-paragraph--first">
-            <span className="about-prose-dropcap">H</span>i &mdash; I&rsquo;m Thamothara, though
-            most people just call me Thamo. {profile.bio}
-          </p>
-          <p className="about-prose-paragraph">{profile.availability}</p>
-          <div className="about-prose-actions">
-            <a href="/api/resume" className="btn-glass" target="_blank" rel="noreferrer">
-              View Resume
-            </a>
-            <Link href="/certificates" className="btn-ghost">Certificates</Link>
-            <Link href="/contact" className="btn-ghost">Get in touch</Link>
-          </div>
+      <section className="about-signal-grid" aria-label="Profile signals">
+        <div className="about-signal">
+          <span className="about-signal-value">{yearsBuilding}+</span>
+          <span className="about-signal-label">years building</span>
         </div>
-      </article>
+        <div className="about-signal">
+          <span className="about-signal-value">{experience.length.toString().padStart(2, '0')}</span>
+          <span className="about-signal-label">experience entries</span>
+        </div>
+        <div className="about-signal">
+          <span className="about-signal-value">{STACK_GROUPS.length.toString().padStart(2, '0')}</span>
+          <span className="about-signal-label">skill lanes</span>
+        </div>
+      </section>
 
-      {/* ─── 02 · CURRENTLY ─── */}
-      <article className="about-section">
-        <NumberHead
-          index="02"
-          eyebrow="Currently"
-          title={<>What I&rsquo;m up to <em>right now</em></>}
-        />
-        <dl className="about-currently">
-          {CURRENTLY.map(c => (
-            <div key={c.label} className="about-currently-row">
-              <dt className="about-currently-label">{c.label}</dt>
-              <dd className="about-currently-value">{c.value}</dd>
-            </div>
-          ))}
-        </dl>
-      </article>
+      <section className="about-story-grid">
+        <article className="about-story-card">
+          <p className="about-section-tag">01 / Working style</p>
+          <h2 className="about-story-title">Careful software, shipped without theatre.</h2>
+          <div className="about-story-prose">
+            <p>{profile.bio}</p>
+            <p>{profile.availability}</p>
+          </div>
+        </article>
 
-      {/* ─── 03 · THE ARSENAL ─── */}
-      <article className="about-section">
-        <NumberHead
-          index="03"
-          eyebrow="The Arsenal"
-          title={<>Tools <em>in daily rotation</em></>}
-          accent="Not exhaustive &mdash; just what shows up in my projects most often."
-        />
-        <div className="about-stack">
-          {Object.entries(STACK).map(([category, techs]) => (
-            <div key={category} className="about-stack-row">
-              <p className="about-stack-cat">{category}</p>
-              <div className="about-stack-pills">
-                {techs.map(t => (
-                  <span key={t} className="about-stack-pill">{t}</span>
+        <aside className="about-now-card">
+          <p className="about-section-tag">Now</p>
+          <dl>
+            {CURRENTLY.map(item => (
+              <div key={item.label}>
+                <dt>{item.label}</dt>
+                <dd>{item.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </aside>
+      </section>
+
+      <section className="about-principles" aria-label="Working principles">
+        {PRINCIPLES.map((principle, index) => (
+          <article key={principle.label} className="about-principle">
+            <span>{String(index + 1).padStart(2, '0')}</span>
+            <h3>{principle.label}</h3>
+            <p>{principle.text}</p>
+          </article>
+        ))}
+      </section>
+
+      <section className="about-stack-section">
+        <div className="about-block-head">
+          <p className="about-section-tag">02 / Stack</p>
+          <h2>Tools in daily rotation.</h2>
+          <p>Not exhaustive. This is the practical stack that shows up across my projects most often.</p>
+        </div>
+        <div className="about-stack-board">
+          {STACK_GROUPS.map(group => (
+            <article key={group.label} className="about-stack-card">
+              <h3>{group.label}</h3>
+              <div>
+                {group.items.map(item => (
+                  <span key={item}>{item}</span>
                 ))}
               </div>
-            </div>
+            </article>
           ))}
         </div>
-      </article>
+      </section>
 
-      {/* ─── 04 · THE PATH (experience) ─── */}
-      {experience.length > 0 && (
-        <article className="about-section">
-          <NumberHead
-            index="04"
-            eyebrow="The Path"
-            title={<>Where I&rsquo;ve <em>worked</em></>}
-          />
-          <ol className="about-timeline">
-            {experience.map(e => (
-              <li key={e.id} className="about-timeline-item">
-                <span className="about-timeline-year">{e.year}</span>
-                <div className="about-timeline-body">
-                  <h3 className="about-timeline-title">{e.title}</h3>
-                  <p className="about-timeline-org">{e.org}</p>
-                  {e.desc && <p className="about-timeline-desc">{e.desc}</p>}
-                </div>
-              </li>
-            ))}
-          </ol>
-        </article>
-      )}
-
-      {/* ─── 05 · SCHOOLING ─── */}
-      {education.length > 0 && (
-        <article className="about-section">
-          <NumberHead
-            index="05"
-            eyebrow="Schooling"
-            title={<>Where I <em>studied</em></>}
-          />
-          <ol className="about-timeline">
-            {education.map(e => (
-              <li key={e.id} className="about-timeline-item">
-                <span className="about-timeline-year">{e.year}</span>
-                <div className="about-timeline-body">
-                  <h3 className="about-timeline-title">{e.title}</h3>
-                  <p className="about-timeline-org">{e.org}</p>
-                  {e.desc && <p className="about-timeline-desc">{e.desc}</p>}
-                </div>
-              </li>
-            ))}
-          </ol>
-        </article>
-      )}
-
-      {/* ─── 06 · TANGENTS ─── */}
-      <article className="about-section">
-        <NumberHead
-          index="06"
-          eyebrow="Tangents"
-          title={<>Beyond the <em>keyboard</em></>}
-        />
-        <div className="about-tangents">
-          <div className="about-tangent">
-            <p className="about-tangent-label">Interests</p>
-            <ul className="about-interests">
-              {INTERESTS.map(item => (
-                <li key={item} className="about-interest">{item}</li>
+      <section className="about-path-grid">
+        {experience.length > 0 && (
+          <article className="about-path-card">
+            <div className="about-block-head">
+              <p className="about-section-tag">03 / Path</p>
+              <h2>Experience</h2>
+            </div>
+            <ol className="about-path-list">
+              {experience.map(item => (
+                <li key={item.id}>
+                  <span>{item.year}</span>
+                  <div>
+                    <h3>{item.title}</h3>
+                    <p>{item.org}</p>
+                    {item.desc && <p>{item.desc}</p>}
+                  </div>
+                </li>
               ))}
-            </ul>
-          </div>
-          <div className="about-tangent">
-            <p className="about-tangent-label">Fun fact</p>
-            <p className="about-funfact">
-              I name my side projects <em>before</em> I start them.
-            </p>
-          </div>
-        </div>
-      </article>
+            </ol>
+          </article>
+        )}
 
-      {/* ─── 07 · FIND ME ELSEWHERE ─── */}
-      <article className="about-section">
-        <NumberHead
-          index="07"
-          eyebrow="Elsewhere"
-          title={<>Find me <em>on the internet</em></>}
-        />
-        <div className="about-socials">
-          <a href={profile.githubUrl} className="about-social" target="_blank" rel="noreferrer">
-            <span className="about-social-platform">GitHub</span>
-            <span className="about-social-handle">{profile.githubUsername}</span>
-            <span className="about-social-arrow" aria-hidden="true">↗</span>
-          </a>
-          <a href={profile.linkedinUrl} className="about-social" target="_blank" rel="noreferrer">
-            <span className="about-social-platform">LinkedIn</span>
-            <span className="about-social-handle">{new URL(profile.linkedinUrl).pathname.replace(/^\/+/, '')}</span>
-            <span className="about-social-arrow" aria-hidden="true">↗</span>
-          </a>
-          <a href={profile.xUrl} className="about-social" target="_blank" rel="noreferrer">
-            <span className="about-social-platform">X / Twitter</span>
-            <span className="about-social-handle">@{new URL(profile.xUrl).pathname.replace(/^\/+/, '')}</span>
-            <span className="about-social-arrow" aria-hidden="true">↗</span>
-          </a>
-          <a href="https://leetcode.com/u/thamothara/" className="about-social" target="_blank" rel="noreferrer">
-            <span className="about-social-platform">LeetCode</span>
-            <span className="about-social-handle">thamothara</span>
-            <span className="about-social-arrow" aria-hidden="true">↗</span>
-          </a>
-          <a href={`mailto:${profile.email}`} className="about-social">
-            <span className="about-social-platform">Email</span>
-            <span className="about-social-handle">{profile.email}</span>
-            <span className="about-social-arrow" aria-hidden="true">→</span>
-          </a>
-        </div>
-      </article>
+        {education.length > 0 && (
+          <article className="about-path-card">
+            <div className="about-block-head">
+              <p className="about-section-tag">04 / Education</p>
+              <h2>Schooling</h2>
+            </div>
+            <ol className="about-path-list">
+              {education.map(item => (
+                <li key={item.id}>
+                  <span>{item.year}</span>
+                  <div>
+                    <h3>{item.title}</h3>
+                    <p>{item.org}</p>
+                    {item.desc && <p>{item.desc}</p>}
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </article>
+        )}
+      </section>
 
-      {/* ─── CLOSING ─── */}
-      <footer className="about-foot">
-        <span className="about-foot-line" aria-hidden="true" />
-        <p className="about-foot-text">
-          That&rsquo;s about it. <Link href="/contact">Say hello </Link>if you&rsquo;d like to talk shop.
-        </p>
-      </footer>
+      <section className="about-closing-grid">
+        <article className="about-interest-card">
+          <p className="about-section-tag">05 / Off keyboard</p>
+          <h2>Side quests</h2>
+          <ul>
+            {INTERESTS.map(interest => <li key={interest}>{interest}</li>)}
+          </ul>
+        </article>
+
+        <article className="about-links-card">
+          <p className="about-section-tag">Elsewhere</p>
+          <a href={profile.githubUrl} target="_blank" rel="noreferrer">
+            <span>GitHub</span>
+            <strong>{profile.githubUsername}</strong>
+          </a>
+          <a href={profile.linkedinUrl} target="_blank" rel="noreferrer">
+            <span>LinkedIn</span>
+            <strong>{linkedinHandle}</strong>
+          </a>
+          <a href={profile.xUrl} target="_blank" rel="noreferrer">
+            <span>X</span>
+            <strong>@{xHandle}</strong>
+          </a>
+          <a href={`mailto:${profile.email}`}>
+            <span>Email</span>
+            <strong>{profile.email}</strong>
+          </a>
+        </article>
+      </section>
     </section>
   )
 }

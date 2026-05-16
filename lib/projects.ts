@@ -35,23 +35,27 @@ function computeIndex(i: number) {
 
 export async function getProjects(): Promise<AdminProject[]> {
   if (hasRedisUrl()) {
-    const client = await getRedisClient()
-    if (client) {
-      const raw = await client.get(PROJECTS_KEY)
-      if (raw) {
-        try {
-          const parsed = z.array(ProjectSchema).safeParse(JSON.parse(raw))
-          if (parsed.success) return parsed.data.map((p, i) => ({ ...p, index: computeIndex(i) }))
-        } catch {}
+    try {
+      const client = await getRedisClient()
+      if (client) {
+        const raw = await client.get(PROJECTS_KEY)
+        if (raw) {
+          try {
+            const parsed = z.array(ProjectSchema).safeParse(JSON.parse(raw))
+            if (parsed.success) return parsed.data.map((p, i) => ({ ...p, index: computeIndex(i) }))
+          } catch {}
+        }
+        // Seed Redis with static data on first visit
+        const seeded = SEED_PROJECTS.map((p, i) => ({
+          ...p,
+          createdAt: new Date().toISOString(),
+          index: computeIndex(i),
+        }))
+        await client.set(PROJECTS_KEY, JSON.stringify(seeded))
+        return seeded
       }
-      // Seed Redis with static data on first visit
-      const seeded = SEED_PROJECTS.map((p, i) => ({
-        ...p,
-        createdAt: new Date().toISOString(),
-        index: computeIndex(i),
-      }))
-      await client.set(PROJECTS_KEY, JSON.stringify(seeded))
-      return seeded
+    } catch {
+      // Fall through to static data if Redis is temporarily unavailable.
     }
   }
 

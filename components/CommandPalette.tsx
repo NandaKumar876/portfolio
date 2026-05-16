@@ -169,6 +169,9 @@ export function CommandPalette({ projects = [] }: { projects?: ProjectLite[] }) 
     } else {
       document.body.style.overflow = ''
     }
+    return () => {
+      document.body.style.overflow = ''
+    }
   }, [open])
 
   useEffect(() => { setSelected(0) }, [query])
@@ -213,6 +216,7 @@ export function CommandPalette({ projects = [] }: { projects?: ProjectLite[] }) 
           <input
             ref={inputRef}
             className="cmdk-input"
+            aria-label="Search pages, projects, and actions"
             placeholder="Search pages, projects, actions…"
             value={query}
             onChange={e => setQuery(e.target.value)}

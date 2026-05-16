@@ -11,8 +11,11 @@ export async function submitContact(
   formData: FormData
 ): Promise<ActionResult> {
   const raw = {
-    name:    formData.get('name'),
-    email:   formData.get('email'),
+    name: formData.get('name'),
+    email: formData.get('email'),
+    company: formData.get('company'),
+    inquiryType: formData.get('inquiryType'),
+    timeline: formData.get('timeline'),
     subject: formData.get('subject'),
     message: formData.get('message'),
   }
@@ -53,12 +56,18 @@ export async function submitContact(
         subject: `[Portfolio] ${result.data.subject}`,
         text: [
           `From: ${result.data.name} <${result.data.email}>`,
+          result.data.company ? `Company: ${result.data.company}` : null,
+          `Inquiry type: ${result.data.inquiryType}`,
+          `Timeline: ${result.data.timeline}`,
           `Subject: ${result.data.subject}`,
           '',
           result.data.message,
-        ].join('\n'),
+        ].filter(Boolean).join('\n'),
         html: `
           <p><strong>From:</strong> ${result.data.name} &lt;${result.data.email}&gt;</p>
+          ${result.data.company ? `<p><strong>Company:</strong> ${result.data.company}</p>` : ''}
+          <p><strong>Inquiry type:</strong> ${result.data.inquiryType}</p>
+          <p><strong>Timeline:</strong> ${result.data.timeline}</p>
           <p><strong>Subject:</strong> ${result.data.subject}</p>
           <hr />
           <p style="white-space:pre-wrap">${result.data.message.replace(/</g, '&lt;')}</p>

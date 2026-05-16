@@ -111,7 +111,7 @@ export function WorkClient({ projects }: { projects: AdminProject[] }) {
                           onClick={e => {
                             e.preventDefault()
                             e.stopPropagation()
-                            window.open(p.repoUrl, '_blank', 'noreferrer')
+                            window.open(p.repoUrl, '_blank', 'noopener,noreferrer')
                           }}
                         >
                           GitHub
@@ -124,7 +124,7 @@ export function WorkClient({ projects }: { projects: AdminProject[] }) {
                           onClick={e => {
                             e.preventDefault()
                             e.stopPropagation()
-                            window.open(p.liveUrl, '_blank', 'noreferrer')
+                            window.open(p.liveUrl, '_blank', 'noopener,noreferrer')
                           }}
                         >
                           Live <span aria-hidden="true">↗</span>

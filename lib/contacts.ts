@@ -7,8 +7,11 @@ export const ContactSubmissionSchema = z.object({
   id: z.string(),
   name: z.string().min(1),
   email: z.string().email(),
+  company: z.string(),
+  inquiryType: z.string().min(1),
+  timeline: z.string().min(1),
   subject: z.string().min(1),
-  message: z.string().min(10),
+  message: z.string().min(20),
   createdAt: z.string(),
 })
 
@@ -72,4 +75,3 @@ export async function getRecentContacts(limit = 10) {
     return []
   }
 }
-

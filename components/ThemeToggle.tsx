@@ -5,12 +5,12 @@ import { useEffect, useState } from 'react'
 type Theme = 'light' | 'dark'
 
 function readTheme(): Theme {
-  if (typeof document === 'undefined') return 'dark'
-  return (document.documentElement.getAttribute('data-theme') as Theme) ?? 'dark'
+  if (typeof document === 'undefined') return 'light'
+  return (document.documentElement.getAttribute('data-theme') as Theme) ?? 'light'
 }
 
 export function ThemeToggle() {
-  const [theme, setTheme] = useState<Theme>('dark')
+  const [theme, setTheme] = useState<Theme>('light')
 
   useEffect(() => {
     setTheme(readTheme())

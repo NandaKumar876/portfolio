@@ -20,6 +20,13 @@ export default async function ContactPage() {
     { label: 'Coffee',   handle: 'Buy me a coffee',                    href: profile.coffeeUrl,                     arrow: '↗' },
   ]
 
+  const briefPoints = [
+    'What you are building',
+    'What shape of help you need',
+    'Timeline and delivery context',
+    'Any current blockers or constraints',
+  ]
+
   return (
     <section className="page contact-page">
 
@@ -33,9 +40,10 @@ export default async function ContactPage() {
           Let&rsquo;s build <em>something fine</em>
         </h1>
         <p className="contact-hero-lede">
-          A project that needs careful hands. A question I might help with.
-          Or just a hello. Pick whichever channel suits you &mdash; I read
-          every message and reply within a day or two.
+          A project that needs careful hands. A system that needs cleanup.
+          Or a product decision that needs a second set of eyes. Send a
+          structured brief and I can reply with something more useful than
+          “tell me more.”
         </p>
       </header>
 
@@ -86,13 +94,25 @@ export default async function ContactPage() {
               </span>
             </p>
           </div>
+
+          <div className="contact-brief-card">
+            <p className="contact-aside-label">
+              <span className="contact-aside-mark">§</span>
+              Good brief
+            </p>
+            <ul className="contact-brief-list">
+              {briefPoints.map(point => (
+                <li key={point}>{point}</li>
+              ))}
+            </ul>
+          </div>
         </aside>
 
         {/* ─── RIGHT · FORM ─── */}
         <div className="contact-form-wrap">
           <p className="contact-form-label">
             <span className="contact-aside-mark">§</span>
-            Or send a note
+            Start with a brief
           </p>
           <ContactForm />
         </div>

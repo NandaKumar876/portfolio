@@ -177,6 +177,9 @@ export function GitHubHeatmap({ weeks, totalContributions }: Props) {
                       key={di}
                       className="heatmap-cell"
                       style={{ background: cellColor(day.contributionCount) }}
+                      role="img"
+                      aria-label={`${day.contributionCount} contribution${day.contributionCount !== 1 ? 's' : ''} on ${formatLong(day.date)}`}
+                      title={`${day.contributionCount} contribution${day.contributionCount !== 1 ? 's' : ''} · ${formatLong(day.date)}`}
                       onMouseEnter={e => {
                         const rect = (e.currentTarget as HTMLElement).getBoundingClientRect()
                         setTooltip({
