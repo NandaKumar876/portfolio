@@ -2,4 +2,5 @@
 node_modules/
 .env.local
 data/contacts.json
+data/portfolio-local.json
 *.tsbuildinfo

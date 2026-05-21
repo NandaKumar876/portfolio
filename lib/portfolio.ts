@@ -1,4 +1,6 @@
 import { z } from 'zod'
+import fs from 'fs'
+import path from 'path'
 import { hasRedisUrl, getRedisClient } from './redis'
 
 /* ── Schemas ── */
@@ -129,6 +131,33 @@ export const DEFAULT_PORTFOLIO: PortfolioData = {
 
 const PORTFOLIO_KEY = 'portfolio:content:v1'
 
+/* ── Local JSON fallback (used when REDIS_URL is not set) ── */
+const LOCAL_STORE = path.join(process.cwd(), 'data', 'portfolio-local.json')
+
+function readLocalStore(): PortfolioData {
+  try {
+    if (fs.existsSync(LOCAL_STORE)) {
+      const raw = fs.readFileSync(LOCAL_STORE, 'utf-8')
+      const parsed = PortfolioSchema.safeParse(JSON.parse(raw))
+      if (parsed.success) return mergePortfolio(parsed.data)
+      // Partial merge on schema mismatch
+      try { return mergePortfolio(JSON.parse(raw) as Partial<PortfolioData>) } catch { /* fall through */ }
+    }
+  } catch { /* fall through */ }
+  return DEFAULT_PORTFOLIO
+}
+
+function writeLocalStore(data: PortfolioData): void {
+  try {
+    const dir = path.dirname(LOCAL_STORE)
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true })
+    fs.writeFileSync(LOCAL_STORE, JSON.stringify(data, null, 2), 'utf-8')
+  } catch (err) {
+    console.error('[Portfolio] Failed to write local store:', err)
+    throw new Error('Could not save portfolio data to local file.')
+  }
+}
+
 function mergePortfolio(value: Partial<PortfolioData> | null | undefined): PortfolioData {
   const profile = {
     ...DEFAULT_PORTFOLIO.profile,
@@ -149,7 +178,7 @@ function mergePortfolio(value: Partial<PortfolioData> | null | undefined): Portf
 }
 
 export async function getPortfolioData(): Promise<PortfolioData> {
-  if (!hasRedisUrl()) return DEFAULT_PORTFOLIO
+  if (!hasRedisUrl()) return readLocalStore()
 
   try {
     const client = await getRedisClient()
@@ -181,9 +210,16 @@ export async function getPortfolioData(): Promise<PortfolioData> {
 }
 
 export async function savePortfolioData(data: PortfolioData) {
+  if (!hasRedisUrl()) {
+    // No Redis — persist to local JSON file
+    writeLocalStore(data)
+    return data
+  }
   const client = await getRedisClient()
   if (!client) {
-    throw new Error('Redis is not configured. Set REDIS_URL to persist portfolio edits.')
+    // Redis URL set but connection failed — fall back to local file
+    writeLocalStore(data)
+    return data
   }
   await client.set(PORTFOLIO_KEY, JSON.stringify(data))
   return data
