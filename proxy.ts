@@ -1,15 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { verifyAdminSessionToken } from '@/lib/admin-session'
 
-const SESSION_COOKIE  = 'thamo_admin_session'
-const ADMIN_ROUTE     = '/dashboard-thamo7'
-const LOGIN_PATH      = '/dashboard-thamo7/login'
+const SESSION_COOKIE  = 'nanda_admin_session'
+const ADMIN_ROUTE     = '/dashboard-nanda7'
+const LOGIN_PATH      = '/dashboard-nanda7/login'
 const LOGIN_API_PATH  = '/api/admin/login'
 const LOGOUT_API_PATH = '/api/admin/logout'
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
-  const secret = process.env.ADMIN_SESSION_SECRET || 'thamo-admin-session-secret'
+  const secret = process.env.ADMIN_SESSION_SECRET || 'nanda-admin-session-secret'
 
   const token    = request.cookies.get(SESSION_COOKIE)?.value
   const isAuthed = token ? await verifyAdminSessionToken(token, secret) : false
@@ -46,5 +46,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/dashboard-thamo7/:path*', '/api/admin/:path*'],
+  matcher: ['/dashboard-nanda7/:path*', '/api/admin/:path*'],
 }

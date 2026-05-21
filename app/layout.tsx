@@ -7,8 +7,8 @@ import { getProjects }       from '@/lib/projects'
 import '@/app/globals.css'
 
 export const metadata: Metadata = {
-  title: 'Thamo — Developer',
-  description: 'Portfolio of Thamothara Natarajan — Full Stack Developer in Chennai.',
+  title: 'Nanda — Developer',
+  description: 'Portfolio of Nanda Kumar R — Full Stack Developer in Chennai.',
 }
 
 /* On first ever visit, persist 'light' so the default sticks across reloads.
@@ -43,7 +43,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <Nav />
         <main>{children}</main>
         <footer className="footer">
-          <span>Thamo</span>
+          <span>Nanda</span>
           <span className="footer-divider">·</span>
           <span>Chennai, India</span>
           <span className="footer-divider">·</span>

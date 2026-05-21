@@ -4,7 +4,7 @@ import { getPortfolioData } from '@/lib/portfolio'
 import { getProjects } from '@/lib/projects'
 
 export const metadata: Metadata = {
-  title: 'Admin — Thamo',
+  title: 'Admin — Nanda',
   description: 'Portfolio admin console for profile, resume, certificates, projects and management.',
 }
 

@@ -71,10 +71,10 @@ export default async function Home() {
 
           {/* LEFT — identity (typographic monogram, no image) */}
           <aside className="hero-id">
-            <span className="hero-id-monogram" aria-hidden="true">TN</span>
-            <h1 className="hero-id-name">Thamothara<br />Natarajan</h1>
+            <span className="hero-id-monogram" aria-hidden="true">NK</span>
+            <h1 className="hero-id-name">Nanda Kumar<br />R</h1>
             <p className="hero-id-aside">
-              Looks big up there, I know &mdash; you can just call me Thamo. 🤓
+              Looks big up there, I know &mdash; you can just call me Nanda. 🤓
             </p>
             <p className="hero-id-loc">
               <svg className="hero-id-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">

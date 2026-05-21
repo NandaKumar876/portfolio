@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { LiquidGlass } from '@/components/LiquidGlass'
 
 export const metadata: Metadata = {
-  title: 'Admin Login — Thamo',
+  title: 'Admin Login — Nanda',
   description: 'Sign in to manage portfolio content.',
 }
 
@@ -15,7 +15,7 @@ type LoginPageProps = {
 
 export default async function AdminLoginPage({ searchParams }: LoginPageProps) {
   const params = await searchParams
-  const nextPath = typeof params?.next === 'string' ? params.next : '/dashboard-thamo7'
+  const nextPath = typeof params?.next === 'string' ? params.next : '/dashboard-nanda7'
   const error = params?.error
 
   return (

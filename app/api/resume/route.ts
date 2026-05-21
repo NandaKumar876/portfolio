@@ -153,7 +153,7 @@ export async function GET() {
     headers: {
       ...NO_STORE_HEADERS,
       'Content-Type': 'application/pdf',
-      'Content-Disposition': buildContentDisposition('Thamo-Resume.pdf'),
+      'Content-Disposition': buildContentDisposition('Nanda-Resume.pdf'),
     },
   })
 }

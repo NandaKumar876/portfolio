@@ -1,11 +1,11 @@
 import { NextRequest } from 'next/server'
 import { verifyAdminSessionToken } from './admin-session'
 
-const SESSION_COOKIE = 'thamo_admin_session'
+const SESSION_COOKIE = 'nanda_admin_session'
 
 export async function isAdminRequest(request: NextRequest) {
   try {
-    const secret = process.env.ADMIN_SESSION_SECRET || 'thamo-admin-session-secret'
+    const secret = process.env.ADMIN_SESSION_SECRET || 'nanda-admin-session-secret'
     const token = request.cookies.get(SESSION_COOKIE)?.value
     if (!token) return false
     return await verifyAdminSessionToken(token, secret)

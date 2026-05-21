@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createAdminSessionToken } from '@/lib/admin-session'
 
-const SESSION_COOKIE = 'thamo_admin_session'
+const SESSION_COOKIE = 'nanda_admin_session'
 
 export async function POST(request: NextRequest) {
   const formData = await request.formData()
@@ -11,13 +11,13 @@ export async function POST(request: NextRequest) {
   const expectedPassword = process.env.ADMIN_PASSWORD || 'admin'
 
   if (username !== expectedUser || password !== expectedPassword) {
-    return NextResponse.redirect(new URL('/dashboard-thamo7/login?error=1', request.url), 303)
+    return NextResponse.redirect(new URL('/dashboard-nanda7/login?error=1', request.url), 303)
   }
 
-  const secret = process.env.ADMIN_SESSION_SECRET || 'thamo-admin-session-secret'
+  const secret = process.env.ADMIN_SESSION_SECRET || 'nanda-admin-session-secret'
   const token = await createAdminSessionToken(secret)
-  const nextPath = String(request.nextUrl.searchParams.get('next') ?? '/dashboard-thamo7')
-  const safeNext = nextPath.startsWith('/dashboard-thamo7') ? nextPath : '/dashboard-thamo7'
+  const nextPath = String(request.nextUrl.searchParams.get('next') ?? '/dashboard-nanda7')
+  const safeNext = nextPath.startsWith('/dashboard-nanda7') ? nextPath : '/dashboard-nanda7'
 
   const response = NextResponse.redirect(new URL(safeNext, request.url), 303)
   response.cookies.set({

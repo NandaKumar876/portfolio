@@ -3,8 +3,8 @@ import Link from 'next/link'
 import { getPortfolioData } from '@/lib/portfolio'
 
 export const metadata: Metadata = {
-  title: 'About — Thamo',
-  description: 'Thamothara Natarajan — Full Stack Developer based in Chennai. Stack, work, education and tangents.',
+  title: 'About — Nanda',
+  description: 'Nanda Kumar R — Full Stack Developer based in Chennai. Stack, work, education and tangents.',
 }
 
 const STARTED_BUILDING = 2022
@@ -74,7 +74,7 @@ export default async function AboutPage() {
             Software with a <em>clear pulse</em>
           </h1>
           <p className="about-cover-lede">
-            I&rsquo;m Thamothara Natarajan, a full stack developer in {cleanLocation}.
+            I&rsquo;m Nanda Kumar R, a full stack developer in {cleanLocation}.
             I build web products that are quick to use, simple to reason about,
             and polished enough that people trust them before reading the docs.
           </p>
@@ -86,13 +86,13 @@ export default async function AboutPage() {
 
         <aside className="about-profile-card" aria-label="Profile summary">
           <div className="about-profile-top">
-            <span className="about-profile-code">TN</span>
+            <span className="about-profile-code">NK</span>
             <span className="about-profile-status">
               <span className="status-dot" aria-hidden="true" />
               open to work
             </span>
           </div>
-          <p className="about-profile-name">Thamo</p>
+          <p className="about-profile-name">Nanda</p>
           <dl className="about-profile-facts">
             <div>
               <dt>Role</dt>

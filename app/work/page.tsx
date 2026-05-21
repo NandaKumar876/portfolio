@@ -3,8 +3,8 @@ import { WorkClient }    from './WorkClient'
 import { getProjects }   from '@/lib/projects'
 
 export const metadata: Metadata = {
-  title: 'Work — Thamo',
-  description: 'An index of selected projects by Thamothara Natarajan.',
+  title: 'Work — Nanda',
+  description: 'An index of selected projects by Nanda Kumar R.',
 }
 
 export default async function WorkPage() {

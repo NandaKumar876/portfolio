@@ -93,7 +93,7 @@ export function CommandPalette({ projects = [] }: { projects?: ProjectLite[] }) 
     ]
     const actions: CommandItem[] = [
       { id: 'a:resume',   group: 'Actions', title: 'Open Resume',     subtitle: 'Latest PDF in a new tab', href: '/api/resume', external: true, icon: 'resume' },
-      { id: 'a:admin',    group: 'Actions', title: 'Admin Dashboard', subtitle: 'Sign in to manage content', href: '/dashboard-thamo7/login', icon: 'admin', keywords: 'admin login dashboard manage' },
+      { id: 'a:admin',    group: 'Actions', title: 'Admin Dashboard', subtitle: 'Sign in to manage content', href: '/dashboard-nanda7/login', icon: 'admin', keywords: 'admin login dashboard manage' },
       { id: 'a:theme',    group: 'Actions', title: 'Toggle Theme',    subtitle: 'Light / Dark', icon: 'theme',
         action: () => {
           const cur = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'
@@ -106,8 +106,8 @@ export function CommandPalette({ projects = [] }: { projects?: ProjectLite[] }) 
              listener opens the overlay. */
           window.dispatchEvent(new KeyboardEvent('keydown', { key: '?' }))
         } },
-      { id: 'a:github',   group: 'Actions', title: 'GitHub',          subtitle: 'Open GitHub profile',  href: 'https://github.com/thamothara7', external: true, icon: 'external' },
-      { id: 'a:linkedin', group: 'Actions', title: 'LinkedIn',        subtitle: 'Open LinkedIn profile', href: 'https://www.linkedin.com/in/thamotharanatarajan/', external: true, icon: 'external' },
+      { id: 'a:github',   group: 'Actions', title: 'GitHub',          subtitle: 'Open GitHub profile',  href: 'https://github.com/NandaKumar876', external: true, icon: 'external' },
+      { id: 'a:linkedin', group: 'Actions', title: 'LinkedIn',        subtitle: 'Open LinkedIn profile', href: 'https://www.linkedin.com/in/nanda-kumar-r-608036362/', external: true, icon: 'external' },
     ]
     const projectItems: CommandItem[] = projects.map(p => ({
       id: `proj:${p.slug}`,

@@ -13,7 +13,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
   const p = await getProjectBySlug(slug)
-  return { title: p ? `${p.title} — Thamo` : 'Not Found' }
+  return { title: p ? `${p.title} — Nanda` : 'Not Found' }
 }
 
 export default async function ProjectDetail({ params }: Props) {

@@ -3,8 +3,8 @@ import { ContactForm }      from '@/components/ContactForm'
 import { getPortfolioData } from '@/lib/portfolio'
 
 export const metadata: Metadata = {
-  title: 'Contact — Thamo',
-  description: 'Get in touch with Thamothara Natarajan for project inquiries and collaborations.',
+  title: 'Contact — Nanda',
+  description: 'Get in touch with Nanda Kumar R for project inquiries and collaborations.',
 }
 
 export default async function ContactPage() {
@@ -124,7 +124,7 @@ export default async function ContactPage() {
         <p className="contact-foot-text">
           Either way works. <em>Looking forward to hearing from you.</em>
         </p>
-        <p className="contact-foot-sign">&mdash; Thamo</p>
+        <p className="contact-foot-sign">&mdash; Nanda</p>
       </footer>
     </section>
   )

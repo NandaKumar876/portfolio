@@ -54,7 +54,7 @@ function countStreak(days: CalendarDay[]) {
 
 async function fetchCalendarData(): Promise<CalendarWeek[] | null> {
   const token = process.env.GITHUB_TOKEN
-  const username = process.env.GITHUB_USERNAME || 'thamothara7'
+  const username = process.env.GITHUB_USERNAME || 'NandaKumar876'
   if (!token) return null
 
   const to = new Date()
@@ -66,7 +66,7 @@ async function fetchCalendarData(): Promise<CalendarWeek[] | null> {
     headers: {
       Authorization: `bearer ${token}`,
       'Content-Type': 'application/json',
-      'User-Agent': 'Thamo-Portfolio',
+      'User-Agent': 'Nanda-Portfolio',
     },
     body: JSON.stringify({
       query: `
@@ -263,11 +263,11 @@ function mapEvent(e: any): ActivityEvent | null {
 /** Pull the latest public events for a GitHub user. Cached 5 min server-side. */
 export async function getRecentActivity(limit = 12): Promise<ActivityEvent[]> {
   const token = process.env.GITHUB_TOKEN
-  const username = process.env.GITHUB_USERNAME || 'thamothara7'
+  const username = process.env.GITHUB_USERNAME || 'NandaKumar876'
   const headers: Record<string, string> = {
     Accept: 'application/vnd.github+json',
     'X-GitHub-Api-Version': '2022-11-28',
-    'User-Agent': 'Thamo-Portfolio',
+    'User-Agent': 'Nanda-Portfolio',
   }
   if (token) headers.Authorization = `Bearer ${token}`
 
@@ -295,7 +295,7 @@ export async function getRepoStats(repoUrl: string): Promise<RepoStats | null> {
   const headers: Record<string, string> = {
     Accept: 'application/vnd.github+json',
     'X-GitHub-Api-Version': '2022-11-28',
-    'User-Agent': 'Thamo-Portfolio',
+    'User-Agent': 'Nanda-Portfolio',
   }
   const token = process.env.GITHUB_TOKEN
   if (token) headers.Authorization = `Bearer ${token}`

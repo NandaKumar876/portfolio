@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import { getPortfolioData } from '@/lib/portfolio'
 
 export const metadata: Metadata = {
-  title: 'Certificates — Thamo',
-  description: 'Certifications and credentials of Thamothara Natarajan.',
+  title: 'Certificates — Nanda',
+  description: 'Certifications and credentials of Nanda Kumar R.',
 }
 
 export default async function CertificatesPage() {

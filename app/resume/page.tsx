@@ -3,8 +3,8 @@ import { getPortfolioData } from '@/lib/portfolio'
 import { PrintButton } from './PrintButton'
 
 export const metadata: Metadata = {
-  title: 'Resume — Thamothara Natarajan',
-  description: 'Resume of Thamothara Natarajan — Full Stack Developer based in Chennai.',
+  title: 'Resume — Nanda Kumar R',
+  description: 'Resume of Nanda Kumar R — Full Stack Developer based in Chennai.',
 }
 
 const STACK: { category: string; items: string[] }[] = [
@@ -48,8 +48,8 @@ export default async function ResumePage() {
         {/* ─── HEADER ─── */}
         <header className="resume-header">
           <h1 className="resume-name">
-            <span className="resume-name-first">Thamothara</span>{' '}
-            <span className="resume-name-last">Natarajan</span>
+            <span className="resume-name-first">{profile.name.split(' ')[0]}</span>{' '}
+            <span className="resume-name-last">{profile.name.split(' ').slice(1).join(' ')}</span>
           </h1>
           <p className="resume-role">{profile.role}</p>
           <p className="resume-contact">
