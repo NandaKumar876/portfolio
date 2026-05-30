@@ -153,7 +153,7 @@ All editable content is stored in Redis and managed via the admin dashboard:
 
 ---
 
-# Customise
+## Customise
 
 | What | Where |
 |------|-------|
