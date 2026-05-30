@@ -20,7 +20,7 @@ export const PROJECTS: Project[] = [
     index: '01',
     title: 'Portfolio',
     year: '2025',
-    description: 'This very site — a liquid-glass portfolio built with Next.js 15, Redis-backed admin, and Apple-inspired physics for every surface.',
+    description: 'This very site — a liquid-glass portfolio built with Next.js 16, Redis-backed admin, and Apple-inspired physics for every surface.',
     tags: ['React', 'Node'],
     repoUrl: 'https://github.com/NandaKumar876/Portfolio',
     features: [
