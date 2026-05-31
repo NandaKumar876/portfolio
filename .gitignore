@@ -4,3 +4,5 @@ node_modules/
 data/contacts.json
 data/portfolio-local.json
 *.tsbuildinfo
+
+.vercel
