@@ -1,7 +1,7 @@
 import { randomUUID } from 'crypto'
 import { NextRequest, NextResponse } from 'next/server'
 import { isAdminRequest } from '@/lib/admin-auth'
-import { addCertificate, getPortfolioData, removeCertificate } from '@/lib/portfolio'
+import { addCertificate, getPortfolioData, removeCertificate, updateCertificate } from '@/lib/portfolio'
 import { revalidatePath } from 'next/cache'
 
 export async function GET(request: NextRequest) {
@@ -68,6 +68,58 @@ export async function POST(request: NextRequest) {
   } catch (err) {
     console.error('[API/Certificates] POST error:', err)
     return NextResponse.json({ error: 'Internal server error during certificate upload' }, { status: 500 })
+  }
+}
+
+export async function PUT(request: NextRequest) {
+  try {
+    if (!(await isAdminRequest(request))) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const id = request.nextUrl.searchParams.get('id')
+    if (!id) {
+      return NextResponse.json({ error: 'Certificate id is required' }, { status: 400 })
+    }
+
+    const formData = await request.formData()
+    const title = String(formData.get('title') ?? '').trim()
+    const issuer = String(formData.get('issuer') ?? '').trim()
+    const year = String(formData.get('year') ?? '').trim()
+    const description = String(formData.get('description') ?? '').trim()
+    const file = formData.get('file')
+
+    if (!title || !issuer || !year) {
+      return NextResponse.json({ error: 'Title, issuer, and year are required' }, { status: 400 })
+    }
+
+    const updates: Record<string, string | undefined> = {
+      title, issuer, year,
+      description: description || undefined,
+    }
+
+    if (file instanceof File && file.size > 0) {
+      if (file.size > 4 * 1024 * 1024) {
+        return NextResponse.json({ error: 'Certificate file is too large (max 4MB)' }, { status: 400 })
+      }
+      const buffer = Buffer.from(await file.arrayBuffer())
+      const base64 = buffer.toString('base64')
+      updates.fileUrl = `data:${file.type};base64,${base64}`
+      updates.fileName = file.name
+    }
+
+    const certificate = await updateCertificate(id, updates)
+    if (!certificate) {
+      return NextResponse.json({ error: 'Certificate not found' }, { status: 404 })
+    }
+
+    revalidatePath('/')
+    revalidatePath('/certificates')
+
+    return NextResponse.json({ ok: true, certificate })
+  } catch (err) {
+    console.error('[API/Certificates] PUT error:', err)
+    return NextResponse.json({ error: 'Internal server error while updating certificate' }, { status: 500 })
   }
 }
 

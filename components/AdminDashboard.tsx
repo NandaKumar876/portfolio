@@ -168,6 +168,8 @@ export function AdminDashboard({ initialContent, initialProjects }: AdminDashboa
   const [profileStatus, setProfileStatus] = useState<{ msg: string; error?: boolean } | null>(null)
   const [resumeStatus, setResumeStatus] = useState<{ msg: string; error?: boolean } | null>(null)
   const [certificateStatus, setCertificateStatus] = useState<{ msg: string; error?: boolean } | null>(null)
+  const [editingCertificate, setEditingCertificate] = useState<Certificate | null>(null)
+  const certificateFormRef = useRef<HTMLFormElement>(null)
   const [projects, setProjects] = useState<AdminProject[]>(initialProjects)
   const [projectStatus, setProjectStatus] = useState<{ msg: string; error?: boolean } | null>(null)
   const [editingProject, setEditingProject] = useState<AdminProject | null>(null)
@@ -225,21 +227,44 @@ export function AdminDashboard({ initialContent, initialProjects }: AdminDashboa
   }
 
   /* ── Certificates ── */
-  async function uploadCertificate(event: FormEvent<HTMLFormElement>) {
+  function startEditCertificate(cert: Certificate) {
+    setEditingCertificate(cert)
+    setCertificateStatus(null)
+    // Scroll to form area
+    setTimeout(() => certificateFormRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 50)
+  }
+
+  function clearCertificateForm() {
+    setEditingCertificate(null)
+    certificateFormRef.current?.reset()
+  }
+
+  async function saveCertificate(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     const formEl = event.currentTarget
-    setCertificateStatus({ msg: 'Uploading certificate…' })
+    const isEditing = !!editingCertificate
+    setCertificateStatus({ msg: isEditing ? 'Updating certificate…' : 'Uploading certificate…' })
+
     const body = new FormData(formEl)
-    const response = await fetch('/api/admin/certificates', { method: 'POST', body })
+    const url = isEditing
+      ? `/api/admin/certificates?id=${encodeURIComponent(editingCertificate!.id)}`
+      : '/api/admin/certificates'
+    const response = await fetch(url, { method: isEditing ? 'PUT' : 'POST', body })
     let data: any
     try { data = await response.json() } catch { data = null }
     if (!response.ok) {
-      setCertificateStatus({ msg: data?.error || (response.status === 413 ? 'File too large (limit ~4MB).' : 'Upload failed.'), error: true })
+      setCertificateStatus({ msg: data?.error || (response.status === 413 ? 'File too large (limit ~4MB).' : isEditing ? 'Update failed.' : 'Upload failed.'), error: true })
       return
     }
-    setCertificates(prev => [data.certificate, ...prev])
-    setCertificateStatus({ msg: 'Certificate added' })
-    formEl.reset()
+
+    if (isEditing) {
+      setCertificates(prev => prev.map(c => c.id === editingCertificate!.id ? data.certificate : c))
+      setCertificateStatus({ msg: 'Certificate updated' })
+    } else {
+      setCertificates(prev => [data.certificate, ...prev])
+      setCertificateStatus({ msg: 'Certificate added' })
+    }
+    clearCertificateForm()
   }
 
   async function deleteCertificate(id: string) {
@@ -250,6 +275,7 @@ export function AdminDashboard({ initialContent, initialProjects }: AdminDashboa
     if (!response.ok) { setCertificateStatus({ msg: data?.error || 'Unable to delete.', error: true }); return }
     setCertificates(prev => prev.filter(item => item.id !== id))
     setCertificateStatus({ msg: 'Certificate removed' })
+    if (editingCertificate?.id === id) clearCertificateForm()
   }
 
   /* ── Projects ── */
@@ -605,33 +631,45 @@ export function AdminDashboard({ initialContent, initialProjects }: AdminDashboa
           <div className="card-topline">
             <div>
               <p className="sec-label">Certificates</p>
-              <h2 className="admin-card-title">Upload proof of skill</h2>
+              <h2 className="admin-card-title">{editingCertificate ? `Editing: ${editingCertificate.title}` : 'Upload proof of skill'}</h2>
             </div>
             <span className="admin-card-badge">{certificates.length} live</span>
           </div>
 
-          <form className="admin-form" onSubmit={uploadCertificate}>
+          <form ref={certificateFormRef} className="admin-form" onSubmit={saveCertificate}
+            key={editingCertificate?.id ?? 'new'}>
             <div className="form-grid">
               <label className="field-label">Title
-                <input className="field-input" name="title" placeholder="Certificate title" required />
+                <input className="field-input" name="title" placeholder="Certificate title" required
+                  defaultValue={editingCertificate?.title ?? ''} />
               </label>
               <label className="field-label">Issuer
-                <input className="field-input" name="issuer" placeholder="Issuing platform" required />
+                <input className="field-input" name="issuer" placeholder="Issuing platform" required
+                  defaultValue={editingCertificate?.issuer ?? ''} />
               </label>
               <label className="field-label">Year
-                <input className="field-input" name="year" placeholder="2026" required />
+                <input className="field-input" name="year" placeholder="2026" required
+                  defaultValue={editingCertificate?.year ?? ''} />
               </label>
-              <label className="field-label">File
+              <label className="field-label">{editingCertificate ? 'Replace file (optional)' : 'File'}
                 <input className="field-input" name="file" type="file" accept="application/pdf,image/*" />
               </label>
             </div>
             <label className="field-label">Description
-              <textarea className="field-input field-textarea" name="description" placeholder="Short note about this certificate." />
+              <textarea className="field-input field-textarea" name="description" placeholder="Short note about this certificate."
+                defaultValue={editingCertificate?.description ?? ''} />
             </label>
             {certificateStatus && (
               <p className={`admin-status${certificateStatus.error ? ' admin-status--error' : ''}`}>{certificateStatus.msg}</p>
             )}
-            <button type="submit" className="btn-submit">Add Certificate</button>
+            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+              <button type="submit" className="btn-submit" style={{ flex: 1 }}>
+                {editingCertificate ? 'Update Certificate' : 'Add Certificate'}
+              </button>
+              {editingCertificate && (
+                <button type="button" className="btn-ghost" style={{ minWidth: 110 }} onClick={clearCertificateForm}>Cancel</button>
+              )}
+            </div>
           </form>
 
           <div className="admin-list">
@@ -646,7 +684,10 @@ export function AdminDashboard({ initialContent, initialProjects }: AdminDashboa
                     <a href={cert.fileUrl} target="_blank" rel="noreferrer" className="project-link" style={{ marginTop: 8 }}>View file →</a>
                   )}
                 </div>
-                <button type="button" className="admin-btn-sm admin-btn-sm--danger" onClick={() => deleteCertificate(cert.id)}>Delete</button>
+                <div className="admin-row-actions">
+                  <button type="button" className="admin-btn-sm" onClick={() => startEditCertificate(cert)}>Edit</button>
+                  <button type="button" className="admin-btn-sm admin-btn-sm--danger" onClick={() => deleteCertificate(cert.id)}>Delete</button>
+                </div>
               </article>
             )) : (
               <p className="admin-empty">No certificates uploaded yet.</p>

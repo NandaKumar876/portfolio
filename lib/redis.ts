@@ -1,66 +1,53 @@
-import { createClient } from 'redis'
+import Redis from 'ioredis'
 
-type RedisClient = ReturnType<typeof createClient>
+/* ── Helpers ── */
+export function hasRedisUrl(): boolean {
+  return !!process.env.REDIS_URL
+}
 
-let redisClientPromise: Promise<RedisClient | null> | null = null
-let redisUnavailable = false
-let redisWarningShown = false
+/* ── Singleton client ── */
+declare global {
+  // eslint-disable-next-line no-var
+  var __redisClient: Redis | null | undefined
+}
 
-function normalizeRedisUrl(raw?: string) {
-  const value = raw?.trim()
-  if (!value) return null
+let connectionFailed = false
 
-  const trimmed = value.replace(/^redis-cli\s+-u\s+/i, '')
-  if (!/^rediss?:\/\//i.test(trimmed)) return null
+export async function getRedisClient(): Promise<Redis | null> {
+  if (!hasRedisUrl()) return null
+  if (connectionFailed) return null
+
+  // Reuse existing singleton (important for Next.js hot-reload in dev)
+  if (globalThis.__redisClient) return globalThis.__redisClient
 
   try {
-    const url = new URL(trimmed)
-    return url.protocol === 'redis:' || url.protocol === 'rediss:' ? trimmed : null
-  } catch {
+    const url = process.env.REDIS_URL!
+
+    // Redis upstash requires TLS — detect rediss:// scheme automatically
+    const isTLS = url.startsWith('rediss://')
+
+    const client = new Redis(url, {
+      ...(isTLS ? { tls: {} } : {}),
+      maxRetriesPerRequest: 3,
+      connectTimeout: 8000,
+      lazyConnect: true,
+    })
+
+    // Test the connection before returning
+    await client.connect()
+    await client.ping()
+
+    client.on('error', (err) => {
+      console.error('[Redis] Connection error:', err.message)
+    })
+
+    globalThis.__redisClient = client
+    console.log('[Redis] Connected to Redis Cloud ✓')
+    return client
+  } catch (err) {
+    console.error('[Redis] Failed to connect:', err)
+    connectionFailed = true        // stop retrying on every request
+    globalThis.__redisClient = null
     return null
   }
-}
-
-export function getRedisUrl() {
-  return normalizeRedisUrl(process.env.REDIS_URL)
-}
-
-export function hasRedisUrl() {
-  return Boolean(getRedisUrl())
-}
-
-function warnRedisUnavailable(err: unknown) {
-  if (redisWarningShown) return
-  redisWarningShown = true
-
-  const message = err instanceof Error ? err.message : String(err)
-  console.warn(`Redis unavailable; using local/static fallback data. ${message}`)
-}
-
-export async function getRedisClient(): Promise<RedisClient | null> {
-  const url = getRedisUrl()
-  if (!url || redisUnavailable) return null
-
-  if (!redisClientPromise) {
-    const client = createClient({
-      url,
-      socket: {
-        connectTimeout: 1500,
-        reconnectStrategy: false,
-      },
-    })
-
-    client.on('error', () => {
-      // connect() handles/reporting the first failure; avoid noisy reconnect logs.
-    })
-
-    redisClientPromise = client.connect().then(() => client).catch(err => {
-      redisClientPromise = null
-      redisUnavailable = true
-      warnRedisUnavailable(err)
-      return null
-    })
-  }
-
-  return redisClientPromise
 }

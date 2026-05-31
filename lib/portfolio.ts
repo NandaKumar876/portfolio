@@ -249,6 +249,17 @@ export async function removeCertificate(id: string) {
   return savePortfolioData({ ...current, certificates: current.certificates.filter(c => c.id !== id) })
 }
 
+export async function updateCertificate(id: string, updates: Partial<Omit<Certificate, 'id'>>) {
+  const current = await getPortfolioData()
+  const idx = current.certificates.findIndex(c => c.id === id)
+  if (idx === -1) return null
+  const updated = { ...current.certificates[idx], ...updates }
+  const certificates = [...current.certificates]
+  certificates[idx] = updated
+  await savePortfolioData({ ...current, certificates })
+  return updated
+}
+
 export async function updateExperience(experience: ExperienceItem[]) {
   const current = await getPortfolioData()
   return savePortfolioData({ ...current, experience })

@@ -30,8 +30,8 @@ export async function saveContactSubmission(submission: ContactSubmission) {
   if (hasRedisUrl()) {
     const client = await getRedisClient()
     if (client) {
-      await client.lPush(CONTACTS_KEY, JSON.stringify(submission))
-      await client.lTrim(CONTACTS_KEY, 0, 49)
+      await client.lpush(CONTACTS_KEY, JSON.stringify(submission))
+      await client.ltrim(CONTACTS_KEY, 0, 49)
       return submission
     }
   }
@@ -54,7 +54,7 @@ export async function getRecentContacts(limit = 10) {
   if (hasRedisUrl()) {
     const client = await getRedisClient()
     if (client) {
-      const raw = await client.lRange(CONTACTS_KEY, 0, Math.max(0, limit - 1))
+      const raw = await client.lrange(CONTACTS_KEY, 0, Math.max(0, limit - 1))
       return raw
         .map(item => {
           try {
