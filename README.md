@@ -65,7 +65,7 @@ NOTIFY_EMAIL=nandakumarr3030@gmail.com
 
 ---
 
-## Architecture
+# Architecture
 
 ```
 nanda-portfolio/
