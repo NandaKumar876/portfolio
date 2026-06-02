@@ -1,5 +1,8 @@
 import type { Metadata } from 'next'
 import { getPortfolioData } from '@/lib/portfolio'
+import { getGitHubCalendar } from '@/lib/github'
+import { GitHubHeatmap } from '@/components/GitHubHeatmap'
+import { LiquidGlass } from '@/components/LiquidGlass'
 
 export const metadata: Metadata = {
   title: 'Certificates — Nanda',
@@ -7,7 +10,10 @@ export const metadata: Metadata = {
 }
 
 export default async function CertificatesPage() {
-  const { certificates } = await getPortfolioData()
+  const [ { certificates }, calendar ] = await Promise.all([
+    getPortfolioData(),
+    getGitHubCalendar()
+  ])
 
   return (
     <section className="page certs-page">
@@ -23,6 +29,17 @@ export default async function CertificatesPage() {
           appear here automatically.
         </p>
       </header>
+
+      {calendar && (
+        <section style={{ marginBottom: '48px' }}>
+          <LiquidGlass className="heatmap-glass" interactive={false}>
+            <GitHubHeatmap
+              weeks={calendar.weeks}
+              totalContributions={calendar.totalContributions}
+            />
+          </LiquidGlass>
+        </section>
+      )}
 
       {certificates.length > 0 ? (
         <ol className="certs-list">
