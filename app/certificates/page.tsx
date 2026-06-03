@@ -5,7 +5,7 @@ import { GitHubHeatmap } from '@/components/GitHubHeatmap'
 import { LiquidGlass } from '@/components/LiquidGlass'
 
 export const metadata: Metadata = {
-  title: 'Certificates — Nanda',
+  title: 'Certificates',
   description: 'Certifications and credentials of Nanda Kumar R.',
 }
 

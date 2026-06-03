@@ -3,7 +3,7 @@ import { getPortfolioData } from '@/lib/portfolio'
 import { PrintButton } from './PrintButton'
 
 export const metadata: Metadata = {
-  title: 'Resume — Nanda Kumar R',
+  title: 'Resume',
   description: 'Resume of Nanda Kumar R — Full Stack Developer based in Chennai.',
 }
 

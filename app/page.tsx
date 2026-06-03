@@ -118,7 +118,7 @@ export default async function Home() {
               the people using it.
             </p>
             <p>
-              I&rsquo;ve spent <mark className="hl">{yearsBuilding}+ years  </mark>  shipping
+              I&rsquo;ve spent <mark className="hl">{yearsBuilding}+ years</mark> shipping
               across the stack &mdash; from <mark className="hl">designing APIs</mark> and{' '}
               <mark className="hl">modelling databases</mark> to{' '}
               <mark className="hl">polished, accessible front ends</mark>. I work most with{' '}

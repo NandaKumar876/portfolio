@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { SERVICES } from '@/data/services'
 
 export const metadata: Metadata = {
-  title: 'Services — Nanda',
+  title: 'Services',
   description: 'Design engineering, full-stack development, and technical consulting by Nanda Kumar R.',
 }
 

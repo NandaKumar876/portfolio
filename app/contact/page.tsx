@@ -3,7 +3,7 @@ import { ContactForm }      from '@/components/ContactForm'
 import { getPortfolioData } from '@/lib/portfolio'
 
 export const metadata: Metadata = {
-  title: 'Contact — Nanda',
+  title: 'Contact',
   description: 'Get in touch with Nanda Kumar R for project inquiries and collaborations.',
 }
 

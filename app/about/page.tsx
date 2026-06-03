@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { getPortfolioData } from '@/lib/portfolio'
 
 export const metadata: Metadata = {
-  title: 'About — Nanda',
+  title: 'About',
   description: 'Nanda Kumar R — Full Stack Developer based in Chennai. Stack, work, education and tangents.',
 }
 

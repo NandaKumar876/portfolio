@@ -164,4 +164,3 @@ All editable content is stored in Redis and managed via the admin dashboard:
 | Glass intensity | `<LiquidGlass intensity="low|medium|high">` |
 | Dev port | `package.json` → `"dev": "next dev -p 4000"` |
 
-<!-- Streak maintenance update -->

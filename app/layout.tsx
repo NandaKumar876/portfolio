@@ -7,8 +7,29 @@ import { getProjects }       from '@/lib/projects'
 import '@/app/globals.css'
 
 export const metadata: Metadata = {
-  title: 'Nanda — Developer',
+  metadataBase: new URL('https://nandakumar.vercel.app'),
+  title: {
+    default: 'Nanda — Developer',
+    template: '%s — Nanda',
+  },
   description: 'Portfolio of Nanda Kumar R — Full Stack Developer in Chennai.',
+  openGraph: {
+    title: 'Nanda — Developer',
+    description: 'Portfolio of Nanda Kumar R — Full Stack Developer in Chennai.',
+    url: '/',
+    siteName: 'Nanda Kumar R',
+    locale: 'en_IN',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Nanda — Developer',
+    description: 'Portfolio of Nanda Kumar R — Full Stack Developer in Chennai.',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 }
 
 /* On first ever visit, persist 'light' so the default sticks across reloads.

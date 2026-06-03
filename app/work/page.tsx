@@ -3,7 +3,7 @@ import { WorkClient }    from './WorkClient'
 import { getProjects }   from '@/lib/projects'
 
 export const metadata: Metadata = {
-  title: 'Work — Nanda',
+  title: 'Work',
   description: 'An index of selected projects by Nanda Kumar R.',
 }
 
