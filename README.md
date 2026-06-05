@@ -171,4 +171,5 @@ All editable content is stored in Redis and managed via the admin dashboard:
 Deploy this project on Vercel or any other hosting platform that supports Next.js.
 
 Built with ❤️ using Next.js.
+Design inspired by Apple Liquid Glass.
 
