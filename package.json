@@ -2,6 +2,7 @@
   "name": "nanda-portfolio",
   "version": "1.0.0",
   "private": true,
+  "keywords": ["portfolio", "nextjs", "react"],
   "scripts": {
     "dev": "next dev -p 4000",
     "build": "next build",
