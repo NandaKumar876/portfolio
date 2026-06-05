@@ -2,6 +2,7 @@
   "name": "nanda-portfolio",
   "version": "1.0.0",
   "private": true,
+  "author": "Nanda Kumar R",
   "keywords": ["portfolio", "nextjs", "react"],
   "scripts": {
     "dev": "next dev -p 4000",
