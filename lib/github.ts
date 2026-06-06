@@ -27,6 +27,10 @@ function countStreak(days: CalendarDay[]) {
   let currentStreak = 0
   let cursor = new Date(today)
 
+  if ((byDate.get(cursor.toISOString().slice(0, 10)) ?? 0) <= 0) {
+    cursor.setUTCDate(cursor.getUTCDate() - 1)
+  }
+
   while (true) {
     const key = cursor.toISOString().slice(0, 10)
     const count = byDate.get(key) ?? 0

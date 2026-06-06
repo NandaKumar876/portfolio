@@ -57,8 +57,14 @@ function computeStats(weeks: CalendarWeek[]) {
 
   // Walk backwards from latest day for current streak
   for (let i = days.length - 1; i >= 0; i--) {
-    if (days[i].contributionCount > 0) currentStreak += 1
-    else break
+    if (days[i].contributionCount > 0) {
+      currentStreak += 1
+    } else if (i === days.length - 1) {
+      // Skip today if it has 0 contributions, streak doesn't break until tomorrow
+      continue
+    } else {
+      break
+    }
   }
 
   return { currentStreak, longestStreak, lastActive }
