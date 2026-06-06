@@ -5,6 +5,7 @@
   "description": "Personal portfolio website",
   "author": "Nanda Kumar R",
   "keywords": ["portfolio", "nextjs", "react"],
+  "license": "MIT",
   "scripts": {
     "dev": "next dev -p 4000",
     "build": "next build",
