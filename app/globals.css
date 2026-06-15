@@ -6212,6 +6212,7 @@ html[data-theme='light'] .hero-id-resume:hover {
 .hero-copy {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 16px;
   max-width: 60ch;
   min-width: 0;
