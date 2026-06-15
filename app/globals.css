@@ -4379,24 +4379,45 @@ html[data-theme='dark'] .about-social:hover .about-social-arrow {
     linear-gradient(145deg, var(--glass-tint-strong), var(--glass-tint)),
     var(--bg-soft);
   box-shadow: var(--shadow-card);
+  transition: transform 0.3s cubic-bezier(.22,1,.36,1), box-shadow 0.3s cubic-bezier(.22,1,.36,1);
+}
+.about-profile-card:hover {
+  transform: scale(1.02);
+  box-shadow:
+    var(--shadow-card),
+    0 12px 48px color-mix(in srgb, var(--accent) 10%, transparent);
 }
 .about-profile-top {
+  position: relative;
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 16px;
-  margin-bottom: 34px;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 24px;
 }
-.about-profile-code {
-  display: grid;
-  place-items: center;
-  width: 72px;
-  height: 72px;
+.about-profile-photo-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 14px;
+  width: 108px;
+  height: 108px;
   border-radius: 50%;
-  border: 1.5px solid var(--accent);
-  color: var(--accent);
-  font-family: var(--fd);
-  font-size: 28px;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 2px solid var(--accent);
+  box-shadow:
+    0 0 0 4px color-mix(in srgb, var(--accent) 12%, transparent),
+    0 4px 18px color-mix(in srgb, var(--accent) 14%, transparent);
+  align-self: center;
+}
+.about-profile-photo {
+  width: 108px !important;
+  height: 108px !important;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  flex-shrink: 0;
 }
 .about-profile-status {
   display: inline-flex;
@@ -4418,6 +4439,7 @@ html[data-theme='dark'] .about-social:hover .about-social-arrow {
   letter-spacing: -0.04em;
   color: var(--ink-strong);
   margin: 0 0 28px;
+  text-align: center;
 }
 .about-profile-facts {
   margin: 0;
@@ -4794,7 +4816,7 @@ html[data-theme='dark'] .about-social:hover .about-social-arrow {
 
 @media (max-width: 440px) {
   .about-page { padding-left: 16px; padding-right: 16px; }
-  .about-profile-top { flex-direction: column; }
+  .about-profile-top { flex-direction: column; align-items: center; }
   .about-block-head h2,
   .about-interest-card h2,
   .about-story-title {

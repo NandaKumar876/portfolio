@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import { getPortfolioData } from '@/lib/portfolio'
 
@@ -86,7 +87,22 @@ export default async function AboutPage() {
 
         <aside className="about-profile-card" aria-label="Profile summary">
           <div className="about-profile-top">
-            <span className="about-profile-code">NK</span>
+            <div className="about-profile-photo-wrap">
+              <Image
+                src="/profile.jpg"
+                alt="Nanda Kumar R — profile photo"
+                width={108}
+                height={108}
+                className="about-profile-photo"
+                priority
+                style={{
+                  width: '108px',
+                  height: '108px',
+                  objectFit: 'cover',
+                  borderRadius: '50%',
+                }}
+              />
+            </div>
             <span className="about-profile-status">
               <span className="status-dot" aria-hidden="true" />
               open to work
