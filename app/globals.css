@@ -6122,7 +6122,7 @@ html[data-theme='dark'] .heatmap-cell:hover {
 }
 .home-hero-grid {
   display: grid;
-  grid-template-columns: 0.8fr 1px 2fr;
+  grid-template-columns: 1fr 1px 1.8fr;
   gap: 40px;
   align-items: start;
   min-width: 0;
@@ -6136,6 +6136,7 @@ html[data-theme='dark'] .heatmap-cell:hover {
   text-align: center;
   position: sticky;
   top: 112px;
+  overflow: visible;
 }
 /* .hero-id-monogram replaced by portrait photo card (Tailwind) */
 /* name — Space Grotesk bold, like crg-portfolio (not serif) */

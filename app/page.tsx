@@ -72,11 +72,11 @@ export default async function Home() {
 
           {/* LEFT — profile panel card */}
           <aside className="hero-id">
-            <div className="flex flex-col items-center gap-5 p-6 rounded-2xl border border-white/[0.08] bg-white/[0.03] backdrop-blur-sm w-full max-w-[280px] mx-auto">
+            <div className="flex flex-col items-center gap-4 p-5 rounded-2xl border border-white/[0.08] bg-white/[0.03] backdrop-blur-sm w-full max-w-[280px] mx-auto">
 
               {/* ── Portrait photo ── */}
               <div className="relative w-full">
-                <div className="relative rounded-xl overflow-hidden border border-white/10 shadow-[0_4px_24px_rgba(0,0,0,0.4)] w-full aspect-[4/5]">
+                <div className="relative rounded-xl overflow-hidden border border-white/10 shadow-[0_4px_24px_rgba(0,0,0,0.4)] w-full aspect-[3/4]">
                   <Image
                     src="/images/profile.jpg"
                     alt="Nanda Kumar R — Full Stack Developer"
@@ -85,7 +85,7 @@ export default async function Home() {
                     className="object-cover object-top"
                   />
                   {/* Subtle bottom fade */}
-                  <div className="absolute bottom-0 inset-x-0 h-12 bg-gradient-to-t from-black/40 to-transparent" />
+                  <div className="absolute bottom-0 inset-x-0 h-10 bg-gradient-to-t from-black/40 to-transparent" />
                 </div>
               </div>
 
