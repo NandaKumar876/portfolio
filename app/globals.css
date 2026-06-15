@@ -6137,23 +6137,7 @@ html[data-theme='dark'] .heatmap-cell:hover {
   position: sticky;
   top: 112px;
 }
-/* typographic monogram — no image */
-.hero-id-monogram {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
-  border: 1.5px solid var(--accent);
-  color: var(--accent);
-  font-family: var(--fd);
-  font-size: 27px;
-  font-style: normal;
-  letter-spacing: 0.02em;
-  margin-bottom: 18px;
-  flex-shrink: 0;
-}
+/* .hero-id-monogram replaced by portrait photo card (Tailwind) */
 /* name — Space Grotesk bold, like crg-portfolio (not serif) */
 .hero-id-name {
   font-family: var(--f);

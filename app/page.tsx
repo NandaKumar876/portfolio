@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { LiquidGlass }       from '@/components/LiquidGlass'
 import { GitHubHeatmap }     from '@/components/GitHubHeatmap'
@@ -71,7 +72,31 @@ export default async function Home() {
 
           {/* LEFT — identity (typographic monogram, no image) */}
           <aside className="hero-id">
-            <span className="hero-id-monogram" aria-hidden="true">NK</span>
+          {/* Portrait photo card — same pattern as About page */}
+          <div className="relative group w-full max-w-[200px] mx-auto mb-5">
+
+            {/* Teal offset border — stays fixed on hover */}
+            <div className="absolute inset-0 rounded-[20px] border border-teal-400/30 translate-x-1 translate-y-1 z-0" />
+
+            {/* Main card — lifts on hover */}
+            <div className="relative z-10 rounded-[20px] overflow-hidden border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.25)] group-hover:-translate-y-1 group-hover:shadow-[0_16px_48px_rgba(0,0,0,0.35)] transition-all duration-300 ease-out">
+              <Image
+                src="/images/profile.jpg"
+                alt="Nanda Kumar R — Full Stack Developer"
+                width={200}
+                height={220}
+                priority
+                className="object-cover object-top w-full h-[220px]"
+              />
+            </div>
+
+            {/* Floating badge */}
+            <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-[#0f1a17] border border-teal-400/30 text-teal-400 shadow-[0_4px_12px_rgba(0,0,0,0.3)] whitespace-nowrap">
+              <span className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" />
+              Open to Work
+            </div>
+          </div>
+
             <h1 className="hero-id-name">Nanda Kumar<br />R</h1>
             <p className="hero-id-aside">
               Looks big up there, I know &mdash; you can just call me Nanda. 🤓
