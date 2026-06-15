@@ -3,6 +3,10 @@
    Retro · Classic — cream paper × retro teal · Light / Dark · Editorial
    ════════════════════════════════════════════════════════════════ */
 
+/* Tailwind utilities (no base/preflight — keeps existing CSS intact) */
+@tailwind components;
+@tailwind utilities;
+
 /* ── RESET ── */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 /* No italics anywhere — <em>/<i> keep their emphasis role but render upright. */
@@ -4387,51 +4391,9 @@ html[data-theme='dark'] .about-social:hover .about-social-arrow {
     var(--shadow-card),
     0 12px 48px color-mix(in srgb, var(--accent) 10%, transparent);
 }
-.about-profile-top {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0;
-  margin-bottom: 24px;
-}
-.about-profile-photo-wrap {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 14px;
-  width: 108px;
-  height: 108px;
-  border-radius: 50%;
-  overflow: hidden;
-  flex-shrink: 0;
-  border: 2px solid var(--accent);
-  box-shadow:
-    0 0 0 4px color-mix(in srgb, var(--accent) 12%, transparent),
-    0 4px 18px color-mix(in srgb, var(--accent) 14%, transparent);
-  align-self: center;
-}
-.about-profile-photo {
-  width: 108px !important;
-  height: 108px !important;
-  border-radius: 50%;
-  object-fit: cover;
-  display: block;
-  flex-shrink: 0;
-}
-.about-profile-status {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 7px 10px;
-  border: 1px solid color-mix(in srgb, var(--accent) 25%, var(--line));
-  border-radius: 999px;
-  color: var(--accent);
-  font-family: var(--fm);
-  font-size: 9.5px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-}
+/* .about-profile-top, .about-profile-photo-wrap, .about-profile-photo,
+   .about-profile-status — replaced by Tailwind utility classes */
+
 .about-profile-name {
   font-family: var(--fd);
   font-size: clamp(48px, 6vw, 72px);
@@ -4816,7 +4778,7 @@ html[data-theme='dark'] .about-social:hover .about-social-arrow {
 
 @media (max-width: 440px) {
   .about-page { padding-left: 16px; padding-right: 16px; }
-  .about-profile-top { flex-direction: column; align-items: center; }
+  .about-profile-top { align-items: center; }
   .about-block-head h2,
   .about-interest-card h2,
   .about-story-title {

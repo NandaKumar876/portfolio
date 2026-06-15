@@ -85,29 +85,26 @@ export default async function AboutPage() {
           </div>
         </div>
 
-        <aside className="about-profile-card" aria-label="Profile summary">
-          <div className="about-profile-top">
-            <div className="about-profile-photo-wrap">
-              <Image
-                src="/profile.jpg"
-                alt="Nanda Kumar R — profile photo"
-                width={108}
-                height={108}
-                className="about-profile-photo"
-                priority
-                style={{
-                  width: '108px',
-                  height: '108px',
-                  objectFit: 'cover',
-                  borderRadius: '50%',
-                }}
-              />
-            </div>
-            <span className="about-profile-status">
-              <span className="status-dot" aria-hidden="true" />
-              open to work
-            </span>
+        <aside className="about-profile-card flex flex-col items-center" aria-label="Profile summary">
+          {/* Profile photo */}
+          <div className="pt-2 rounded-full ring-2 ring-teal-400 ring-offset-4 ring-offset-[#1e2d2a] shadow-[0_0_0_8px_rgba(29,185,146,0.12)] hover:scale-105 transition-transform duration-300 cursor-pointer mb-5">
+            <Image
+              src="/images/profile.jpg"
+              alt="Nanda Kumar R"
+              width={112}
+              height={112}
+              priority
+              className="rounded-full object-cover object-top"
+              style={{ width: '112px', height: '112px', display: 'block' }}
+            />
           </div>
+
+          {/* Open to work badge */}
+          <span className="flex items-center gap-1.5 text-xs text-teal-400 bg-teal-400/10 border border-teal-400/20 rounded-full px-3 py-1 mb-5">
+            <span className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" />
+            OPEN TO WORK
+          </span>
+
           <p className="about-profile-name">Nanda</p>
           <dl className="about-profile-facts">
             <div>
