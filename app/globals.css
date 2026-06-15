@@ -6122,9 +6122,9 @@ html[data-theme='dark'] .heatmap-cell:hover {
 }
 .home-hero-grid {
   display: grid;
-  grid-template-columns: 1fr 1px 1.8fr;
-  gap: 40px;
-  align-items: start;
+  grid-template-columns: 280px 1px 1fr;
+  gap: 48px;
+  align-items: stretch;
   min-width: 0;
 }
 
