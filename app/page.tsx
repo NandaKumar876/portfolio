@@ -70,64 +70,86 @@ export default async function Home() {
       <section className="home-hero">
         <div className="home-hero-grid">
 
-          {/* LEFT — identity (typographic monogram, no image) */}
+          {/* LEFT — profile panel card */}
           <aside className="hero-id">
-          {/* Portrait photo card — same pattern as About page */}
-          <div className="relative group w-full max-w-[200px] mx-auto mb-5">
+            <div className="flex flex-col items-center gap-5 p-6 rounded-2xl border border-white/[0.08] bg-white/[0.03] backdrop-blur-sm w-full max-w-[280px] mx-auto">
 
-            {/* Teal offset border — stays fixed on hover */}
-            <div className="absolute inset-0 rounded-[20px] border border-teal-400/30 translate-x-1 translate-y-1 z-0" />
+              {/* ── Portrait photo ── */}
+              <div className="relative w-full">
+                <div className="relative rounded-xl overflow-hidden border border-white/10 shadow-[0_4px_24px_rgba(0,0,0,0.4)] w-full aspect-[4/5]">
+                  <Image
+                    src="/images/profile.jpg"
+                    alt="Nanda Kumar R — Full Stack Developer"
+                    fill
+                    priority
+                    className="object-cover object-top"
+                  />
+                  {/* Subtle bottom fade */}
+                  <div className="absolute bottom-0 inset-x-0 h-12 bg-gradient-to-t from-black/40 to-transparent" />
+                </div>
+              </div>
 
-            {/* Main card — lifts on hover */}
-            <div className="relative z-10 rounded-[20px] overflow-hidden border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.25)] group-hover:-translate-y-1 group-hover:shadow-[0_16px_48px_rgba(0,0,0,0.35)] transition-all duration-300 ease-out">
-              <Image
-                src="/images/profile.jpg"
-                alt="Nanda Kumar R — Full Stack Developer"
-                width={200}
-                height={220}
-                priority
-                className="object-cover object-top w-full h-[220px]"
-              />
-            </div>
+              {/* ── Open to Work badge — below photo, not overlapping ── */}
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-teal-400/25 bg-teal-400/[0.08] text-teal-400 text-xs font-medium">
+                <span className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" />
+                Open to Work
+              </div>
 
-            {/* Floating badge */}
-            <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-[#0f1a17] border border-teal-400/30 text-teal-400 shadow-[0_4px_12px_rgba(0,0,0,0.3)] whitespace-nowrap">
-              <span className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" />
-              Open to Work
-            </div>
-          </div>
+              {/* ── Name + title ── */}
+              <div className="text-center space-y-1">
+                <h1 className="text-xl font-semibold text-white tracking-tight">Nanda Kumar R</h1>
+                <p className="text-sm text-white/50 font-normal">Full Stack Developer</p>
+              </div>
 
-            <h1 className="hero-id-name">Nanda Kumar<br />R</h1>
-            <p className="hero-id-aside">
-              Looks big up there, I know &mdash; you can just call me Nanda. 🤓
-            </p>
-            <p className="hero-id-loc">
-              <svg className="hero-id-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
-                <path d="M12 21s-7-6.2-7-11a7 7 0 1 1 14 0c0 4.8-7 11-7 11Z" strokeLinejoin="round" />
-                <circle cx="12" cy="10" r="2.4" />
-              </svg>
-              {cleanLocation}
-            </p>
-            <div className="hero-id-socials">
-              <a href={profile.githubUrl} target="_blank" rel="noreferrer" className="hero-id-social" aria-label="GitHub">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.475 2 2 6.588 2 12.253c0 4.537 2.862 8.369 6.838 9.727.5.09.687-.218.687-.487 0-.243-.013-1.05-.013-1.91C7 20.059 6.35 18.957 6.15 18.38c-.113-.295-.6-1.205-1.025-1.448-.35-.192-.85-.667-.013-.68.788-.012 1.35.744 1.538 1.051.9 1.551 2.338 1.116 2.912.846.088-.666.35-1.115.638-1.371-2.225-.256-4.55-1.14-4.55-5.062 0-1.115.387-2.038 1.025-2.756-.1-.256-.45-1.307.1-2.717 0 0 .837-.269 2.75 1.051.8-.23 1.65-.346 2.5-.346.85 0 1.7.115 2.5.346 1.912-1.333 2.75-1.05 2.75-1.05.55 1.409.2 2.46.1 2.716.637.718 1.025 1.628 1.025 2.756 0 3.934-2.337 4.806-4.562 5.062.362.32.675.936.675 1.897 0 1.371-.013 2.473-.013 2.82 0 .268.188.589.688.486a10.039 10.039 0 0 0 4.932-3.74A10.447 10.447 0 0 0 22 12.253C22 6.588 17.525 2 12 2Z" />
+              {/* ── Divider ── */}
+              <div className="w-full border-t border-white/[0.08]" />
+
+              {/* ── Tagline ── */}
+              <p className="text-center text-xs text-white/30 italic leading-relaxed px-2">
+                Looks big up there, I know — you can just call me Nanda. 🤓
+              </p>
+
+              {/* ── Location ── */}
+              <div className="flex items-center gap-1.5 text-xs text-white/40">
+                <svg className="w-3.5 h-3.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+                  <path d="M12 21s-7-6.2-7-11a7 7 0 1 1 14 0c0 4.8-7 11-7 11Z" strokeLinejoin="round" />
+                  <circle cx="12" cy="10" r="2.4" />
+                </svg>
+                {cleanLocation}
+              </div>
+
+              {/* ── Social icons ── */}
+              <div className="flex items-center gap-4">
+                <a href={profile.githubUrl} target="_blank" rel="noreferrer" aria-label="GitHub"
+                   className="text-white/40 hover:text-white transition-colors duration-200">
+                  <svg viewBox="0 0 24 24" className="w-[18px] h-[18px]" fill="currentColor" aria-hidden="true">
+                    <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.475 2 2 6.588 2 12.253c0 4.537 2.862 8.369 6.838 9.727.5.09.687-.218.687-.487 0-.243-.013-1.05-.013-1.91C7 20.059 6.35 18.957 6.15 18.38c-.113-.295-.6-1.205-1.025-1.448-.35-.192-.85-.667-.013-.68.788-.012 1.35.744 1.538 1.051.9 1.551 2.338 1.116 2.912.846.088-.666.35-1.115.638-1.371-2.225-.256-4.55-1.14-4.55-5.062 0-1.115.387-2.038 1.025-2.756-.1-.256-.45-1.307.1-2.717 0 0 .837-.269 2.75 1.051.8-.23 1.65-.346 2.5-.346.85 0 1.7.115 2.5.346 1.912-1.333 2.75-1.05 2.75-1.05.55 1.409.2 2.46.1 2.716.637.718 1.025 1.628 1.025 2.756 0 3.934-2.337 4.806-4.562 5.062.362.32.675.936.675 1.897 0 1.371-.013 2.473-.013 2.82 0 .268.188.589.688.486a10.039 10.039 0 0 0 4.932-3.74A10.447 10.447 0 0 0 22 12.253C22 6.588 17.525 2 12 2Z" />
+                  </svg>
+                </a>
+                <a href={profile.linkedinUrl} target="_blank" rel="noreferrer" aria-label="LinkedIn"
+                   className="text-white/40 hover:text-white transition-colors duration-200">
+                  <svg viewBox="0 0 24 24" className="w-[18px] h-[18px]" fill="currentColor" aria-hidden="true">
+                    <path d="M18.335 18.339H15.67v-4.177c0-.996-.02-2.278-1.39-2.278-1.389 0-1.601 1.084-1.601 2.205v4.25h-2.666V9.75h2.56v1.17h.035c.358-.674 1.228-1.387 2.528-1.387 2.7 0 3.2 1.778 3.2 4.091v4.715zM7.003 8.575a1.546 1.546 0 01-1.548-1.549 1.548 1.548 0 111.547 1.549zm1.336 9.764H5.666V9.75H8.34v8.589zM19.67 3H4.329C3.593 3 3 3.58 3 4.297v15.406C3 20.42 3.594 21 4.328 21h15.338C20.4 21 21 20.42 21 19.703V4.297C21 3.58 20.4 3 19.666 3h.003z" />
+                  </svg>
+                </a>
+                <a href={profile.xUrl} target="_blank" rel="noreferrer" aria-label="X"
+                   className="text-white/40 hover:text-white transition-colors duration-200">
+                  <svg viewBox="0 0 24 24" className="w-[18px] h-[18px]" fill="currentColor" aria-hidden="true">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                  </svg>
+                </a>
+              </div>
+
+              {/* ── Résumé button ── */}
+              <a href={resumeHref} target="_blank" rel="noreferrer"
+                 className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium border border-white/15 text-white/80 hover:border-white/30 hover:text-white hover:bg-white/5 transition-all duration-200">
+                View Résumé
+                <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M7 17L17 7M17 7H7M17 7v10" />
                 </svg>
               </a>
-              <a href={profile.linkedinUrl} target="_blank" rel="noreferrer" className="hero-id-social" aria-label="LinkedIn">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M18.335 18.339H15.67v-4.177c0-.996-.02-2.278-1.39-2.278-1.389 0-1.601 1.084-1.601 2.205v4.25h-2.666V9.75h2.56v1.17h.035c.358-.674 1.228-1.387 2.528-1.387 2.7 0 3.2 1.778 3.2 4.091v4.715zM7.003 8.575a1.546 1.546 0 01-1.548-1.549 1.548 1.548 0 111.547 1.549zm1.336 9.764H5.666V9.75H8.34v8.589zM19.67 3H4.329C3.593 3 3 3.58 3 4.297v15.406C3 20.42 3.594 21 4.328 21h15.338C20.4 21 21 20.42 21 19.703V4.297C21 3.58 20.4 3 19.666 3h.003z" />
-                </svg>
-              </a>
-              <a href={profile.xUrl} target="_blank" rel="noreferrer" className="hero-id-social" aria-label="X">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                </svg>
-              </a>
+
             </div>
-            <a href={resumeHref} target="_blank" rel="noreferrer" className="hero-id-resume">
-              View Résumé
-            </a>
           </aside>
 
           {/* divider */}
