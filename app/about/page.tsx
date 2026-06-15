@@ -86,24 +86,31 @@ export default async function AboutPage() {
         </div>
 
         <aside className="about-profile-card flex flex-col items-center" aria-label="Profile summary">
-          {/* Profile photo */}
-          <div className="pt-2 rounded-full ring-2 ring-teal-400 ring-offset-4 ring-offset-[#1e2d2a] shadow-[0_0_0_8px_rgba(29,185,146,0.12)] hover:scale-105 transition-transform duration-300 cursor-pointer mb-5">
-            <Image
-              src="/images/profile.jpg"
-              alt="Nanda Kumar R"
-              width={112}
-              height={112}
-              priority
-              className="rounded-full object-cover object-top"
-              style={{ width: '112px', height: '112px', display: 'block' }}
-            />
-          </div>
 
-          {/* Open to work badge */}
-          <span className="flex items-center gap-1.5 text-xs text-teal-400 bg-teal-400/10 border border-teal-400/20 rounded-full px-3 py-1 mb-5">
-            <span className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" />
-            OPEN TO WORK
-          </span>
+          {/* ── Portrait photo card ── */}
+          <div className="relative group w-full max-w-[220px] mx-auto mb-8">
+
+            {/* Teal accent border — sits behind, stays fixed on hover */}
+            <div className="absolute inset-0 rounded-[20px] border border-teal-400/30 translate-x-1 translate-y-1 z-0" />
+
+            {/* Main photo card — lifts on hover */}
+            <div className="relative z-10 rounded-[20px] overflow-hidden border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.25)] group-hover:-translate-y-1 group-hover:shadow-[0_16px_48px_rgba(0,0,0,0.35)] transition-all duration-300 ease-out">
+              <Image
+                src="/images/profile.jpg"
+                alt="Nanda Kumar R — Full Stack Developer"
+                width={220}
+                height={240}
+                priority
+                className="object-cover object-top w-full h-[240px]"
+              />
+            </div>
+
+            {/* Floating status badge — bottom-center, does not move on hover */}
+            <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-[#0f1a17] border border-teal-400/30 text-teal-400 shadow-[0_4px_12px_rgba(0,0,0,0.3)] whitespace-nowrap">
+              <span className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" />
+              Open to Work
+            </div>
+          </div>
 
           <p className="about-profile-name">Nanda</p>
           <dl className="about-profile-facts">
