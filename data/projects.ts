@@ -30,4 +30,19 @@ export const PROJECTS: Project[] = [
       { title: 'Contact to Redis', description: 'Contact form submissions stored in Redis lists with a 50-message rolling window.' },
     ],
   },
+  {
+    id: 'speedxsafety',
+    slug: 'speedxsafety',
+    index: '02',
+    title: 'SpeedxSafety',
+    year: '2026',
+    description: 'A robust mobile application designed to ensure the safety of teen drivers, featuring role-based dashboards and real-time monitoring.',
+    tags: ['React Native', 'Expo', 'Backend'],
+    repoUrl: 'https://github.com/NandaKumar876/speedxsafety',
+    features: [
+      { title: 'Role-Based Dashboards', description: 'Dedicated interfaces for Parents and Teens to provide appropriate controls and visibility.' },
+      { title: 'Real-Time Monitoring', description: 'Real-time telemetry tracking and trip data processing to ensure driving safety.' },
+      { title: 'Liquid Glass Aesthetic', description: 'Features a dynamic, premium UI with a liquid glass aesthetic.' },
+    ],
+  },
 ]
