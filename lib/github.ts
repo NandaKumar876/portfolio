@@ -190,29 +190,108 @@ export interface ActivityEvent {
   commits?: ActivityCommit[]
 }
 
+/**
+ * Extract a clean branch name from a full git ref string.
+ * e.g. "refs/heads/main" → "main", "refs/heads/feat/login" → "feat/login"
+ */
+function extractBranch(ref: string | undefined | null): string {
+  if (!ref) return ''
+  return ref.replace(/^refs\/heads\//, '')
+}
+
+/**
+ * Determine the commit count for a PushEvent payload.
+ *
+ * The GitHub Events API may not include the full commits array in public
+ * event payloads — `payload.commits` can be empty even when commits were
+ * pushed. We therefore prefer `payload.size` or `payload.distinct_size`
+ * (which are always set correctly), falling back to `commits.length`.
+ */
+function getCommitCount(payload: any): number {
+  const commitsLength = Array.isArray(payload?.commits) ? payload.commits.length : 0
+  // payload.size = total commits pushed; payload.distinct_size = unique commits
+  const size         = typeof payload?.size === 'number' ? payload.size : 0
+  const distinctSize = typeof payload?.distinct_size === 'number' ? payload.distinct_size : 0
+
+  // Pick the best non-zero value: prefer the full size, then distinct, then array length
+  return size || distinctSize || commitsLength
+}
+
+/**
+ * Build a human-readable action string for a PushEvent.
+ * Examples:
+ *   "Pushed 1 commit to main"
+ *   "Pushed 5 commits to develop"
+ *   "Pushed commits to main" (fallback when count is unknown)
+ */
+function formatPushAction(count: number, branch: string): { action: string; detail?: string } {
+  const branchDetail = branch ? `to ${branch}` : undefined
+
+  if (count > 0) {
+    return {
+      action: `Pushed ${count} commit${count === 1 ? '' : 's'}`,
+      detail: branchDetail,
+    }
+  }
+
+  // Fallback: we know a push happened but can't determine the count
+  return {
+    action: 'Pushed commits',
+    detail: branchDetail,
+  }
+}
+
+/**
+ * Map a raw GitHub event object into our normalised ActivityEvent format.
+ * Returns null for unsupported event types so the caller can filter them out.
+ */
 function mapEvent(e: any): ActivityEvent | null {
   if (!e || !e.type || !e.repo) return null
+
   const repo    = e.repo.name as string
   const repoUrl = `https://github.com/${repo}`
   const base    = { id: String(e.id), repo, repoUrl, createdAt: e.created_at as string }
 
+  // Debug: log the raw payload so we can verify event structure
+  console.debug(`[GitHubActivity] Processing ${e.type} for ${repo}`, {
+    payloadKeys: e.payload ? Object.keys(e.payload) : [],
+    ...(e.type === 'PushEvent' && {
+      'payload.size':          e.payload?.size,
+      'payload.distinct_size': e.payload?.distinct_size,
+      'payload.commits.length': Array.isArray(e.payload?.commits) ? e.payload.commits.length : 'N/A',
+      'payload.ref':           e.payload?.ref,
+    }),
+  })
+
   switch (e.type) {
+    /* ── Push ────────────────────────────────────────────── */
     case 'PushEvent': {
-      const commits = (e.payload?.commits ?? []).map((c: any) => ({
-        sha: c.sha, message: c.message, url: `${repoUrl}/commit/${c.sha}`,
+      const payload = e.payload ?? {}
+      const commits = (payload.commits ?? []).map((c: any) => ({
+        sha: c.sha,
+        message: c.message,
+        url: `${repoUrl}/commit/${c.sha}`,
       })) as ActivityCommit[]
-      const branch = (e.payload?.ref ?? '').replace(/^refs\/heads\//, '')
+
+      const branch     = extractBranch(payload.ref)
+      const count      = getCommitCount(payload)
+      const { action, detail } = formatPushAction(count, branch)
+
+      console.debug(`[GitHubActivity] PushEvent resolved: count=${count}, branch="${branch}"`)
+
       return {
         ...base,
         kind: 'push',
-        action: `Pushed ${commits.length} commit${commits.length === 1 ? '' : 's'}`,
-        detail: branch ? `to ${branch}` : undefined,
+        action,
+        detail,
         url: `${repoUrl}/commits/${branch || 'main'}`,
         commits,
       }
     }
+
+    /* ── Pull Request ───────────────────────────────────── */
     case 'PullRequestEvent': {
-      const a = e.payload?.action ?? 'updated'
+      const a  = e.payload?.action ?? 'updated'
       const pr = e.payload?.pull_request
       return {
         ...base,
@@ -222,8 +301,10 @@ function mapEvent(e: any): ActivityEvent | null {
         url: pr?.html_url ?? `${repoUrl}/pulls`,
       }
     }
+
+    /* ── Issues ──────────────────────────────────────────── */
     case 'IssuesEvent': {
-      const a = e.payload?.action ?? 'updated'
+      const a     = e.payload?.action ?? 'updated'
       const issue = e.payload?.issue
       return {
         ...base,
@@ -233,6 +314,8 @@ function mapEvent(e: any): ActivityEvent | null {
         url: issue?.html_url ?? `${repoUrl}/issues`,
       }
     }
+
+    /* ── Release ─────────────────────────────────────────── */
     case 'ReleaseEvent': {
       const r = e.payload?.release
       return {
@@ -243,23 +326,50 @@ function mapEvent(e: any): ActivityEvent | null {
         url: r?.html_url ?? `${repoUrl}/releases`,
       }
     }
+
+    /* ── Watch (Star) ────────────────────────────────────── */
     case 'WatchEvent': {
       return { ...base, kind: 'star', action: 'Starred', url: repoUrl }
     }
+
+    /* ── Fork ────────────────────────────────────────────── */
     case 'ForkEvent': {
-      return { ...base, kind: 'fork', action: 'Forked', url: e.payload?.forkee?.html_url ?? repoUrl }
+      return {
+        ...base,
+        kind: 'fork',
+        action: 'Forked',
+        url: e.payload?.forkee?.html_url ?? repoUrl,
+      }
     }
+
+    /* ── Create (branch / tag / repo) ────────────────────── */
     case 'CreateEvent': {
-      const t = e.payload?.ref_type
+      const refType = e.payload?.ref_type   // "branch", "tag", or "repository"
+      const ref     = e.payload?.ref        // branch/tag name (null for repo)
+
+      let action: string
+      if (refType === 'repository') {
+        action = 'Created repository'
+      } else if (refType === 'branch') {
+        action = 'Created branch'
+      } else if (refType === 'tag') {
+        action = 'Created tag'
+      } else {
+        action = `Created ${refType ?? 'ref'}`
+      }
+
       return {
         ...base,
         kind: 'create',
-        action: t === 'repository' ? 'Created a repository' : `Created ${t}`,
-        detail: e.payload?.ref ?? undefined,
+        action,
+        detail: ref ?? undefined,
         url: repoUrl,
       }
     }
+
+    /* ── Unsupported event type ──────────────────────────── */
     default:
+      console.debug(`[GitHubActivity] Skipping unsupported event type: ${e.type}`)
       return null
   }
 }

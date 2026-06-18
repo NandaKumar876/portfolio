@@ -92,7 +92,7 @@ export function RecentActivity({ initial, intervalMs = 90_000 }: Props) {
             <span className="activity-action">
               {ev.action}
               {ev.detail && (
-                <span className="activity-action-detail"> {ev.detail.replace(/^to /, '')}</span>
+                <span className="activity-action-detail"> {ev.detail}</span>
               )}
             </span>
             <span className="activity-repo">{ev.repo}</span>
