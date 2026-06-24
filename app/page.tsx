@@ -49,7 +49,7 @@ export default async function Home() {
   const { profile, resume, certificates } = content
   const resumeHref    = `/api/resume?v=${encodeURIComponent(resume?.uploadedAt || Date.now())}`
   const yearsBuilding = new Date().getFullYear() - STARTED_BUILDING
-  const featured      = projects.slice(0, 3)
+  const featured      = projects.slice(0, 4)
   const cleanLocation = profile.location.replace(/[\u{1F1E6}-\u{1F1FF}]{2}/gu, '').trim()
 
   /* Contiguous section numbering — only sections that render get a number.
