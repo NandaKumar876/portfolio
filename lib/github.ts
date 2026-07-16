@@ -64,30 +64,92 @@ function countStreak(days: CalendarDay[]) {
 let _cachedCalendar: { weeks: CalendarWeek[]; fetchedAt: number } | null = null
 const CALENDAR_CACHE_TTL = 60 * 60 * 1000 // 1 hour
 
-async function fetchCalendarData(): Promise<CalendarWeek[] | null> {
-  const token = process.env.GITHUB_TOKEN
-  const username = process.env.GITHUB_USERNAME || 'NandaKumar876'
-  if (!token) {
-    console.warn('[GitHubCalendar] No GITHUB_TOKEN set — skipping calendar fetch')
-    return _cachedCalendar?.weeks ?? null
-  }
+/**
+ * Scrape contribution data from GitHub's public contribution page.
+ * This endpoint requires NO authentication and returns an HTML page
+ * with `<td>` elements containing `data-date` and `data-level` attrs.
+ */
+async function fetchPublicCalendar(username: string): Promise<CalendarWeek[] | null> {
+  try {
+    console.debug(`[GitHubCalendar] Trying public scrape for ${username}`)
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), 10000)
 
-  // Return cached data if still fresh
-  if (_cachedCalendar && Date.now() - _cachedCalendar.fetchedAt < CALENDAR_CACHE_TTL) {
-    console.debug('[GitHubCalendar] Returning cached data')
-    return _cachedCalendar.weeks
-  }
+    const res = await fetch(`https://github.com/users/${username}/contributions`, {
+      headers: {
+        'User-Agent': 'Nanda-Portfolio',
+        Accept: 'text/html',
+      },
+      signal: controller.signal,
+      next: { revalidate: 3600 },
+    })
 
+    clearTimeout(timeout)
+    if (!res.ok) {
+      console.warn(`[GitHubCalendar] Public scrape failed: ${res.status}`)
+      return null
+    }
+
+    const html = await res.text()
+
+    // Parse contribution cells from the HTML.
+    // Each cell looks like: <td ... data-date="2025-07-16" data-level="2" ...>
+    const cellRegex = /data-date="(\d{4}-\d{2}-\d{2})"[^>]*data-level="(\d)"/g
+    const dayMap = new Map<string, number>()
+    let match: RegExpExecArray | null
+
+    while ((match = cellRegex.exec(html)) !== null) {
+      const date = match[1]
+      const level = parseInt(match[2], 10)
+      // Map level (0-4) to approximate contribution counts
+      const count = level === 0 ? 0 : level === 1 ? 1 : level === 2 ? 4 : level === 3 ? 8 : 12
+      dayMap.set(date, count)
+    }
+
+    if (dayMap.size === 0) {
+      console.warn('[GitHubCalendar] Public scrape returned no contribution cells')
+      return null
+    }
+
+    // Sort dates and group into weeks (Sun–Sat)
+    const sortedDates = [...dayMap.keys()].sort()
+    const weeks: CalendarWeek[] = []
+    let currentWeek: CalendarDay[] = []
+
+    for (const date of sortedDates) {
+      const dow = new Date(date + 'T00:00:00Z').getUTCDay() // 0=Sun
+      if (dow === 0 && currentWeek.length > 0) {
+        weeks.push({ contributionDays: currentWeek })
+        currentWeek = []
+      }
+      currentWeek.push({ date, contributionCount: dayMap.get(date) ?? 0 })
+    }
+    if (currentWeek.length > 0) {
+      weeks.push({ contributionDays: currentWeek })
+    }
+
+    console.debug(`[GitHubCalendar] Public scrape succeeded: ${weeks.length} weeks, ${dayMap.size} days`)
+    return weeks
+  } catch (err) {
+    console.error('[GitHubCalendar] Public scrape error:', err instanceof Error ? err.message : err)
+    return null
+  }
+}
+
+/**
+ * Fetch calendar data using the authenticated GraphQL API.
+ */
+async function fetchGraphQLCalendar(username: string, token: string): Promise<CalendarWeek[] | null> {
   const to = new Date()
   const from = new Date()
   from.setUTCFullYear(from.getUTCFullYear() - 1)
 
-  const MAX_RETRIES = 3
+  const MAX_RETRIES = 2
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
     try {
-      console.debug(`[GitHubCalendar] Fetching contribution data for ${username} (attempt ${attempt}/${MAX_RETRIES})`)
+      console.debug(`[GitHubCalendar] GraphQL fetch for ${username} (attempt ${attempt}/${MAX_RETRIES})`)
       const controller = new AbortController()
-      const timeout = setTimeout(() => controller.abort(), 15000) // 15s timeout
+      const timeout = setTimeout(() => controller.abort(), 12000)
 
       const response = await fetch('https://api.github.com/graphql', {
         method: 'POST',
@@ -124,8 +186,7 @@ async function fetchCalendarData(): Promise<CalendarWeek[] | null> {
 
       if (!response.ok) {
         const body = await response.text()
-        console.error(`[GitHubCalendar] GraphQL request failed: ${response.status} ${response.statusText}`, body)
-        // Don't retry on auth errors — those won't improve
+        console.error(`[GitHubCalendar] GraphQL failed: ${response.status} ${response.statusText}`, body)
         if (response.status === 401 || response.status === 403) break
         continue
       }
@@ -150,29 +211,61 @@ async function fetchCalendarData(): Promise<CalendarWeek[] | null> {
 
       const weeks = payload.data?.user?.contributionsCollection?.contributionCalendar?.weeks ?? null
       if (weeks) {
-        console.debug(`[GitHubCalendar] Fetched ${weeks.length} weeks of data`)
-        _cachedCalendar = { weeks, fetchedAt: Date.now() }
+        console.debug(`[GitHubCalendar] GraphQL succeeded: ${weeks.length} weeks`)
         return weeks
-      } else {
-        console.warn('[GitHubCalendar] No calendar data in response:', JSON.stringify(payload).slice(0, 500))
       }
     } catch (err) {
-      console.error(`[GitHubCalendar] Attempt ${attempt}/${MAX_RETRIES} failed:`, err instanceof Error ? err.message : err)
+      console.error(`[GitHubCalendar] GraphQL attempt ${attempt} failed:`, err instanceof Error ? err.message : err)
       if (attempt < MAX_RETRIES) {
-        const delay = attempt * 1000 // 1s, 2s backoff
-        console.debug(`[GitHubCalendar] Retrying in ${delay}ms...`)
-        await new Promise(r => setTimeout(r, delay))
+        await new Promise(r => setTimeout(r, attempt * 1000))
       }
     }
   }
+  return null
+}
 
-  // All retries failed — return cached data if available
-  if (_cachedCalendar) {
-    console.warn('[GitHubCalendar] All fetch attempts failed, returning stale cached data')
+/**
+ * Main calendar fetcher — tries multiple sources with caching:
+ * 1. In-memory cache (if fresh)
+ * 2. Public GitHub contributions page (no auth needed)
+ * 3. GraphQL API (needs GITHUB_TOKEN)
+ * 4. Stale cache (if all else fails)
+ */
+async function fetchCalendarData(): Promise<CalendarWeek[] | null> {
+  const token = process.env.GITHUB_TOKEN
+  const username = process.env.GITHUB_USERNAME || 'NandaKumar876'
+
+  // Return cached data if still fresh
+  if (_cachedCalendar && Date.now() - _cachedCalendar.fetchedAt < CALENDAR_CACHE_TTL) {
+    console.debug('[GitHubCalendar] Returning cached data')
     return _cachedCalendar.weeks
   }
 
-  console.error('[GitHubCalendar] All fetch attempts failed, no cached data available')
+  // Strategy 1: Public scrape (works without token, works on Vercel)
+  const publicWeeks = await fetchPublicCalendar(username)
+  if (publicWeeks) {
+    _cachedCalendar = { weeks: publicWeeks, fetchedAt: Date.now() }
+    return publicWeeks
+  }
+
+  // Strategy 2: GraphQL API (needs token)
+  if (token) {
+    const graphqlWeeks = await fetchGraphQLCalendar(username, token)
+    if (graphqlWeeks) {
+      _cachedCalendar = { weeks: graphqlWeeks, fetchedAt: Date.now() }
+      return graphqlWeeks
+    }
+  } else {
+    console.warn('[GitHubCalendar] No GITHUB_TOKEN set — GraphQL unavailable')
+  }
+
+  // Strategy 3: Return stale cache
+  if (_cachedCalendar) {
+    console.warn('[GitHubCalendar] All sources failed, returning stale cached data')
+    return _cachedCalendar.weeks
+  }
+
+  console.error('[GitHubCalendar] All sources failed, no cached data')
   return null
 }
 
