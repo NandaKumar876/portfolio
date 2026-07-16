@@ -30,16 +30,14 @@ export default async function CertificatesPage() {
         </p>
       </header>
 
-      {calendar && (
-        <section style={{ marginBottom: '48px' }}>
-          <LiquidGlass className="heatmap-glass" interactive={false}>
-            <GitHubHeatmap
-              weeks={calendar.weeks}
-              totalContributions={calendar.totalContributions}
-            />
-          </LiquidGlass>
-        </section>
-      )}
+      <section style={{ marginBottom: '48px' }}>
+        <LiquidGlass className="heatmap-glass" interactive={false}>
+          <GitHubHeatmap
+            weeks={calendar.weeks}
+            totalContributions={calendar.totalContributions}
+          />
+        </LiquidGlass>
+      </section>
 
       {certificates.length > 0 ? (
         <ol className="certs-list">

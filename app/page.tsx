@@ -58,7 +58,7 @@ export default async function Home() {
   const order = [
     featured.length > 0     ? 'selected-work' : null,
     certificates.length > 0 ? 'credentials'    : null,
-    calendar                ? 'field-notes'   : null,
+    'field-notes',
     activity.length > 0     ? 'live-feed'      : null,
     'reach-out',
   ].filter(Boolean) as string[]
@@ -279,21 +279,19 @@ export default async function Home() {
       )}
 
       {/* ═════════════ FIELD NOTES ═════════════ */}
-      {calendar && (
-        <section id="field-notes" className="home-section">
-          <SectionHead
-            index={idx('field-notes')}
-            eyebrow="Field Notes"
-            title={<>A year, <em>day by day</em></>}
+      <section id="field-notes" className="home-section">
+        <SectionHead
+          index={idx('field-notes')}
+          eyebrow="Field Notes"
+          title={<>A year, <em>day by day</em></>}
+        />
+        <LiquidGlass className="heatmap-glass" interactive={false}>
+          <GitHubHeatmap
+            weeks={calendar.weeks}
+            totalContributions={calendar.totalContributions}
           />
-          <LiquidGlass className="heatmap-glass" interactive={false}>
-            <GitHubHeatmap
-              weeks={calendar.weeks}
-              totalContributions={calendar.totalContributions}
-            />
-          </LiquidGlass>
-        </section>
-      )}
+        </LiquidGlass>
+      </section>
 
       {/* ═════════════ LIVE FEED ═════════════ */}
       {activity.length > 0 && (
