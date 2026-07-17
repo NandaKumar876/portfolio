@@ -61,7 +61,7 @@ function countStreak(days: CalendarDay[]) {
    successful result so the heatmap stays visible even when a
    subsequent fetch fails.
    ──────────────────────────────────────────────────────────────── */
-let _cachedCalendar: { weeks: CalendarWeek[]; fetchedAt: number } | null = null
+let _cachedCalendar: { weeks: CalendarWeek[]; totalContributions?: number; fetchedAt: number } | null = null
 const CALENDAR_CACHE_TTL = 60 * 60 * 1000 // 1 hour
 
 /**
@@ -69,7 +69,7 @@ const CALENDAR_CACHE_TTL = 60 * 60 * 1000 // 1 hour
  * This endpoint requires NO authentication and returns an HTML page
  * with `<td>` elements containing `data-date` and `data-level` attrs.
  */
-async function fetchPublicCalendar(username: string): Promise<CalendarWeek[] | null> {
+async function fetchPublicCalendar(username: string): Promise<{ weeks: CalendarWeek[]; totalContributions?: number } | null> {
   try {
     console.debug(`[GitHubCalendar] Trying public scrape for ${username}`)
     const controller = new AbortController()
@@ -92,6 +92,15 @@ async function fetchPublicCalendar(username: string): Promise<CalendarWeek[] | n
 
     const html = await res.text()
 
+    // Try to extract the real total from the page header
+    // e.g. "388 contributions in the last year"
+    let scrapedTotal: number | undefined
+    const totalMatch = html.match(/(\d[\d,]+)\s+contributions?\s+in\s+the\s+last\s+year/i)
+    if (totalMatch) {
+      scrapedTotal = parseInt(totalMatch[1].replace(/,/g, ''), 10)
+      console.debug(`[GitHubCalendar] Scraped total contributions: ${scrapedTotal}`)
+    }
+
     // Parse contribution cells from the HTML.
     // Each cell looks like: <td ... data-date="2025-07-16" data-level="2" ...>
     const cellRegex = /data-date="(\d{4}-\d{2}-\d{2})"[^>]*data-level="(\d)"/g
@@ -101,7 +110,7 @@ async function fetchPublicCalendar(username: string): Promise<CalendarWeek[] | n
     while ((match = cellRegex.exec(html)) !== null) {
       const date = match[1]
       const level = parseInt(match[2], 10)
-      // Map level (0-4) to approximate contribution counts
+      // Map level (0-4) to approximate contribution counts for the heatmap visual only
       const count = level === 0 ? 0 : level === 1 ? 1 : level === 2 ? 4 : level === 3 ? 8 : 12
       dayMap.set(date, count)
     }
@@ -129,7 +138,7 @@ async function fetchPublicCalendar(username: string): Promise<CalendarWeek[] | n
     }
 
     console.debug(`[GitHubCalendar] Public scrape succeeded: ${weeks.length} weeks, ${dayMap.size} days`)
-    return weeks
+    return { weeks, totalContributions: scrapedTotal }
   } catch (err) {
     console.error('[GitHubCalendar] Public scrape error:', err instanceof Error ? err.message : err)
     return null
@@ -138,8 +147,9 @@ async function fetchPublicCalendar(username: string): Promise<CalendarWeek[] | n
 
 /**
  * Fetch calendar data using the authenticated GraphQL API.
+ * Returns exact contribution counts per day + the authoritative total.
  */
-async function fetchGraphQLCalendar(username: string, token: string): Promise<CalendarWeek[] | null> {
+async function fetchGraphQLCalendar(username: string, token: string): Promise<{ weeks: CalendarWeek[]; totalContributions: number } | null> {
   const to = new Date()
   const from = new Date()
   from.setUTCFullYear(from.getUTCFullYear() - 1)
@@ -209,10 +219,12 @@ async function fetchGraphQLCalendar(username: string, token: string): Promise<Ca
         console.error('[GitHubCalendar] GraphQL errors:', payload.errors)
       }
 
-      const weeks = payload.data?.user?.contributionsCollection?.contributionCalendar?.weeks ?? null
+      const calendar = payload.data?.user?.contributionsCollection?.contributionCalendar
+      const weeks = calendar?.weeks ?? null
+      const total = calendar?.totalContributions ?? 0
       if (weeks) {
-        console.debug(`[GitHubCalendar] GraphQL succeeded: ${weeks.length} weeks`)
-        return weeks
+        console.debug(`[GitHubCalendar] GraphQL succeeded: ${weeks.length} weeks, ${total} total contributions`)
+        return { weeks, totalContributions: total }
       }
     } catch (err) {
       console.error(`[GitHubCalendar] GraphQL attempt ${attempt} failed:`, err instanceof Error ? err.message : err)
@@ -227,42 +239,42 @@ async function fetchGraphQLCalendar(username: string, token: string): Promise<Ca
 /**
  * Main calendar fetcher — tries multiple sources with caching:
  * 1. In-memory cache (if fresh)
- * 2. Public GitHub contributions page (no auth needed)
- * 3. GraphQL API (needs GITHUB_TOKEN)
+ * 2. GraphQL API (exact counts, needs GITHUB_TOKEN) ← preferred
+ * 3. Public GitHub contributions page (approximate, no auth needed)
  * 4. Stale cache (if all else fails)
  */
-async function fetchCalendarData(): Promise<CalendarWeek[] | null> {
+async function fetchCalendarData(): Promise<{ weeks: CalendarWeek[]; totalContributions?: number } | null> {
   const token = process.env.GITHUB_TOKEN
   const username = process.env.GITHUB_USERNAME || 'NandaKumar876'
 
   // Return cached data if still fresh
   if (_cachedCalendar && Date.now() - _cachedCalendar.fetchedAt < CALENDAR_CACHE_TTL) {
     console.debug('[GitHubCalendar] Returning cached data')
-    return _cachedCalendar.weeks
+    return { weeks: _cachedCalendar.weeks, totalContributions: _cachedCalendar.totalContributions }
   }
 
-  // Strategy 1: Public scrape (works without token, works on Vercel)
-  const publicWeeks = await fetchPublicCalendar(username)
-  if (publicWeeks) {
-    _cachedCalendar = { weeks: publicWeeks, fetchedAt: Date.now() }
-    return publicWeeks
-  }
-
-  // Strategy 2: GraphQL API (needs token)
+  // Strategy 1 (preferred): GraphQL API — returns exact contribution counts
   if (token) {
-    const graphqlWeeks = await fetchGraphQLCalendar(username, token)
-    if (graphqlWeeks) {
-      _cachedCalendar = { weeks: graphqlWeeks, fetchedAt: Date.now() }
-      return graphqlWeeks
+    const graphqlResult = await fetchGraphQLCalendar(username, token)
+    if (graphqlResult) {
+      _cachedCalendar = { weeks: graphqlResult.weeks, totalContributions: graphqlResult.totalContributions, fetchedAt: Date.now() }
+      return graphqlResult
     }
   } else {
     console.warn('[GitHubCalendar] No GITHUB_TOKEN set — GraphQL unavailable')
   }
 
+  // Strategy 2: Public scrape (levels are approximate, but total is scraped from header)
+  const publicResult = await fetchPublicCalendar(username)
+  if (publicResult) {
+    _cachedCalendar = { weeks: publicResult.weeks, totalContributions: publicResult.totalContributions, fetchedAt: Date.now() }
+    return publicResult
+  }
+
   // Strategy 3: Return stale cache
   if (_cachedCalendar) {
     console.warn('[GitHubCalendar] All sources failed, returning stale cached data')
-    return _cachedCalendar.weeks
+    return { weeks: _cachedCalendar.weeks, totalContributions: _cachedCalendar.totalContributions }
   }
 
   console.error('[GitHubCalendar] All sources failed, no cached data')
@@ -270,19 +282,26 @@ async function fetchCalendarData(): Promise<CalendarWeek[] | null> {
 }
 
 export async function getGitHubStats(): Promise<GitHubStats | null> {
-  const weeks = await fetchCalendarData()
-  if (!weeks) return null
-  const days = weeks.flatMap(w => w.contributionDays ?? [])
+  const result = await fetchCalendarData()
+  if (!result) return null
+  const days = result.weeks.flatMap(w => w.contributionDays ?? [])
   if (!days.length) return null
-  return countStreak(days)
+  const stats = countStreak(days)
+  // If the fetcher returned an authoritative total, use that instead of the sum
+  if (result.totalContributions != null) {
+    stats.totalContributions = result.totalContributions
+  }
+  return stats
 }
 
 export async function getGitHubCalendar(): Promise<GitHubCalendar> {
-  const weeks = await fetchCalendarData()
-  if (weeks) {
-    const days = weeks.flatMap(w => w.contributionDays ?? [])
-    const totalContributions = days.reduce((s, d) => s + d.contributionCount, 0)
-    return { weeks, totalContributions }
+  const result = await fetchCalendarData()
+  if (result) {
+    const days = result.weeks.flatMap(w => w.contributionDays ?? [])
+    // Use the authoritative total from the API/scrape if available,
+    // otherwise fall back to summing the per-day counts
+    const totalContributions = result.totalContributions ?? days.reduce((s, d) => s + d.contributionCount, 0)
+    return { weeks: result.weeks, totalContributions }
   }
 
   // Fallback: generate an empty 52-week calendar so the section always renders
