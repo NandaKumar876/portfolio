@@ -78,7 +78,7 @@ export default async function Home() {
               <div className="relative w-full">
                 <div className="relative rounded-xl overflow-hidden border border-[var(--line-strong)] shadow-[var(--shadow-card)] w-full aspect-[3/4]">
                   <Image
-                    src="/images/profile.jpg"
+                    src="/images/profile.png"
                     alt="Nanda Kumar R — Full Stack Developer"
                     fill
                     priority
