@@ -90,24 +90,27 @@ export default async function AboutPage() {
           {/* ── Portrait photo card ── */}
           <div className="relative group w-full max-w-[220px] mx-auto mb-8">
 
-            {/* Teal accent border — sits behind, stays fixed on hover */}
-            <div className="absolute inset-0 rounded-[20px] border border-teal-400/30 translate-x-1 translate-y-1 z-0" />
+            {/* Ambient accent glow border — behind main card */}
+            <div className="absolute -inset-1 rounded-[22px] bg-gradient-to-tr from-[var(--accent)]/30 to-transparent opacity-50 blur-sm group-hover:opacity-100 transition-opacity duration-300 z-0" />
 
-            {/* Main photo card — lifts on hover */}
-            <div className="relative z-10 rounded-[20px] overflow-hidden border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.25)] group-hover:-translate-y-1 group-hover:shadow-[0_16px_48px_rgba(0,0,0,0.35)] transition-all duration-300 ease-out">
+            {/* Main photo card — lifts smoothly on hover */}
+            <div className="relative z-10 rounded-[20px] overflow-hidden border border-[var(--line-strong)] shadow-[var(--shadow-card)] group-hover:-translate-y-1 transition-all duration-300 ease-out bg-[var(--glass-tint-strong)]">
               <Image
                 src="/images/profile.jpg"
                 alt="Nanda Kumar R — Full Stack Developer"
                 width={220}
                 height={240}
                 priority
-                className="object-cover object-top w-full h-[240px]"
+                className="object-cover object-top w-full h-[240px] transition-transform duration-500 group-hover:scale-[1.03]"
               />
             </div>
 
-            {/* Floating status badge — bottom-center, does not move on hover */}
-            <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-[#0f1a17] border border-teal-400/30 text-teal-400 shadow-[0_4px_12px_rgba(0,0,0,0.3)] whitespace-nowrap">
-              <span className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" />
+            {/* Floating status badge — bottom-center */}
+            <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-medium bg-[var(--bg-soft)] border border-[var(--accent-glow)] text-[var(--accent)] shadow-md whitespace-nowrap">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--accent)] opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--accent)]" />
+              </span>
               Open to Work
             </div>
           </div>
