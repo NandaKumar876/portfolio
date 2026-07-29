@@ -20,6 +20,7 @@ export const TIMELINE_OPTIONS = [
 export const ContactSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   email: z.string().email('Valid email required'),
+  phone: z.string().trim().optional().transform(value => value || ''),
   company: z.string().trim().optional().transform(value => value || ''),
   inquiryType: z.enum(INQUIRY_TYPES, { message: 'Select an inquiry type' }),
   timeline: z.enum(TIMELINE_OPTIONS, { message: 'Select a timeline' }),
