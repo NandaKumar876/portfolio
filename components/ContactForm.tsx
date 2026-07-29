@@ -43,6 +43,7 @@ export function ContactForm() {
     const payload = {
       name: formData.get('name'),
       email: formData.get('email'),
+      phone: formData.get('phone') || '',
       company: formData.get('company'),
       inquiryType: formData.get('inquiryType'),
       timeline: formData.get('timeline'),
@@ -71,9 +72,9 @@ export function ContactForm() {
           setState({ ok: true })
           setToast({
             type: 'warning',
-            text: 'Message stored in DB, but email notification failed.',
+            text: data.warning || 'Message saved successfully, but admin notification could not be sent.',
           })
-          console.warn('[ContactForm] Message saved but email notification failed.')
+          console.warn('[ContactForm] Message saved but email notification failed:', data.emailError)
         } else {
           // Success
           setState({ ok: true })
