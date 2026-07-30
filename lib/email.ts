@@ -1,3 +1,4 @@
+import { Resend } from 'resend'
 import nodemailer from 'nodemailer'
 
 export interface EmailOptions {
@@ -69,9 +70,7 @@ export function validateEmailConfig(): EmailConfigValidation {
       details: {
         missingVars: [
           'ADMIN_EMAIL or NOTIFY_EMAIL',
-          'SMTP_HOST (or smtp.gmail.com)',
-          'SMTP_USER (or GMAIL_USER)',
-          'SMTP_PASS (or GMAIL_APP_PASSWORD)',
+          'RESEND_API_KEY (or SMTP credentials)',
         ],
       },
     }
@@ -141,35 +140,26 @@ export async function sendEmail(options: EmailOptions) {
   })
 
   if (config.provider === 'resend') {
-    const resendKey = process.env.RESEND_API_KEY!
-    console.log('[EmailConfig] Dispatching request to Resend API...')
+    const resendKey = process.env.RESEND_API_KEY!.trim().replace(/^["']|["']$/g, '')
+    console.log('[EmailConfig] Dispatching email via Resend SDK...')
 
     try {
-      const response = await fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${resendKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          from: emailFrom,
-          to: emailTo,
-          reply_to: options.replyTo,
-          subject: options.subject,
-          text: options.text,
-          html: options.html,
-        }),
+      const resend = new Resend(resendKey)
+      const { data, error } = await resend.emails.send({
+        from: emailFrom || 'onboarding@resend.dev',
+        to: emailTo,
+        replyTo: options.replyTo,
+        subject: options.subject,
+        text: options.text,
+        html: options.html,
       })
 
-      const data = (await response.json()) as any
-      console.log('[EmailConfig] Resend API Response:', JSON.stringify(data, null, 2))
-
-      if (!response.ok) {
-        const errorDetail = data?.message || data?.error || `Resend HTTP Error ${response.status}`
-        throw new Error(`Resend Delivery Failed: ${errorDetail}`)
+      if (error) {
+        console.error('[EmailConfig] Resend Error:', error)
+        throw new Error(`Resend Delivery Failed: ${error.message || JSON.stringify(error)}`)
       }
 
-      console.log('[EmailConfig] Resend Email delivered successfully. ID:', data.id)
+      console.log('[EmailConfig] Resend Email delivered successfully. Data:', data)
       return { success: true, provider: 'resend', data }
     } catch (err: any) {
       console.error('[EmailConfig] Resend send error:', err)
