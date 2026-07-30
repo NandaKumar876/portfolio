@@ -177,9 +177,13 @@ export async function sendEmail(options: EmailOptions) {
     }
   } else {
     // SMTP Nodemailer
-    const smtpUser = process.env.SMTP_USER || process.env.GMAIL_USER || process.env.EMAIL_USER!
-    const smtpPass = process.env.SMTP_PASSWORD || process.env.SMTP_PASS || process.env.GMAIL_APP_PASSWORD || process.env.EMAIL_PASS!
-    const smtpHost = process.env.SMTP_HOST || 'smtp.gmail.com'
+    const rawUser = process.env.SMTP_USER || process.env.GMAIL_USER || process.env.EMAIL_USER || ''
+    const rawPass = process.env.SMTP_PASSWORD || process.env.SMTP_PASS || process.env.GMAIL_APP_PASSWORD || process.env.EMAIL_PASS || ''
+    
+    // Automatically sanitize credentials (remove spaces from Google 16-char App Passwords and surrounding quotes)
+    const smtpUser = rawUser.trim().replace(/^["']|["']$/g, '')
+    const smtpPass = rawPass.trim().replace(/\s+/g, '').replace(/^["']|["']$/g, '')
+    const smtpHost = (process.env.SMTP_HOST || 'smtp.gmail.com').trim().replace(/^["']|["']$/g, '')
 
     const userPort = process.env.SMTP_PORT ? parseInt(process.env.SMTP_PORT, 10) : null
     
