@@ -1,4 +1,4 @@
-## Nanda Kumar R — Portfolio
+### Nanda Kumar R — Portfolio
 ## Next.js 16 · React 19 · Apple Liquid Glass · TypeScript
 
 Personal portfolio of **Nanda Kumar R** — Full Stack Developer based in Chennai, Tamil Nadu 🇮🇳
