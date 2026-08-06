@@ -7,7 +7,7 @@ import { getProjects }       from '@/lib/projects'
 import '@/app/globals.css'
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://nandakumar.vercel.app'),
+  metadataBase: new URL('https://nandakumar.xyz'),
   title: {
     default: 'Nanda — Developer',
     template: '%s — Nanda',
