@@ -38,6 +38,8 @@ export async function POST(request: NextRequest) {
 
     revalidatePath('/')
     revalidatePath('/about')
+    revalidatePath('/resume')
+    revalidatePath('/api/resume')
 
     return NextResponse.json({ ok: true, resume: resume.resume })
   } catch (err) {
@@ -56,6 +58,8 @@ export async function DELETE(request: NextRequest) {
 
     revalidatePath('/')
     revalidatePath('/about')
+    revalidatePath('/resume')
+    revalidatePath('/api/resume')
 
     return NextResponse.json({ ok: true, resume: updated.resume })
   } catch (err) {
