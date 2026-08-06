@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import { getPortfolioData } from '@/lib/portfolio'
 import { PrintButton } from './PrintButton'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'Resume',
   description: 'Resume of Nanda Kumar R — Full Stack Developer based in Chennai.',
