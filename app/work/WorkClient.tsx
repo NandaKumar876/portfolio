@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { RepoStars } from '@/components/RepoStars'
 import type { AdminProject } from '@/lib/projects'
 
-const FILTERS = ['All', 'React', 'Node', 'AI', 'Design'] as const
+const FILTERS = ['All', 'React', 'Node', 'AI', 'Python', 'Design'] as const
 type Filter = typeof FILTERS[number]
 
 export function WorkClient({ projects }: { projects: AdminProject[] }) {
