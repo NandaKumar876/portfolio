@@ -3,9 +3,9 @@
 
 Personal portfolio of **Nanda Kumar R** — Full Stack Developer based in Chennai, Tamil Nadu 🇮🇳
 
-🔗 **GitHub:** [github.com/NandaKumar876](https://github.com/NandaKumar876)
-🔗 **LinkedIn:** [linkedin.com/in/nanda-kumar-r-608036362](https://www.linkedin.com/in/nanda-kumar-r-608036362/)
-📧 **Email:** nandakumarr3030@gmail.com
+ **GitHub:** [github.com/NandaKumar876](https://github.com/NandaKumar876)
+ **LinkedIn:** [linkedin.com/in/nanda-kumar-r-608036362](https://www.linkedin.com/in/nanda-kumar-r-608036362/)
+ **Email:** nandakumarr3030@gmail.com
 
 ---
 
